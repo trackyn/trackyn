@@ -47,10 +47,10 @@ a { text-decoration: none; color: inherit; }
     z-index: 100;
 }
 
-/* Header Logo Container (using provided image) */
+/* Header Logo Container */
 .logo-container {
     display: block;
-    width: 150px; /* Adjust this size as needed for ideal header fit */
+    width: 150px;
 }
 
 .logo-img {
@@ -88,7 +88,6 @@ a { text-decoration: none; color: inherit; }
 
 /* --- Hero Section --- */
 .hero {
-    /* Background image set to relative path for seamless loading */
     background: url('images/hero-bg.jpg') no-repeat center center/cover;
     height: 80vh;
     min-height: 600px;
@@ -152,7 +151,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .btn-light {
-    background-color: #f4ece6; /* Beige/off-white from screenshots */
+    background-color: #f4ece6; 
     color: var(--primary-blue);
 }
 
@@ -162,8 +161,8 @@ a { text-decoration: none; color: inherit; }
 
 .btn-outline {
     background: transparent;
-    border: 1px solid var(--accent-blue); /* Light blue outline */
-    color: var(--text-light); /* White button text */
+    border: 1px solid var(--accent-blue);
+    color: var(--text-light);
     width: 100%;
 }
 
@@ -172,10 +171,10 @@ a { text-decoration: none; color: inherit; }
     color: var(--primary-blue);
 }
 
-/* --- Wave Divider - Pulls color seamlessly from main content --- */
+/* --- Wave Divider --- */
 .wave-container {
     background: transparent;
-    margin-top: -100px; /* Pulls wave up over the hero image */
+    margin-top: -100px;
     position: relative;
     z-index: 5;
 }
@@ -256,8 +255,8 @@ a { text-decoration: none; color: inherit; }
 }
 
 .card {
-    background-color: var(--pricing-box-bg); /* Lighter translucent content */
-    border: 1px solid var(--accent-blue); /* Light blue border */
+    background-color: var(--pricing-box-bg);
+    border: 1px solid var(--accent-blue);
     border-radius: 8px;
     padding: 40px 30px;
     display: flex;
@@ -267,7 +266,7 @@ a { text-decoration: none; color: inherit; }
 
 .card h3 {
     font-family: var(--font-tech);
-    color: var(--text-light); /* White title */
+    color: var(--text-light);
     font-size: 1.5rem;
     margin-bottom: 20px;
 }
@@ -275,7 +274,7 @@ a { text-decoration: none; color: inherit; }
 .card p {
     font-size: 0.95rem;
     line-height: 1.5;
-    color: var(--text-light); /* White content text */
+    color: var(--text-light);
     margin-bottom: 40px;
 }
 
@@ -285,11 +284,10 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: flex-end;
     padding: 60px 5% 40px;
-    background-color: var(--primary-blue); /* Seamless blue footer */
+    background-color: var(--primary-blue);
     position: relative;
 }
 
-/* Footer text colors as light grey */
 .email-text, .copyright {
     color: var(--text-grey);
 }
@@ -309,10 +307,9 @@ a { text-decoration: none; color: inherit; }
     gap: 30px;
 }
 
-/* Footer Logo Container */
 .footer-logo-container {
     display: block;
-    width: 120px; /* Slightly smaller than header logo */
+    width: 120px;
 }
 
 .footer-logo-img {
@@ -321,7 +318,7 @@ a { text-decoration: none; color: inherit; }
     display: block;
 }
 
-/* Social Icon Container */
+/* --- FIXED SOCIAL ICONS --- */
 .social-icons {
     display: flex;
     gap: 15px;
@@ -334,16 +331,23 @@ a { text-decoration: none; color: inherit; }
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    /* Translucent grey circular background from original screenshot */
-    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff; /* Sets the icon color to crisp white */
     font-size: 1.2rem;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* Re-adding hover effect while maintaining base icon color */
+/* Brand Background Colors */
+.social-fb { background-color: #1877f2; }
+.social-ig { background-color: #e4405f; }
+.social-yt { background-color: #ff0000; }
+.social-x  { background-color: #000000; } /* Black background for X */
+.social-li { background-color: #0a66c2; }
+.social-tt { background-color: #000000; } /* Black background for TikTok */
+
+/* Using brightness filter so hover works perfectly on all individual colors */
 .social-icons a:hover {
     transform: translateY(-3px);
-    background-color: rgba(255, 255, 255, 0.3);
+    filter: brightness(1.25);
 }
 
 .back-to-top {
@@ -352,15 +356,15 @@ a { text-decoration: none; color: inherit; }
     right: 5%;
     width: 40px;
     height: 40px;
-    background-color: var(--accent-blue); /* Light blue */
-    color: var(--primary-blue); /* Dark text for contrast */
+    background-color: var(--accent-blue);
+    color: var(--primary-blue);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.2rem;
 }
 
-/* --- Responsive Media Queries (Preserving Seamlessness) --- */
+/* --- Responsive Media Queries --- */
 @media (max-width: 968px) {
     .split-section, .split-section.reverse {
         flex-direction: column;
@@ -368,7 +372,7 @@ a { text-decoration: none; color: inherit; }
     }
     
     .nav-links {
-        display: none; /* Mobile view: links are hidden */
+        display: none;
     }
     
     .hero-title {
