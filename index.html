@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body id="top">
 
     <nav class="navbar">
         <div class="logo-container">
@@ -121,26 +121,9 @@
         </div>
     </footer>
 
-    <a href="#" class="back-to-top" aria-label="Scroll to top">
+    <a href="#top" class="back-to-top" aria-label="Scroll to top">
         <i class="fa-solid fa-arrow-up"></i>
     </a>
-
-    <script>
-        const scrollBtn = document.querySelector('.back-to-top');
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollBtn.classList.add('show');
-            } else {
-                scrollBtn.classList.remove('show');
-            }
-        });
-
-        scrollBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
 
 </body>
 </html>
