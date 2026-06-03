@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-/* Enable smooth scrolling globally */
+/* Enable pure CSS smooth scrolling globally */
 html {
     scroll-behavior: smooth;
 }
@@ -342,7 +342,7 @@ a { text-decoration: none; color: inherit; }
 .social-fb { background-color: #1877f2; }
 .social-ig { background-color: #e4405f; }
 .social-yt { background-color: #ff0000; }
-.social-x  { background-color: #000000; } /* Pure black X logo */
+.social-x  { background-color: #000000; }
 .social-li { background-color: #0a66c2; }
 .social-tt { background-color: #000000; }
 
@@ -351,7 +351,7 @@ a { text-decoration: none; color: inherit; }
     opacity: 0.85;
 }
 
-/* --- FIXED: Dynamic Floating Scroll Up Button --- */
+/* --- PERMANENTLY VISIBLE FLOATING BUTTON --- */
 .back-to-top {
     position: fixed; 
     bottom: 30px;
@@ -366,25 +366,14 @@ a { text-decoration: none; color: inherit; }
     align-items: center;
     font-size: 1.3rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    z-index: 1000; 
-    
-    /* Initially hidden to act as a proper float */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-}
-
-/* Triggered by JS when scrolled down */
-.back-to-top.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    z-index: 9999; /* Max priority to ensure it floats over everything */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    text-decoration: none;
 }
 
 .back-to-top:hover {
     background-color: #5b9ce6;
-    transform: translateY(-4px); /* Hover lift effect */
+    transform: translateY(-4px);
 }
 
 /* --- Responsive Media Queries --- */
