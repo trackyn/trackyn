@@ -5,6 +5,11 @@
     box-sizing: border-box;
 }
 
+/* Enable smooth scrolling globally */
+html {
+    scroll-behavior: smooth;
+}
+
 :root {
     --primary-blue: #1b1e64; /* Deep navy blue - Main background/Nav/Footer */
     --accent-blue: #4a90e2;   /* Light digital blue - Highlights and buttons */
@@ -316,7 +321,7 @@ a { text-decoration: none; color: inherit; }
     display: block;
 }
 
-/* --- FIXED: Solid Colored Social Icons --- */
+/* --- Solid Colored Social Icons --- */
 .social-icons {
     display: flex;
     gap: 15px;
@@ -328,17 +333,16 @@ a { text-decoration: none; color: inherit; }
     justify-content: center;
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* Perfect circles */
-    color: #ffffff; /* Crisp white icons */
+    border-radius: 50%;
+    color: #ffffff; 
     font-size: 1.2rem;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* Brand specific background colors from your design */
 .social-fb { background-color: #1877f2; }
 .social-ig { background-color: #e4405f; }
 .social-yt { background-color: #ff0000; }
-.social-x  { background-color: #000000; }
+.social-x  { background-color: #000000; } /* Pure black X logo */
 .social-li { background-color: #0a66c2; }
 .social-tt { background-color: #000000; }
 
@@ -347,27 +351,40 @@ a { text-decoration: none; color: inherit; }
     opacity: 0.85;
 }
 
-/* --- FIXED: Floating Scroll Up Button --- */
+/* --- FIXED: Dynamic Floating Scroll Up Button --- */
 .back-to-top {
-    position: fixed; /* This makes it float over the content */
+    position: fixed; 
     bottom: 30px;
     right: 30px;
     width: 45px;
     height: 45px;
-    background-color: var(--accent-blue); /* Light digital blue */
-    color: var(--primary-blue); /* Dark navy icon */
-    border: none;
-    border-radius: 10px; /* Rounded square */
-    cursor: pointer;
+    background-color: var(--accent-blue); 
+    color: var(--primary-blue); 
+    border-radius: 10px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 1.3rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    z-index: 1000; /* Ensures it stays on top of everything */
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    z-index: 1000; 
+    
+    /* Initially hidden to act as a proper float */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+/* Triggered by JS when scrolled down */
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .back-to-top:hover {
-    transform: translateY(-4px);
     background-color: #5b9ce6;
+    transform: translateY(-4px); /* Hover lift effect */
 }
 
 /* --- Responsive Media Queries --- */
@@ -413,5 +430,10 @@ a { text-decoration: none; color: inherit; }
     .social-icons {
         flex-wrap: wrap;
         justify-content: center;
+    }
+    
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
     }
 }
