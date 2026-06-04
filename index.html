@@ -140,19 +140,19 @@
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
 
-        // Open menu
+        // Open Menu Action
         menuToggle.addEventListener('click', () => {
             navLinks.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevents background scrolling when menu is open
+            document.body.style.overflow = 'hidden'; 
         });
 
-        // Close menu
+        // Close Menu Action
         closeMenu.addEventListener('click', () => {
             navLinks.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restores background scrolling
+            document.body.style.overflow = 'auto'; 
         });
 
-        // Optional: Close menu when a link is clicked
+        // Auto-close menu overlay when item selection takes place
         const navItems = document.querySelectorAll('.nav-links li a');
         navItems.forEach(item => {
             item.addEventListener('click', () => {
