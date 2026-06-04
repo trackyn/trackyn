@@ -293,7 +293,6 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: flex-end;
     padding: 60px 5% 40px;
-    /* Solid white line distinguishing the footer from the content above */
     border-top: 1px solid #ffffff; 
 }
 
@@ -383,6 +382,24 @@ a { text-decoration: none; color: inherit; }
 
 /* --- Responsive Media Queries --- */
 @media (max-width: 968px) {
+    /* Center the hero box horizontally on tablets/mobile */
+    .hero {
+        justify-content: center;
+    }
+    
+    /* Center all text and contain the width to avoid overflow */
+    .hero-content {
+        text-align: center;
+        width: 100%;
+        max-width: 90%; /* Prevents edges from touching the screen boundary */
+        padding: 40px 30px;
+    }
+
+    /* Center the buttons below the text */
+    .hero-buttons {
+        justify-content: center;
+    }
+
     .split-section, .split-section.reverse {
         flex-direction: column;
         text-align: center;
@@ -413,8 +430,28 @@ a { text-decoration: none; color: inherit; }
 }
 
 @media (max-width: 480px) {
+    /* Adjust text size and padding for smaller phone screens */
+    .hero-content {
+        padding: 25px 20px;
+        max-width: 95%;
+    }
+    
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-desc {
+        font-size: 0.95rem;
+    }
+
+    /* Stack buttons and make them full width for better mobile UX */
     .hero-buttons {
         flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-buttons .btn {
+        width: 100%;
     }
     
     .tech-heading {
