@@ -11,9 +11,9 @@ html {
 }
 
 :root {
-    /* Brand Colors for alternating sections */
-    --primary-blue: #141979;    
-    --secondary-blue: #2B2F84;  
+    /* Updated Brand Colors for alternating sections */
+    --primary-blue: #141979;    /* Base header/footer and alternating sections */
+    --secondary-blue: #2B2F84;  /* Alternating contrast section color */
     
     --accent-blue: #4a90e2;   /* Light digital blue - Highlights and buttons */
     --pricing-box-bg: rgba(200, 200, 200, 0.15); /* Translucent box content */
@@ -59,7 +59,7 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: center;
     padding: 20px 5%;
-    background-color: var(--primary-blue);
+    background-color: var(--primary-blue); /* Hardcoded to primary */
     position: relative;
     z-index: 100;
 }
@@ -249,7 +249,7 @@ a { text-decoration: none; color: inherit; }
 
 /* --- Features Section --- */
 .features-section {
-    padding: 80px 5%; 
+    padding: 80px 5%; /* Increased padding to match split sections perfectly */
 }
 
 .features-sub {
@@ -295,8 +295,7 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: flex-end;
     padding: 60px 5% 40px;
-    /* Added Top Border to perfectly distinguish the footer from the section above */
-    border-top: 1px solid #ffffff;
+    /* Background controlled by .bg-primary class */
 }
 
 .email-text, .copyright {
