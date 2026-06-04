@@ -11,9 +11,12 @@ html {
 }
 
 :root {
-    --primary-blue: #1b1e64; /* Deep navy blue - Main background/Nav/Footer */
+    /* Updated Brand Colors for alternating sections */
+    --primary-blue: #141979;    /* Base header/footer and alternating sections */
+    --secondary-blue: #2B2F84;  /* Alternating contrast section color */
+    
     --accent-blue: #4a90e2;   /* Light digital blue - Highlights and buttons */
-    --pricing-box-bg: rgba(200, 200, 200, 0.3); /* Translucent grey content */
+    --pricing-box-bg: rgba(200, 200, 200, 0.15); /* Translucent box content */
     --hero-overlay-color: rgba(0, 0, 0, 0.2); /* Dark overlay */
     --hero-content-bg: rgba(255, 255, 255, 0.85); /* Blurred beige/white */
     --text-light: #ffffff; /* White - Headings, main text */
@@ -27,6 +30,15 @@ body {
     background-color: var(--primary-blue);
     color: var(--text-light);
     overflow-x: hidden;
+}
+
+/* --- Alternating Background Classes --- */
+.bg-primary {
+    background-color: var(--primary-blue);
+}
+
+.bg-secondary {
+    background-color: var(--secondary-blue);
 }
 
 /* --- Typography --- */
@@ -47,7 +59,7 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: center;
     padding: 20px 5%;
-    background-color: var(--primary-blue);
+    background-color: var(--primary-blue); /* Hardcoded to primary */
     position: relative;
     z-index: 100;
 }
@@ -175,10 +187,10 @@ a { text-decoration: none; color: inherit; }
     color: var(--primary-blue);
 }
 
-/* --- Wave Divider --- */
+/* --- Perfect Wavy Divider --- */
 .wave-container {
     background: transparent;
-    margin-top: -100px;
+    margin-top: -95px; /* Overlaps hero perfectly without gap */
     position: relative;
     z-index: 5;
 }
@@ -190,11 +202,6 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* --- Main Content Areas --- */
-.dark-bg {
-    background-color: var(--primary-blue);
-    padding-bottom: 80px;
-}
-
 .split-section {
     display: flex;
     align-items: center;
@@ -242,7 +249,7 @@ a { text-decoration: none; color: inherit; }
 
 /* --- Features Section --- */
 .features-section {
-    padding: 60px 5%;
+    padding: 80px 5%; /* Increased padding to match split sections perfectly */
 }
 
 .features-sub {
@@ -288,7 +295,7 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: flex-end;
     padding: 60px 5% 40px;
-    background-color: var(--primary-blue);
+    /* Background controlled by .bg-primary class */
 }
 
 .email-text, .copyright {
@@ -366,7 +373,7 @@ a { text-decoration: none; color: inherit; }
     align-items: center;
     font-size: 1.3rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    z-index: 9999; /* Max priority to ensure it floats over everything */
+    z-index: 9999; 
     transition: transform 0.2s ease, background-color 0.2s ease;
     text-decoration: none;
 }
