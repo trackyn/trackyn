@@ -16,7 +16,11 @@
                 <img src="images/logo.png" alt="Trackyn Logo" class="logo-img">
             </a>
         </div>
+        
         <ul class="nav-links">
+            <li class="close-menu-container">
+                <i class="fa-solid fa-xmark close-menu" aria-label="Close menu"></i>
+            </li>
             <li><a href="#" style="text-decoration: underline;">Home</a></li>
             <li><a href="#">Blog</a></li>
             <li><a href="#">Groups</a></li>
@@ -24,9 +28,15 @@
             <li><a href="#">How It Works</a></li>
             <li><a href="#">Shop</a></li>
         </ul>
-        <div class="cart">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span class="cart-count">0</span>
+
+        <div class="nav-actions">
+            <div class="cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-count">1</span>
+            </div>
+            <div class="menu-toggle" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </div>
         </div>
     </nav>
 
@@ -124,6 +134,33 @@
     <a href="#top" class="back-to-top" aria-label="Scroll to top">
         <i class="fa-solid fa-arrow-up"></i>
     </a>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const closeMenu = document.querySelector('.close-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        // Open menu
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevents background scrolling when menu is open
+        });
+
+        // Close menu
+        closeMenu.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restores background scrolling
+        });
+
+        // Optional: Close menu when a link is clicked
+        const navItems = document.querySelectorAll('.nav-links li a');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+    </script>
 
 </body>
 </html>
