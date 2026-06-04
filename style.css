@@ -5,22 +5,20 @@
     box-sizing: border-box;
 }
 
-/* Enable pure CSS smooth scrolling globally */
 html {
     scroll-behavior: smooth;
 }
 
 :root {
-    /* Updated Brand Colors for alternating sections */
-    --primary-blue: #141979;    /* Base header/footer and alternating sections */
-    --secondary-blue: #2B2F84;  /* Alternating contrast section color */
-    
-    --accent-blue: #4a90e2;   /* Light digital blue - Highlights and buttons */
-    --pricing-box-bg: rgba(200, 200, 200, 0.15); /* Translucent box content */
-    --hero-overlay-color: rgba(0, 0, 0, 0.2); /* Dark overlay */
-    --hero-content-bg: rgba(255, 255, 255, 0.85); /* Blurred beige/white */
-    --text-light: #ffffff; /* White - Headings, main text */
-    --text-grey: #a0a0a0;   /* Light grey - Footer text, copyright */
+    /* Brand Colors */
+    --primary-blue: #141979;    
+    --secondary-blue: #2B2F84;  
+    --accent-blue: #4a90e2;   
+    --pricing-box-bg: rgba(200, 200, 200, 0.15); 
+    --hero-overlay-color: rgba(0, 0, 0, 0.2); 
+    --hero-content-bg: rgba(255, 255, 255, 0.85); 
+    --text-light: #ffffff; 
+    --text-grey: #a0a0a0;   
     --font-tech: 'Orbitron', sans-serif;
     --font-body: 'Inter', sans-serif;
 }
@@ -59,7 +57,7 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: center;
     padding: 20px 5%;
-    background-color: var(--primary-blue); /* Hardcoded to primary */
+    background-color: var(--primary-blue);
     position: relative;
     z-index: 100;
 }
@@ -187,10 +185,10 @@ a { text-decoration: none; color: inherit; }
     color: var(--primary-blue);
 }
 
-/* --- Perfect Wavy Divider --- */
+/* --- Wavy Divider --- */
 .wave-container {
     background: transparent;
-    margin-top: -95px; /* Overlaps hero perfectly without gap */
+    margin-top: -95px; 
     position: relative;
     z-index: 5;
 }
@@ -249,7 +247,7 @@ a { text-decoration: none; color: inherit; }
 
 /* --- Features Section --- */
 .features-section {
-    padding: 80px 5%; /* Increased padding to match split sections perfectly */
+    padding: 80px 5%; 
 }
 
 .features-sub {
@@ -295,7 +293,8 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     align-items: flex-end;
     padding: 60px 5% 40px;
-    /* Background controlled by .bg-primary class */
+    /* Solid white line distinguishing the footer from the content above */
+    border-top: 1px solid #ffffff; 
 }
 
 .email-text, .copyright {
@@ -328,7 +327,6 @@ a { text-decoration: none; color: inherit; }
     display: block;
 }
 
-/* --- Solid Colored Social Icons --- */
 .social-icons {
     display: flex;
     gap: 15px;
@@ -358,7 +356,7 @@ a { text-decoration: none; color: inherit; }
     opacity: 0.85;
 }
 
-/* --- PERMANENTLY VISIBLE FLOATING BUTTON --- */
+/* --- Floating Scroll to Top --- */
 .back-to-top {
     position: fixed; 
     bottom: 30px;
