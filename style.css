@@ -1167,7 +1167,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* Common Typography */
-.section-heading {
+.partner-main .section-heading {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     text-align: center;
@@ -1175,7 +1175,7 @@ a { text-decoration: none; color: inherit; }
     text-transform: capitalize;
 }
 
-.section-heading.left-align {
+.partner-main .section-heading.left-align {
     text-align: left;
 }
 
@@ -1236,10 +1236,10 @@ a { text-decoration: none; color: inherit; }
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 3rem 2rem;
     border-radius: 4px;
-    background: rgba(255, 255, 255, 0.03); /* Subtle highlight */
+    background: rgba(255, 255, 255, 0.03);
 }
 
-.card-title {
+.partner-main .card-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
@@ -1271,7 +1271,7 @@ a { text-decoration: none; color: inherit; }
 /* --- How to Partner Steps Section --- */
 .partner-steps {
     padding: 6rem 8%;
-    background: rgba(0, 0, 0, 0.1); /* Slight section contrast */
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .steps-grid {
@@ -1332,7 +1332,7 @@ a { text-decoration: none; color: inherit; }
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
     margin-bottom: 1.5rem;
-    min-height: 80px; /* Keeps cards aligned if text varies */
+    min-height: 80px;
 }
 
 .quote-divider {
@@ -1377,13 +1377,13 @@ a { text-decoration: none; color: inherit; }
 
 .btn-partner-cta {
     display: inline-block;
-    background-color: #f3f4f6; /* Light gray/off-white */
-    color: #1a1b5c; /* Dark blue text */
+    background-color: #f3f4f6;
+    color: #1a1b5c;
     padding: 1rem 2.5rem;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 1rem;
-    border-radius: 30px; /* Pill shape */
+    border-radius: 30px;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -1403,7 +1403,6 @@ a { text-decoration: none; color: inherit; }
 }
 
 @media (max-width: 850px) {
-    /* Stack Hero */
     .partner-hero {
         flex-direction: column;
     }
@@ -1414,14 +1413,12 @@ a { text-decoration: none; color: inherit; }
         min-height: 400px;
     }
 
-    /* Stack Grids to 1 column */
     .benefits-grid,
     .steps-grid,
     .testimonials-grid {
         grid-template-columns: 1fr;
     }
 
-    /* Fix Step Dividers for Mobile */
     .step-column {
         padding-right: 0;
         padding-bottom: 2rem;
