@@ -1434,73 +1434,9 @@ a { text-decoration: none; color: inherit; }
     .partner-steps, 
     .partner-testimonials,
     .partner-cta {
-        padding: 4rem 0; /* Less empty space on mobile */
+        padding: 4rem 0;
     }
     .partner-cta {
         padding: 4rem 5%;
-    }
-}
-
-/* =========================================
-   MOBILE NAVIGATION FIXES
-   ========================================= */
-@media (min-width: 769px) {
-    .menu-toggle, .close-menu-container {
-        display: none !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem; /* Space between cart and hamburger */
-    }
-
-    .menu-toggle {
-        display: block !important;
-        cursor: pointer;
-        font-size: 1.5rem;
-        color: #ffffff;
-    }
-
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%; /* Hidden off-screen by default */
-        width: 250px;
-        height: 100vh;
-        background-color: #141979; /* Match nav color */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 80px;
-        transition: right 0.3s ease-in-out;
-        z-index: 9999;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Activated by JavaScript */
-    .nav-links.active {
-        right: 0;
-    }
-
-    .nav-links li {
-        margin: 1.5rem 0;
-    }
-
-    .nav-links a {
-        font-size: 1.2rem;
-    }
-
-    .close-menu-container {
-        display: block !important;
-        position: absolute;
-        top: 20px;
-        right: 25px;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #ffffff;
     }
 }
