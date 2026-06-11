@@ -1158,3 +1158,235 @@ a { text-decoration: none; color: inherit; }
         position: static;
     }
 }
+/* =========================================
+   PARTNER PROGRAM PAGE STYLES (ISOLATED)
+   ========================================= */
+
+.partner-main {
+    background-color: #13145b; /* Trackyn deep blue */
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+/* Typography Base */
+.partner-main h1, 
+.partner-main h2, 
+.partner-main h3, 
+.partner-main h4 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}
+
+.partner-heading {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 4rem;
+    text-transform: capitalize;
+}
+
+.partner-heading.left-align {
+    text-align: left;
+}
+
+.partner-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 0 8%;
+    margin-bottom: 6rem;
+}
+
+/* --- Hero Section --- */
+.partner-hero {
+    display: flex;
+    min-height: 80vh;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.partner-hero-content {
+    flex: 1;
+    padding: 4rem 5% 4rem 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.partner-title {
+    font-size: 3.8rem;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+}
+
+.partner-hero-content p {
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    max-width: 90%;
+}
+
+.partner-hero-image {
+    flex: 1;
+}
+
+.partner-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Benefits & Cards --- */
+.partner-benefits {
+    padding-top: 6rem;
+}
+
+.partner-card {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3rem 2.5rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+}
+
+.partner-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+.partner-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.partner-card ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.partner-card ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2rem;
+}
+
+/* --- Steps Section --- */
+.partner-steps {
+    padding-top: 2rem;
+}
+
+.partner-step {
+    padding-right: 2rem;
+    position: relative;
+}
+
+.partner-step:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.step-num {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.partner-step h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.partner-step p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+}
+
+/* --- Testimonials --- */
+.partner-card.testimonial {
+    display: flex;
+    flex-direction: column;
+}
+
+.quote-text {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    flex-grow: 1;
+    min-height: 80px;
+}
+
+.quote-line {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 40px;
+    margin: 1.5rem 0 1rem 0;
+}
+
+.author-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.author-role {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* --- CTA Section --- */
+.partner-cta {
+    text-align: center;
+    padding: 2rem 8% 8rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.cta-title {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: capitalize;
+}
+
+.partner-cta p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.partner-btn {
+    display: inline-block;
+    background-color: #f3f4f6;
+    color: #13145b;
+    padding: 1rem 2.5rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.partner-btn:hover {
+    background-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* --- Responsive Adjustments for Partner Page --- */
+@media (max-width: 1024px) {
+    .partner-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    .partner-hero {
+        flex-direction: column;
+    }
+    .partner-step {
+        padding-right: 0;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 2rem;
+    }
+}
