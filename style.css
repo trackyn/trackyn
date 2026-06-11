@@ -1194,7 +1194,7 @@ a { text-decoration: none; color: inherit; }
 
 .partner-heading {
     text-align: center;
-    font-size: 2.5rem; /* Reduced from 3rem */
+    font-size: 2.5rem; 
     margin-bottom: 3.5rem;
     text-transform: capitalize;
 }
@@ -1222,7 +1222,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .partner-title {
-    font-size: 3.2rem; /* Reduced from 3.8rem */
+    font-size: 3.2rem; 
     line-height: 1.15;
     margin-bottom: 1.5rem;
 }
@@ -1261,7 +1261,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .partner-card h3 {
-    font-size: 1.6rem; /* Reduced from 1.8rem */
+    font-size: 1.6rem; 
     margin-bottom: 2rem;
 }
 
@@ -1303,7 +1303,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .partner-step h3 {
-    font-size: 1.6rem; /* Reduced from 1.8rem */
+    font-size: 1.6rem; 
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
@@ -1358,7 +1358,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .cta-title {
-    font-size: 2.8rem; /* Reduced from 3.5rem */
+    font-size: 2.8rem; 
     margin-bottom: 1.5rem;
     font-family: 'Orbitron', sans-serif;
     text-transform: capitalize;
@@ -1438,5 +1438,69 @@ a { text-decoration: none; color: inherit; }
     }
     .partner-cta {
         padding: 4rem 5%;
+    }
+}
+
+/* =========================================
+   MOBILE NAVIGATION FIXES
+   ========================================= */
+@media (min-width: 769px) {
+    .menu-toggle, .close-menu-container {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem; /* Space between cart and hamburger */
+    }
+
+    .menu-toggle {
+        display: block !important;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #ffffff;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Hidden off-screen by default */
+        width: 250px;
+        height: 100vh;
+        background-color: #141979; /* Match nav color */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 80px;
+        transition: right 0.3s ease-in-out;
+        z-index: 9999;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Activated by JavaScript */
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links li {
+        margin: 1.5rem 0;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
+    }
+
+    .close-menu-container {
+        display: block !important;
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #ffffff;
     }
 }
