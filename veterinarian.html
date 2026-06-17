@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackyn | Veterinarian Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+    <nav class="navbar bg-color-1 vet-nav">
+        <div class="logo-container">
+            <a href="index.html" class="logo-link">
+                <img src="images/logo.png" alt="Trackyn Logo" class="logo-img">
+            </a>
+        </div>
+        
+        <ul class="nav-links">
+            <li class="close-menu-container">
+                <i class="fa-solid fa-xmark close-menu" aria-label="Close menu"></i>
+            </li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="groups.html">Groups</a></li>
+            <li><a href="partner.html">Partner Program</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="shop.html">Shop</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <div class="menu-toggle" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main class="vet-main bg-color-1">
+        
+        <section class="vet-hero">
+            <div class="vet-hero-content">
+                <span class="vet-badge">TRACKYN VET PORTAL</span>
+                <h1 class="vet-hero-title">Smart Veterinary Microchip Solutions</h1>
+                <p class="vet-hero-subtitle">Simplify registration, fast-track pet lookups, and upgrade your clinical workflow with Trackyn's integrated hardware and dynamic identification portal.</p>
+                <div class="vet-hero-actions">
+                    <a href="#portal" class="btn-primary-vet">Launch Vet Portal</a>
+                    <a href="#features" class="btn-secondary-vet">Explore Features</a>
+                </div>
+            </div>
+            <div class="vet-hero-visual">
+                <div class="vet-abstract-card">
+                    <div class="card-glow"></div>
+                    <i class="fa-solid fa-user-doctor card-icon"></i>
+                    <h3>Instant Lookup System</h3>
+                    <p>Scan standard 15-digit microchips directly into our cloud interface.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="vet-stats-bar">
+            <div class="stat-item">
+                <h2>100%</h2>
+                <p>ISO 11784/11785 Compliant</p>
+            </div>
+            <div class="stat-item">
+                <h2>&lt; 3 Sec</h2>
+                <p>Lookup Speed</p>
+            </div>
+            <div class="stat-item">
+                <h2>24/7</h2>
+                <p>Database Availability</p>
+            </div>
+        </section>
+
+        <section id="features" class="vet-features-section">
+            <div class="section-header-center">
+                <h2>Designed For Modern Practices</h2>
+                <p>Engineered to remove friction from pet registration and medical identification records.</p>
+            </div>
+
+            <div class="vet-features-grid">
+                <div class="vet-feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <h3>Dual Tech Identification</h3>
+                    <p>Seamless support for both electronic RFID implants and direct-scan physical QR code tags on pet collars.</p>
+                </div>
+
+                <div class="vet-feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-shield-dog"></i>
+                    </div>
+                    <h3>Secure Owner Syncing</h3>
+                    <p>Instantly map newly implanted tags to the owner's legal profile without manual paper forms or delayed queues.</p>
+                </div>
+
+                <div class="vet-feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3>Scanner Interoperability</h3>
+                    <p>Fully optimized to pull data straight from our high-performance scanner wands and portable handheld devices.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="portal" class="vet-portal-cta">
+            <div class="portal-cta-box">
+                <div class="cta-text-side">
+                    <h2>Join the Trackyn Veterinary Network</h2>
+                    <p>Empower your clinic with bulk chip ordering, dedicated practice tracking accounts, and prioritized global search verification channels.</p>
+                    <ul class="cta-perks-list">
+                        <li><i class="fa-solid fa-circle-check"></i> Discounted clinic bulk rates on scanners & tags</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Free lifetime portal registration access for doctors</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Direct digital medical history export logs</li>
+                    </ul>
+                    <a href="mailto:trackyn.id@gmail.com" class="btn-primary-vet space-top">Register Your Clinic</a>
+                </div>
+                <div class="cta-form-side">
+                    <div class="mini-lookup-simulator">
+                        <h4>Verify a Tag Reference</h4>
+                        <p class="simulator-hint">Simulate a database call inside the platform</p>
+                        <div class="simulator-input-group">
+                            <input type="text" placeholder="Enter 15-digit Microchip ID..." class="sim-input" maxlength="15">
+                            <button class="btn-sim-search" onclick="alert('Demo Mode: Connect a live Trackyn Scanner to look up active records.')">Search</button>
+                        </div>
+                        <div class="sim-status">
+                            <span class="status-indicator idle"></span> Ready for scanning interface connection
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer bg-color-1">
+        <div class="footer-left">
+            <p class="email-text">trackyn.id@gmail.com</p>
+            <div class="footer-bottom-text">
+                <p>Trackyn</p>
+                <p class="copyright">&copy; 2026 Trackyn. All rights reserved.</p>
+            </div>
+        </div>
+        <div class="footer-right">
+            <div class="footer-logo-container">
+                <img src="images/logo.png" alt="Trackyn Logo" class="footer-logo-img">
+            </div>
+            <div class="social-icons vibrant">
+                <a href="#" class="social-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-ig"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-yt"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="social-x"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="social-li"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" class="social-tt"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const closeMenu = document.querySelector('.close-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            });
+        }
+
+        if(closeMenu) {
+            closeMenu.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                document.body.style.overflow = 'auto'; 
+            });
+        }
+    </script>
+</body>
+</html>
