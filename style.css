@@ -1802,3 +1802,477 @@ a { text-decoration: none; color: inherit; }
         font-size: 1rem;
     }
 }
+/* =========================================
+   SHOP PAGE STYLES (ISOLATED)
+   ========================================= */
+
+/* Overriding parent page frameworks cleanly */
+.bg-color-1 {
+    background-color: #141979 !important; 
+}
+
+.shop-main {
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    padding: 0 0 4rem 0;
+}
+
+.shop-nav {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+/* Typography Base definitions */
+.shop-main h1,
+.shop-main h2,
+.shop-main h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}
+
+/* Breadcrumbs Bar Layout styling */
+.shop-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.5rem 5%;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #141979;
+}
+
+.shop-breadcrumbs a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.shop-breadcrumbs a:hover {
+    opacity: 0.8;
+}
+
+.shop-breadcrumbs .separator {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.shop-breadcrumbs .current {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- Hero Banner Section --- */
+.shop-banner {
+    padding: 0 5%;
+    background-color: #141979;
+}
+
+.banner-image-container {
+    width: 100%;
+    max-height: 380px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.banner-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.banner-title-bar {
+    padding: 2.5rem 0;
+}
+
+.shop-main-title {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* --- Main Split Grid Layout Framework --- */
+.shop-content-section {
+    padding: 2rem 5% 5rem 5%;
+    background-color: #141979;
+}
+
+.shop-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* --- Filter Sidebar Elements --- */
+.shop-sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-block {
+    padding-bottom: 2rem;
+}
+
+.sidebar-block.border-top {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 2rem;
+}
+
+.filter-main-title {
+    font-size: 1.2rem;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+/* Browse navigation category lists */
+.browse-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.browse-list li {
+    margin-bottom: 0.9rem;
+}
+
+.browse-link {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: inline-block;
+}
+
+.browse-link:hover,
+.browse-link.active {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* Accordion Group Structural boxes */
+.filter-group {
+    padding: 1.2rem 0;
+}
+
+.border-top-thin {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    user-select: none;
+}
+
+.filter-header span {
+    transition: opacity 0.2s ease;
+}
+
+.filter-header:hover span {
+    opacity: 0.8;
+}
+
+.icon-toggle {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-body {
+    display: none;
+    padding-top: 1rem;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.filter-body.open {
+    display: flex;
+}
+
+/* Custom Checkbox Design Modules */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 2rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    user-select: none;
+    line-height: 1.4;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: transparent;
+    border-color: #ffffff;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Numeric Range Blocks style */
+.price-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-input {
+    width: 100%;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    color: #ffffff;
+    font-size: 0.85rem;
+}
+
+.price-input:focus {
+    outline: none;
+    border-color: #ffffff;
+}
+
+.price-inputs span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Color Palette Dots Selection Layout */
+.color-options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.color-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.color-dot:hover {
+    transform: scale(1.15);
+    border-color: #ffffff;
+}
+
+.bg-black { background-color: #000000; }
+.bg-white { background-color: #ffffff; }
+.bg-silver { background-color: #cccccc; }
+.bg-blue { background-color: #1877F2; }
+.bg-red { background-color: #FF0000; }
+
+/* --- Product Exhibition Main Area --- */
+.shop-grid-area {
+    width: 100%;
+}
+
+.grid-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 2rem;
+}
+
+.products-count {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Dropdown Filters configuration styling */
+.sort-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.sort-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.sort-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.sort-select {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding-right: 1.5rem;
+    cursor: pointer;
+}
+
+.sort-select:focus {
+    outline: none;
+}
+
+.sort-select option {
+    background-color: #141979; 
+    color: #ffffff;
+}
+
+.sort-chevron {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+}
+
+/* Showcase Grid Layout Structure */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem 1.8rem;
+}
+
+/* Singular Product Card components */
+.product-item {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.product-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    margin-bottom: 1.2rem;
+    transition: transform 0.25s ease;
+}
+
+.product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    mix-blend-mode: multiply; 
+}
+
+.product-item:hover .product-image-wrapper {
+    transform: translateY(-4px);
+}
+
+.product-item-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 0.4rem 0;
+    line-height: 1.4;
+}
+
+.product-item-price {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 600;
+    margin: 0;
+}
+
+/* =========================================
+   RESPONSIVE LAYOUT SYSTEM QUERY DEFINITIONS
+   ========================================= */
+
+@media (max-width: 1024px) {
+    .shop-layout {
+        grid-template-columns: 200px 1fr;
+        gap: 1.8rem;
+    }
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Collapse side-by-side grids cleanly on touch viewports */
+    .shop-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .shop-sidebar {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        padding-bottom: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .banner-image-container {
+        max-height: 200px;
+    }
+
+    .shop-main-title {
+        font-size: 1.8rem;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem 1rem;
+    }
+
+    .product-item-title {
+        font-size: 0.9rem;
+    }
+
+    .product-item-price {
+        font-size: 0.85rem;
+    }
+}
