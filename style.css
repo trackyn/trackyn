@@ -1440,3 +1440,365 @@ a { text-decoration: none; color: inherit; }
         padding: 4rem 5%;
     }
 }
+/* =========================================
+   HOW IT WORKS PAGE STYLES (ISOLATED)
+   ========================================= */
+
+.works-main {
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+/* Ensure Nav flows perfectly into Hero */
+.works-nav {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+/* Base Typographies */
+.works-main h1, 
+.works-main h2, 
+.works-main h3, 
+.works-main h4 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}
+
+.works-heading {
+    font-size: 2.5rem;
+    margin-bottom: 3.5rem;
+    line-height: 1.2;
+}
+
+.works-heading.left-aligned {
+    text-align: left;
+}
+
+.works-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+/* --- Hero Section --- */
+.works-hero {
+    display: flex;
+    min-height: 80vh;
+}
+
+.works-hero-image {
+    flex: 1.2;
+    overflow: hidden;
+}
+
+.works-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.works-hero-content {
+    flex: 1;
+    padding: 4rem 5% 4rem 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.works-title {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+}
+
+.works-hero-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    max-width: 90%;
+}
+
+/* --- Detailed Steps Section --- */
+.works-steps-detailed {
+    padding: 6rem 0;
+}
+
+.works-intro-text {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 4rem;
+    line-height: 1.7;
+    text-align: left;
+}
+
+/* Step Cards */
+.step-card {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 3rem 2.5rem;
+    margin-bottom: 2rem;
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.step-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+}
+
+.step-card p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+
+.step-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.step-card ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+
+.step-card ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.3rem;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
+/* --- Joins the Network Section --- */
+.works-network {
+    padding: 6rem 0;
+}
+
+.network-desc {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 900px;
+    margin: 0 auto 3rem auto;
+}
+
+.checklist-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 4rem;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    color: #ffffff;
+    text-align: left;
+}
+
+.check-item i {
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.network-privacy-note {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 850px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* --- If Pet Is Lost Section --- */
+.works-lost {
+    padding: 6rem 0;
+}
+
+.works-lost-split {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+}
+
+.works-lost-left {
+    flex: 1;
+}
+
+.works-lost-right {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+.lost-step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.lost-step-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.lost-step-row:first-child {
+    padding-top: 0;
+}
+
+.lost-num {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.lost-step-row p {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+}
+
+/* --- Microchip Search Works Section --- */
+.works-search {
+    padding: 6rem 0;
+}
+
+.search-step-block {
+    margin-bottom: 3.5rem;
+}
+
+.search-step-block h3 {
+    font-size: 1.7rem;
+    margin-bottom: 1.2rem;
+    color: #ffffff;
+}
+
+.search-step-block p {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+}
+
+.works-inline-link {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.works-inline-link:hover {
+    opacity: 0.8;
+}
+
+.search-bullets {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.search-bullets li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.search-bullets li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.3rem;
+}
+
+/* Quick Tip Box Styling */
+.works-quick-tip-box {
+    margin-top: 5rem;
+    background-color: #008fa0; /* Exact custom cyan-teal box color */
+    border-radius: 8px;
+    padding: 2.2rem 2.5rem;
+}
+
+.works-quick-tip-box p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #ffffff;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS & FONTS SCALING
+   ========================================= */
+
+@media (max-width: 1024px) {
+    .works-hero {
+        flex-direction: column;
+    }
+    .works-hero-image {
+        min-height: 400px;
+    }
+    .works-hero-content {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+    }
+    .works-lost-split {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+    }
+}
+
+/* Mobile Screens Adjustments */
+@media (max-width: 768px) {
+    .works-title {
+        font-size: 2.5rem;
+    }
+    .works-hero-subtitle {
+        font-size: 1.05rem;
+        max-width: 100%;
+    }
+    .works-heading {
+        font-size: 1.8rem;
+        margin-bottom: 2.5rem;
+    }
+    .works-intro-text {
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+    }
+    .step-card {
+        padding: 2rem 1.5rem;
+    }
+    .step-card h3 {
+        font-size: 1.3rem;
+    }
+    .search-step-block h3 {
+        font-size: 1.4rem;
+    }
+    .works-steps-detailed, 
+    .works-network, 
+    .works-lost, 
+    .works-search {
+        padding: 4rem 0;
+    }
+    .works-quick-tip-box {
+        margin-top: 3.5rem;
+        padding: 1.8rem 1.5rem;
+    }
+    .check-item {
+        font-size: 1rem;
+    }
+}
