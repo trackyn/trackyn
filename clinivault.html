@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackyn | Clinivault Veterinary Case Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body id="top">
+
+    <nav class="navbar bg-color-1">
+        <div class="logo-container">
+            <a href="index.html" class="logo-link">
+                <img src="images/logo.png" alt="Trackyn Logo" class="logo-img">
+            </a>
+        </div>
+        
+        <ul class="nav-links">
+            <li class="close-menu-container">
+                <i class="fa-solid fa-xmark close-menu" aria-label="Close menu"></i>
+            </li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="groups.html">Groups</a></li>
+            <li><a href="partner.html">Partner Program</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="shop.html">Shop</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <div class="menu-toggle" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main class="clini-main bg-color-1">
+        
+        <section class="clini-hero-section">
+            <div class="clini-container">
+                <p class="clini-subtitle">INTRODUCING CLINIVAULT</p>
+                <h1 class="clini-main-title">VETERINARY CASE BANK</h1>
+                
+                <div class="clini-hero-image-wrapper">
+                    <img src="images/clinivault-hero.jpg" alt="Veterinary Operating Room and Ultrasound">
+                </div>
+            </div>
+        </section>
+
+        <section class="clini-split-section">
+            <div class="clini-container clini-split-layout">
+                <div class="clini-text-content">
+                    <h2 class="clini-heading">Enrich the Global<br>Repository</h2>
+                    <p class="clini-desc">Share your clinical expertise by adding and updating complex cases within our secure veterinary mainframe. Your contributions drive medical innovation and provide critical data for the global veterinary community.</p>
+                    <a href="#" class="clini-btn clini-btn-solid">CONTRIBUTE CASE</a>
+                </div>
+                <div class="clini-image-content">
+                    <img src="images/clini-vet-cat.jpg" alt="Veterinarian with cat using tablet" class="clini-rounded-img">
+                </div>
+            </div>
+        </section>
+
+        <section class="clini-split-section">
+            <div class="clini-container clini-split-layout clini-reverse">
+                <div class="clini-image-content clini-stacked-images">
+                    <img src="images/clini-heart-scan.jpg" alt="Veterinarian analyzing heart scan" class="clini-rounded-img">
+                    <img src="images/clini-vet-team.jpg" alt="Veterinary team collaborating" class="clini-rounded-img">
+                </div>
+                <div class="clini-text-content">
+                    <h2 class="clini-heading">Master the Art of<br>Diagnosis</h2>
+                    <p class="clini-desc">Access an expansive bank of real-world cases to accelerate your learning journey. From rare pathologies to everyday clinical procedures, explore detailed histories, scans, and outcomes shared by experts globally.</p>
+                    <a href="#" class="clini-btn clini-btn-outline">START EXPLORING</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="clini-ecosystem-section">
+            <div class="clini-container">
+                <h2 class="clini-center-heading">ECOSYSTEM CAPABILITIES</h2>
+                
+                <div class="clini-cards-grid">
+                    <div class="clini-dark-card">
+                        <h3>Modular Cases</h3>
+                        <p>Dynamic case structuring allows for continuous updates as clinical scenarios evolve, providing a lived-experience mainframe for complex veterinary medicine.</p>
+                    </div>
+                    <div class="clini-dark-card">
+                        <h3>Global Collaboration</h3>
+                        <p>Bridge the diagnostic gap by connecting with international specialists. Contributed cases fuel a global archive accessible to verified peers worldwide.</p>
+                    </div>
+                    <div class="clini-dark-card">
+                        <h3>Advanced Search</h3>
+                        <p>Utilize technocratic filtering to pinpoint rare findings, specific breeds, or specialized surgical protocols within our secure data bank.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer bg-color-1">
+        <div class="footer-left">
+            <p class="email-text">trackyn.id@gmail.com</p>
+            <div class="footer-bottom-text">
+                <p>Trackyn</p>
+                <p class="copyright">&copy; 2026 Trackyn. All rights reserved.</p>
+            </div>
+        </div>
+        <div class="footer-right">
+            <div class="footer-logo-container">
+                <img src="images/logo.png" alt="Trackyn Logo" class="footer-logo-img">
+            </div>
+            <div class="social-icons vibrant">
+                <a href="#" class="social-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-ig"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-yt"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="social-x"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="social-li"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" class="social-tt"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const closeMenu = document.querySelector('.close-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            });
+        }
+
+        if(closeMenu) {
+            closeMenu.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                document.body.style.overflow = 'auto'; 
+            });
+        }
+    </script>
+</body>
+</html>
