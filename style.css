@@ -2276,443 +2276,143 @@ a { text-decoration: none; color: inherit; }
         font-size: 0.85rem;
     }
 }
-/* =========================================
+/* ==========================================================================
    VETERINARIAN PAGE STYLES (ISOLATED)
-   ========================================= */
+   ========================================================================== */
 
-.vet-main {
+.vet-page-main {
     color: #ffffff;
     font-family: 'Inter', sans-serif;
-    padding: 0 0 5rem 0;
-    overflow-x: hidden;
+    line-height: 1.6;
 }
 
-.vet-nav {
-    border-bottom: none !important;
-    box-shadow: none !important;
+/* Container */
+.vet-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
 }
 
-/* Typography Helpers */
-.vet-main h1,
-.vet-main h2,
-.vet-main h3,
-.vet-main h4 {
+/* Typography Overrides */
+.vet-main-heading {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 4.5rem;
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+    text-transform: capitalize;
+}
+
+.vet-sub-heading {
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-/* --- Hero Layout --- */
-.vet-hero {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 4rem;
-    padding: 5rem 5% 4rem 5%;
-    align-items: center;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.vet-hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.vet-badge {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 0.4rem 0.9rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border-radius: 50px;
-    letter-spacing: 1px;
-    font-family: 'Orbitron', sans-serif;
-    margin-bottom: 1.5rem;
-    color: #ffffff;
-}
-
-.vet-hero-title {
     font-size: 2.8rem;
     line-height: 1.2;
-    margin: 0 0 1.5rem 0;
+    color: #a0a4c2;
+    margin: 0 0 2rem 0;
+    text-transform: capitalize;
 }
 
-.vet-hero-subtitle {
+.vet-desc-text {
     font-size: 1.1rem;
-    line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
-    margin: 0 0 2.5rem 0;
-    max-width: 620px;
-}
-
-.vet-hero-actions {
-    display: flex;
-    gap: 1.2rem;
-    flex-wrap: wrap;
-}
-
-/* Custom Styled Buttons */
-.btn-primary-vet {
-    background-color: #ffffff;
-    color: #141979;
-    padding: 0.9rem 1.8rem;
-    font-weight: 600;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-    display: inline-block;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-primary-vet:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    transform: translateY(-2px);
-}
-
-.btn-secondary-vet {
-    background-color: transparent;
-    color: #ffffff;
-    padding: 0.9rem 1.8rem;
-    font-weight: 600;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.95rem;
-    border: 1.5px solid rgba(255, 255, 255, 0.4);
-    transition: all 0.2s ease;
-    display: inline-block;
-}
-
-.btn-secondary-vet:hover {
-    border-color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-/* Hero Right Side Visual Card */
-.vet-hero-visual {
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-.vet-abstract-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 340px;
-    position: relative;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-.card-glow {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background: #ffffff;
-    filter: blur(80px);
-    opacity: 0.15;
-    top: -20px;
-    right: -20px;
-    pointer-events: none;
-}
-
-.card-icon {
-    font-size: 2.5rem;
-    color: #ffffff;
-    margin-bottom: 1.5rem;
-}
-
-.vet-abstract-card h3 {
-    font-size: 1.2rem;
-    margin: 0 0 0.8rem 0;
-}
-
-.vet-abstract-card p {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-}
-
-/* --- Stats Bar --- */
-.vet-stats-bar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    padding: 3rem 5%;
-    max-width: 1400px;
-    margin: 2rem auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: center;
-}
-
-.stat-item h2 {
-    font-size: 2.5rem;
-    margin: 0 0 0.4rem 0;
-    color: #ffffff;
-}
-
-.stat-item p {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-}
-
-/* --- Features Layout Grid --- */
-.vet-features-section {
-    padding: 5rem 5%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.section-header-center {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 4rem auto;
-}
-
-.section-header-center h2 {
-    font-size: 2.2rem;
-    margin: 0 0 1rem 0;
-}
-
-.section-header-center p {
-    font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.75);
-    line-height: 1.5;
-    margin: 0;
-}
-
-.vet-features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-}
-
-.vet-feature-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 6px;
-    padding: 2.5rem 2rem;
-    transition: transform 0.25s ease, border-color 0.25s ease;
-}
-
-.vet-feature-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.icon-wrapper {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
-}
-
-.icon-wrapper i {
-    font-size: 1.3rem;
-    color: #ffffff;
-}
-
-.vet-feature-card h3 {
-    font-size: 1.25rem;
-    margin: 0 0 0.8rem 0;
-}
-
-.vet-feature-card p {
-    font-size: 0.95rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.75);
-    margin: 0;
-}
-
-/* --- Unified CTA & Lookup Section --- */
-.vet-portal-cta {
-    padding: 4rem 5% 6rem 5%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.portal-cta-box {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 4rem;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 4rem;
-    align-items: center;
-}
-
-.cta-text-side h2 {
-    font-size: 2rem;
-    margin: 0 0 1rem 0;
-}
-
-.cta-text-side p {
-    font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.5;
     margin: 0 0 2rem 0;
 }
 
-.cta-perks-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2.5rem 0;
+/* Helpers */
+.text-center { text-align: center; }
+.center-block { margin-left: auto; margin-right: auto; max-width: 800px; }
+.mb-tight { margin-bottom: 1rem; }
+.mb-loose { margin-bottom: 3.5rem; }
+
+/* Search Section */
+.vet-search-section {
+    padding: 6rem 0 8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.cta-perks-list li {
+.vet-search-split {
     display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 0.8rem;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 4rem;
 }
 
-.cta-perks-list li i {
+.vet-search-left { flex: 1.2; }
+.vet-search-right { flex: 0.8; display: flex; justify-content: flex-end; }
+
+.vet-search-box { width: 100%; max-width: 350px; }
+
+.vet-search-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #ffffff;
+    padding: 1rem 1.5rem;
     color: #ffffff;
+    font-family: 'Inter', sans-serif;
     font-size: 1rem;
+    outline: none;
+    transition: background-color 0.2s ease;
 }
 
-.space-top {
-    margin-top: 0.5rem;
+.vet-search-input::placeholder {
+    color: #ffffff;
+    text-align: center;
 }
 
-/* Interactive Simulator Graphic Block */
-.mini-lookup-simulator {
-    background-color: #0d104c;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-    padding: 2rem;
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+.vet-search-input:focus { background-color: rgba(255, 255, 255, 0.1); }
+
+/* Clinivault Section */
+.clinivault-section {
+    padding: 6rem 0 8rem 0;
 }
 
-.mini-lookup-simulator h4 {
-    font-size: 1.1rem;
-    margin: 0 0 0.2rem 0;
+.clinivault-card {
+    background-color: #141979;
+    border-radius: 12px;
+    padding: 3.5rem 3rem;
+    max-width: 500px;
+    margin: 4rem auto 0 auto;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.simulator-hint {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0 0 1.5rem 0;
-}
-
-.simulator-input-group {
-    display: flex;
-    gap: 0.5rem;
+.clipboard-icon {
+    font-size: 2.5rem;
+    color: #eab896;
     margin-bottom: 1.5rem;
 }
 
-.sim-input {
-    flex: 1;
-    background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    padding: 0.7rem 1rem;
+.clinivault-link {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
     color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    display: block;
+    margin-bottom: 1.5rem;
+    transition: opacity 0.2s ease;
 }
 
-.sim-input:focus {
-    outline: none;
-    border-color: #ffffff;
+.clinivault-link:hover { opacity: 0.8; }
+
+.clinivault-action-text {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin: 0;
 }
 
-.btn-sim-search {
-    background-color: #ffffff;
-    color: #141979;
-    border: none;
-    padding: 0 1.4rem;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-.sim-status {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.status-indicator.idle {
-    width: 8px;
-    height: 8px;
-    background-color: #00ffcc;
-    border-radius: 50%;
-    display: inline-block;
-    box-shadow: 0 0 8px #00ffcc;
-}
-
-/* =========================================
-   MEDIA RESPONSIVE QUERIES
-   ========================================= */
-
+/* Responsiveness */
 @media (max-width: 1024px) {
-    .vet-hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 3rem;
-    }
-    .vet-hero-content {
-        align-items: center;
-    }
-    .vet-hero-subtitle {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .vet-hero-actions {
-        justify-content: center;
-    }
-    .vet-features-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .portal-cta-box {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        padding: 2.5rem;
-    }
+    .vet-search-split { flex-direction: column; align-items: flex-start; }
+    .vet-search-right { width: 100%; justify-content: flex-start; margin-top: 2rem; }
+    .vet-main-heading { font-size: 3.5rem; }
 }
 
 @media (max-width: 768px) {
-    .vet-hero-title {
-        font-size: 2.1rem;
-    }
-    .vet-stats-bar {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 2rem 5%;
-    }
-    .vet-features-grid {
-        grid-template-columns: 1fr;
-    }
-    .section-header-center h2 {
-        font-size: 1.8rem;
-    }
-    .cta-text-side h2 {
-        font-size: 1.6rem;
-    }
-    .simulator-input-group {
-        flex-direction: column;
-    }
-    .btn-sim-search {
-        padding: 0.7rem 0;
-    }
+    .vet-main-heading { font-size: 2.5rem; }
+    .vet-sub-heading { font-size: 1.8rem; }
+    .vet-search-section, .clinivault-section { padding: 4rem 0; }
 }
