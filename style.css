@@ -2416,3 +2416,236 @@ a { text-decoration: none; color: inherit; }
     .vet-sub-heading { font-size: 1.8rem; }
     .vet-search-section, .clinivault-section { padding: 4rem 0; }
 }
+/* ==========================================================================
+   CLINIVAULT PAGE STYLES (ISOLATED)
+   ========================================================================== */
+
+.clini-main {
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+.clini-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+/* --- Hero Section --- */
+.clini-hero-section {
+    padding: 4rem 0 0 0; /* Padding top for space below nav */
+}
+
+.clini-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    color: #a0a4c2; /* Subtle light blue/grey */
+    text-transform: uppercase;
+    margin: 0 0 1rem 0;
+}
+
+.clini-main-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 5.5rem; /* Large impact heading */
+    text-transform: uppercase;
+    color: #ffffff;
+    line-height: 1;
+    margin: 0 0 3rem 0;
+}
+
+.clini-hero-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0; /* Rounded top corners matching screenshot */
+    margin-bottom: -5px; /* Removes gap if next section is flush */
+}
+
+.clini-hero-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* --- Split Layout Sections --- */
+.clini-split-section {
+    padding: 6rem 0;
+}
+
+.clini-split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+/* Reverse layout for desktop */
+.clini-split-layout.clini-reverse {
+    grid-template-columns: 1fr 1.2fr; /* Slightly larger text area on right */
+}
+
+.clini-heading {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 3.2rem;
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+.clini-desc {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 2.5rem 0;
+    line-height: 1.6;
+    max-width: 90%;
+}
+
+.clini-rounded-img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    display: block;
+    object-fit: cover;
+}
+
+/* Stacked Image Grid for second split section */
+.clini-stacked-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Pill Buttons */
+.clini-btn {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border-radius: 50px; /* Pill shape */
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.clini-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.clini-btn-solid {
+    background-color: #f0eae1; /* Light beige/white from screenshot */
+    color: #141979;
+}
+
+.clini-btn-outline {
+    background-color: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+}
+
+/* --- Ecosystem Capabilities Section --- */
+.clini-ecosystem-section {
+    padding: 5rem 0 8rem 0;
+}
+
+.clini-center-heading {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 3.2rem;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 4rem 0;
+}
+
+.clini-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.clini-dark-card {
+    background-color: #0b0e33; /* Distinct dark navy blue for cards */
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.clini-dark-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin: 0 0 1.2rem 0;
+}
+
+.clini-dark-card p {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+
+@media (max-width: 1024px) {
+    .clini-main-title {
+        font-size: 4rem;
+    }
+
+    .clini-heading {
+        font-size: 2.8rem;
+    }
+
+    .clini-split-layout {
+        gap: 3rem;
+    }
+
+    .clini-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .clini-main-title {
+        font-size: 2.8rem;
+    }
+
+    /* Stack the split sections vertically on mobile */
+    .clini-split-layout,
+    .clini-split-layout.clini-reverse {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    /* Force text to be above images on mobile even in reverse layout */
+    .clini-split-layout.clini-reverse .clini-text-content {
+        order: -1;
+    }
+
+    .clini-heading {
+        font-size: 2.2rem;
+    }
+
+    .clini-desc {
+        max-width: 100%;
+    }
+
+    .clini-center-heading {
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .clini-cards-grid {
+        grid-template-columns: 1fr; /* Single column on phones */
+    }
+}
