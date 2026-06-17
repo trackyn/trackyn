@@ -2432,9 +2432,18 @@ a { text-decoration: none; color: inherit; }
     padding: 0 5%;
 }
 
+/* Background Alternation Utility Classes */
+.clini-bg-primary {
+    background-color: #2b2f84;
+}
+
+.clini-bg-secondary {
+    background-color: #141979;
+}
+
 /* --- Hero Section --- */
 .clini-hero-section {
-    padding: 4rem 0 0 0; /* Padding top for space below nav */
+    padding: 4rem 0 6rem 0; /* Increased bottom padding to accommodate rounded image */
 }
 
 .clini-subtitle {
@@ -2442,7 +2451,7 @@ a { text-decoration: none; color: inherit; }
     font-weight: 600;
     font-size: 0.95rem;
     letter-spacing: 2px;
-    color: #a0a4c2; /* Subtle light blue/grey */
+    color: #a0a4c2;
     text-transform: uppercase;
     margin: 0 0 1rem 0;
 }
@@ -2450,18 +2459,18 @@ a { text-decoration: none; color: inherit; }
 .clini-main-title {
     font-family: 'Orbitron', sans-serif;
     font-weight: 900;
-    font-size: 5.5rem; /* Large impact heading */
+    font-size: 4rem; /* Reduced from 5.5rem for better desktop proportions */
     text-transform: uppercase;
     color: #ffffff;
-    line-height: 1;
+    line-height: 1.1;
     margin: 0 0 3rem 0;
 }
 
 .clini-hero-image-wrapper {
     width: 100%;
     overflow: hidden;
-    border-radius: 16px 16px 0 0; /* Rounded top corners matching screenshot */
-    margin-bottom: -5px; /* Removes gap if next section is flush */
+    border-radius: 16px; /* Now rounds ALL corners properly */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); /* Adds a slight lift */
 }
 
 .clini-hero-image-wrapper img {
@@ -2485,7 +2494,7 @@ a { text-decoration: none; color: inherit; }
 
 /* Reverse layout for desktop */
 .clini-split-layout.clini-reverse {
-    grid-template-columns: 1fr 1.2fr; /* Slightly larger text area on right */
+    grid-template-columns: 1fr 1.2fr;
 }
 
 .clini-heading {
@@ -2528,7 +2537,7 @@ a { text-decoration: none; color: inherit; }
     font-weight: 600;
     text-transform: uppercase;
     padding: 1rem 2rem;
-    border-radius: 50px; /* Pill shape */
+    border-radius: 50px;
     text-decoration: none;
     transition: transform 0.2s ease, opacity 0.2s ease;
     cursor: pointer;
@@ -2540,7 +2549,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .clini-btn-solid {
-    background-color: #f0eae1; /* Light beige/white from screenshot */
+    background-color: #f0eae1;
     color: #141979;
 }
 
@@ -2572,7 +2581,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .clini-dark-card {
-    background-color: #0b0e33; /* Distinct dark navy blue for cards */
+    background-color: #0b0e33; /* Darker navy to stand out against #141979 */
     padding: 3rem 2.5rem;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -2599,7 +2608,7 @@ a { text-decoration: none; color: inherit; }
 
 @media (max-width: 1024px) {
     .clini-main-title {
-        font-size: 4rem;
+        font-size: 3.2rem;
     }
 
     .clini-heading {
@@ -2616,8 +2625,14 @@ a { text-decoration: none; color: inherit; }
 }
 
 @media (max-width: 768px) {
+    .clini-hero-section {
+        padding: 2rem 0 4rem 0;
+    }
+
     .clini-main-title {
-        font-size: 2.8rem;
+        font-size: 1.8rem; /* Drastically reduced to prevent the 'Y' from spilling */
+        word-wrap: break-word;
+        hyphens: auto;
     }
 
     /* Stack the split sections vertically on mobile */
@@ -2627,7 +2642,7 @@ a { text-decoration: none; color: inherit; }
         gap: 3rem;
     }
 
-    /* Force text to be above images on mobile even in reverse layout */
+    /* Force text to be above images on mobile */
     .clini-split-layout.clini-reverse .clini-text-content {
         order: -1;
     }
