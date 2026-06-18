@@ -2664,3 +2664,187 @@ a { text-decoration: none; color: inherit; }
         grid-template-columns: 1fr; /* Single column on phones */
     }
 }
+/* ==========================================================================
+   LEARNER ACCESS PORTAL PAGE (ISOLATED)
+   ========================================================================== */
+
+.lp-main-wrapper {
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+}
+
+.lp-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    box-sizing: border-box;
+}
+
+/* --- HERO SECTION --- */
+.lp-hero-section {
+    background-color: #2b2f84;
+    padding: 5rem 0;
+}
+
+.lp-hero-layout {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    justify-content: space-between;
+}
+
+.lp-hero-text-block {
+    flex: 1;
+}
+
+.lp-hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+.lp-hero-description {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.lp-hero-image-block {
+    flex: 1;
+    max-width: 500px;
+}
+
+.lp-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px; /* 4 Corners Rounded */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* --- CONTENT SECTION (Search & Grid) --- */
+.lp-content-section {
+    background-color: #141979; /* Extends all the way to footer */
+    padding: 6rem 0 8rem 0;
+}
+
+/* Search Area */
+.lp-search-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.lp-section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 2rem 0;
+    color: #ffffff;
+}
+
+.lp-search-bar {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.lp-search-input {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.lp-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.lp-search-input:focus {
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* The 15 Equal Sized Cards Grid */
+.lp-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.lp-card {
+    background-color: #0b0e33;
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100%; /* Ensures all boxes are equal size vertically */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.lp-card:hover {
+    transform: translateY(-5px);
+}
+
+.lp-card-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin: 0 0 1rem 0;
+    color: #ffffff;
+}
+
+.lp-card-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+    flex-grow: 1; /* Pushes content evenly */
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 1024px) {
+    .lp-hero-layout {
+        gap: 2rem;
+    }
+    .lp-hero-title {
+        font-size: 2.8rem;
+    }
+    .lp-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .lp-hero-section {
+        padding: 3rem 0;
+    }
+    .lp-hero-layout {
+        flex-direction: column;
+        text-align: center;
+    }
+    .lp-hero-image-block {
+        order: -1; /* Puts image above text on mobile */
+        margin-bottom: 2rem;
+    }
+    .lp-hero-title {
+        font-size: 2.2rem;
+    }
+    .lp-section-title {
+        font-size: 1.8rem;
+    }
+    .lp-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
