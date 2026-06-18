@@ -2728,11 +2728,11 @@ a { text-decoration: none; color: inherit; }
 
 /* --- CONTENT SECTION (Search & Grid) --- */
 .lp-content-section {
-    background-color: #141979; /* Extends all the way to footer */
+    background-color: #141979; /* Extends continuously down to footer */
     padding: 6rem 0 8rem 0;
 }
 
-/* Search Area */
+/* Search Area (Clean input field without internal button) */
 .lp-search-header {
     text-align: center;
     margin-bottom: 4rem;
@@ -2774,7 +2774,7 @@ a { text-decoration: none; color: inherit; }
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* The 15 Equal Sized Cards Grid */
+/* --- THE 15 CARDS GRID (Transparent Layout with Internal Buttons) --- */
 .lp-cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2782,35 +2782,61 @@ a { text-decoration: none; color: inherit; }
 }
 
 .lp-card {
-    background-color: #0b0e33;
+    background-color: transparent; /* Changed back to completely transparent */
+    border: 1px solid rgba(255, 255, 255, 0.25); /* Layout-adjusted subtle frame border */
     border-radius: 12px;
     padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    height: 100%; /* Ensures all boxes are equal size vertically */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
+    height: 100%; /* Symmetrical vertical matching grid heights */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .lp-card:hover {
     transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.6);
 }
 
 .lp-card-title {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     margin: 0 0 1rem 0;
-    color: #ffffff;
+    color: #ffffff; /* White text for clear contrast against dark blue section */
 }
 
 .lp-card-text {
     font-size: 1rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.75);
-    margin: 0;
-    flex-grow: 1; /* Pushes content evenly */
+    color: rgba(255, 255, 255, 0.85); 
+    margin: 0 0 2rem 0; /* Clear spacing before button alignment */
+    flex-grow: 1; /* Pushes button neatly to the card floor layout */
+}
+
+/* White-pill Search Button inside Card */
+.lp-card-btn {
+    background-color: #ffffff;
+    color: #141979; /* Direct color translation match to section background */
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.7rem 2.2rem;
+    border: none;
+    border-radius: 50px; /* White-pill layout */
+    cursor: pointer;
+    width: fit-content;
+    align-self: flex-start; /* Sits perfectly aligned to left grid side underneath text block */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.lp-card-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.lp-card-btn:active {
+    transform: scale(0.97);
 }
 
 /* --- RESPONSIVE ADJUSTMENTS --- */
@@ -2835,7 +2861,7 @@ a { text-decoration: none; color: inherit; }
         text-align: center;
     }
     .lp-hero-image-block {
-        order: -1; /* Puts image above text on mobile */
+        order: -1; 
         margin-bottom: 2rem;
     }
     .lp-hero-title {
