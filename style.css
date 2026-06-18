@@ -3493,3 +3493,232 @@ a { text-decoration: none; color: inherit; }
         padding: 4rem 0;
     }
 }
+/* ==========================================================================
+   PREMIUM TIER FEATURES PAGE (ISOLATED)
+   ========================================================================== */
+
+.pt-main-wrapper {
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+}
+
+.pt-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    box-sizing: border-box;
+}
+
+/* --- HERO SECTION --- */
+.pt-hero-section {
+    background-color: #2b2f84;
+    padding: 5rem 0;
+}
+
+.pt-hero-layout {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    justify-content: space-between;
+}
+
+.pt-hero-text-block {
+    flex: 1.2;
+}
+
+.pt-hero-tagline {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.pt-hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+.pt-hero-description {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.pt-hero-image-block {
+    flex: 0.8;
+    max-width: 450px;
+}
+
+.pt-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* --- FEATURES STRUCTURAL LAYOUT --- */
+.pt-feature-section {
+    padding: 6rem 0;
+}
+
+.bg-dark {
+    background-color: #141979;
+}
+
+.bg-light {
+    background-color: #2b2f84;
+}
+
+.pt-feature-layout {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+/* Switches alternating sections side-by-side */
+.pt-feature-layout.alternate {
+    flex-direction: row-reverse;
+}
+
+.pt-feature-text {
+    flex: 1;
+}
+
+.pt-feature-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.pt-feature-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+.pt-feature-desc {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 2rem 0;
+}
+
+/* Custom Styled Sequential Steps for Block 1 */
+.pt-feature-steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.pt-feature-steps-list li {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.pt-feature-steps-list .step-num {
+    background-color: #4ade80;
+    color: #141979;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pt-feature-note {
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 0 2.5rem 0;
+    border-left: 3px solid #4ade80;
+    padding-left: 1rem;
+}
+
+/* Pill Shaped CTA Buttons */
+.pt-action-btn {
+    background-color: #ffffff;
+    color: #141979;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.8rem 2.8rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.pt-action-btn:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-2px);
+}
+
+.pt-action-btn:active {
+    transform: translateY(0);
+}
+
+.pt-ui-img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: block;
+}
+
+/* --- MOBILE & RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 850px) {
+    .pt-hero-layout, .pt-feature-layout, .pt-feature-layout.alternate {
+        flex-direction: column;
+        text-align: center;
+        gap: 2.5rem;
+    }
+    
+    .pt-hero-image-block {
+        margin-top: 1.5rem; 
+    }
+
+    .pt-hero-title {
+        font-size: 2.2rem;
+    }
+
+    .pt-feature-title {
+        font-size: 1.8rem;
+    }
+
+    .pt-feature-steps-list li {
+        text-align: left;
+        justify-content: flex-start;
+    }
+
+    .pt-feature-note {
+        text-align: left;
+    }
+
+    .pt-feature-section {
+        padding: 4rem 0;
+    }
+}
