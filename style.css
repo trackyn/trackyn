@@ -2732,7 +2732,7 @@ a { text-decoration: none; color: inherit; }
     padding: 6rem 0 8rem 0;
 }
 
-/* Search Area (Clean input field without internal button) */
+/* Search Area */
 .lp-search-header {
     text-align: center;
     margin-bottom: 4rem;
@@ -2774,7 +2774,7 @@ a { text-decoration: none; color: inherit; }
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* --- THE 15 CARDS GRID (Transparent Layout with Internal Buttons) --- */
+/* --- THE 15 CARDS GRID (Transparent Layout) --- */
 .lp-cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2782,14 +2782,14 @@ a { text-decoration: none; color: inherit; }
 }
 
 .lp-card {
-    background-color: transparent; /* Changed back to completely transparent */
-    border: 1px solid rgba(255, 255, 255, 0.25); /* Layout-adjusted subtle frame border */
+    background-color: transparent; 
+    border: 1px solid rgba(255, 255, 255, 0.25); 
     border-radius: 12px;
     padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    height: 100%; /* Symmetrical vertical matching grid heights */
+    height: 100%; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
@@ -2804,30 +2804,32 @@ a { text-decoration: none; color: inherit; }
     font-weight: 700;
     font-size: 1.25rem;
     margin: 0 0 1rem 0;
-    color: #ffffff; /* White text for clear contrast against dark blue section */
+    color: #ffffff; 
+    text-align: center; /* Symmetrically aligns titles to support centered button design */
 }
 
 .lp-card-text {
     font-size: 1rem;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.85); 
-    margin: 0 0 2rem 0; /* Clear spacing before button alignment */
-    flex-grow: 1; /* Pushes button neatly to the card floor layout */
+    margin: 0 0 2rem 0; 
+    flex-grow: 1; 
+    text-align: center; /* Symmetrically aligns descriptions to support centered button design */
 }
 
-/* White-pill Search Button inside Card */
+/* Centered White-pill Search Button inside Card */
 .lp-card-btn {
     background-color: #ffffff;
-    color: #141979; /* Direct color translation match to section background */
+    color: #141979; 
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 0.95rem;
     padding: 0.7rem 2.2rem;
     border: none;
-    border-radius: 50px; /* White-pill layout */
+    border-radius: 50px; 
     cursor: pointer;
     width: fit-content;
-    align-self: flex-start; /* Sits perfectly aligned to left grid side underneath text block */
+    align-self: center; /* Explicitly centers the button horizontally in the column layout */
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
