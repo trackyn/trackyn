@@ -4133,3 +4133,275 @@ a { text-decoration: none; color: inherit; }
         font-size: 1.4rem;
     }
 }
+/* ==========================================================================
+   MY PET DOCUMENTS PAGE (ISOLATED)
+   ========================================================================== */
+
+.md-main-wrapper {
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+}
+
+.md-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    box-sizing: border-box;
+}
+
+/* --- HERO SECTION --- */
+.md-hero-section {
+    display: flex;
+    background-color: #2b2f84;
+    min-height: 550px;
+}
+
+.md-hero-text-block {
+    flex: 1;
+    padding: 6rem 5% 6rem 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.md-hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4.8rem;
+    font-weight: 900;
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+.md-hero-description {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    max-width: 600px;
+}
+
+.md-hero-image-block {
+    flex: 1;
+    position: relative;
+    min-height: 300px; /* For mobile scaling */
+}
+
+.md-hero-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- SECTION 2: GLOBAL TRAVEL READINESS --- */
+.md-travel-section {
+    background-color: #141979;
+    padding: 6rem 0;
+}
+
+.md-section-center-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    margin: 0 0 4rem 0;
+    color: #ffffff;
+}
+
+.md-travel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.md-travel-card {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    padding: 2.5rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.md-travel-card:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.md-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.md-card-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.md-upload-btn {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    padding: 0.6rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.md-upload-btn:hover {
+    background-color: #ffffff;
+    color: #141979;
+}
+
+.md-card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    margin: 0 0 1rem 0;
+    color: #ffffff;
+}
+
+.md-card-desc {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.md-view-all-wrapper {
+    text-align: center;
+    margin-top: 3.5rem;
+}
+
+.md-view-all-btn {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    padding: 0.8rem 3rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.md-view-all-btn:hover {
+    background-color: #ffffff;
+    color: #141979;
+}
+
+/* --- SECTION 3: LIFE-CYCLE MEDICAL LOGS --- */
+.md-medical-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.md-medical-img-container {
+    width: 100%;
+    height: 350px;
+}
+
+.md-medical-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.md-medical-content-container {
+    background-color: #2b2f84;
+    padding: 5rem 0 6rem 0;
+}
+
+.md-medical-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    margin: 0 0 2.5rem 0;
+    color: #ffffff;
+}
+
+.md-medical-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.md-medical-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.md-medical-list li:last-child {
+    margin-bottom: 0;
+}
+
+.md-medical-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+/* --- MOBILE & RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 1024px) {
+    .md-hero-title {
+        font-size: 3.5rem;
+    }
+    .md-section-center-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 850px) {
+    .md-hero-section {
+        flex-direction: column;
+    }
+    
+    .md-hero-image-block {
+        order: -1;
+        min-height: 400px;
+    }
+
+    .md-hero-text-block {
+        padding: 4rem 5%;
+        text-align: center;
+    }
+
+    .md-hero-description {
+        margin: 0 auto;
+    }
+
+    .md-travel-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .md-medical-title {
+        font-size: 2.2rem;
+        text-align: center;
+    }
+
+    .md-medical-list li {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .md-card-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
