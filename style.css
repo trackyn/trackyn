@@ -3072,6 +3072,9 @@ a { text-decoration: none; color: inherit; }
         order: -1;
         margin-bottom: 2rem;
     }
+    .po-hero-title {
+        font-size: 2.2rem; /* Reduced typography footprint specifically for mobile balance */
+    }
     .po-pricing-grid {
         grid-template-columns: 1fr;
         max-width: 500px;
