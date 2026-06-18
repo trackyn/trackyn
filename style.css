@@ -3722,3 +3722,414 @@ a { text-decoration: none; color: inherit; }
         padding: 4rem 0;
     }
 }
+/* ==========================================================================
+   VETCONNECT FEATURES PAGE (ISOLATED)
+   ========================================================================== */
+
+.vc-main-wrapper {
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+}
+
+.vc-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    box-sizing: border-box;
+}
+
+.bg-dark {
+    background-color: #141979;
+}
+
+.bg-light {
+    background-color: #2b2f84;
+}
+
+/* --- HERO SECTION --- */
+.vc-hero-section {
+    background-color: #2b2f84;
+    padding: 5rem 0;
+}
+
+.vc-hero-layout {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    justify-content: space-between;
+}
+
+.vc-hero-text-block {
+    flex: 1.2;
+}
+
+.vc-hero-tagline {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.vc-hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+.vc-hero-description {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 2rem 0;
+}
+
+.vc-hero-image-block {
+    flex: 0.8;
+    max-width: 450px;
+}
+
+.vc-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* --- BLOCK 2: ABOUT / PHILOSOPHY --- */
+.vc-about-section {
+    padding: 6rem 0;
+}
+
+.vc-about-layout {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+.vc-about-text {
+    flex: 1.2;
+}
+
+.vc-about-image {
+    flex: 0.8;
+    display: flex;
+    justify-content: center;
+}
+
+.vc-about-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    color: #ffffff;
+}
+
+.vc-about-desc {
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 1.5rem 0;
+}
+
+.vc-about-desc:last-of-type {
+    margin-bottom: 0;
+}
+
+.vc-ui-img {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: block;
+}
+
+/* --- BLOCK 3: GRID MODULE --- */
+.vc-features-section {
+    padding: 6rem 0;
+}
+
+.vc-section-center-title {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    font-size: 2.4rem;
+    margin-bottom: 4rem;
+}
+
+.vc-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.vc-feature-card {
+    background-color: #141979;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+
+.vc-feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.vc-card-icon {
+    font-size: 2.5rem;
+    color: #4ade80;
+    margin-bottom: 1.5rem;
+}
+
+.vc-feature-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    margin: 0 0 1rem 0;
+}
+
+.vc-feature-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+/* --- BLOCK 4: CHAT WINDOW MOCKUP --- */
+.vc-chat-mock-section {
+    padding: 6rem 0;
+}
+
+.vc-chat-layout {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+.vc-chat-text-block {
+    flex: 1;
+}
+
+.vc-chat-frame-block {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.vc-chat-window {
+    width: 100%;
+    max-width: 460px;
+    background-color: #2b2f84;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.vc-chat-header {
+    background-color: #1f2368;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.vc-bot-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(74, 222, 128, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4ade80;
+    font-size: 1.2rem;
+}
+
+.vc-online-dot {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
+    background-color: #4ade80;
+    border: 2px solid #1f2368;
+    border-radius: 50%;
+}
+
+.vc-header-info h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.vc-header-info p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+}
+
+.vc-chat-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-height: 380px;
+    overflow-y: auto;
+    background-color: #141979;
+}
+
+.vc-message {
+    max-width: 85%;
+    padding: 0.9rem 1.2rem;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.vc-message p {
+    margin: 0;
+}
+
+.vc-message.bot {
+    background-color: #2b2f84;
+    color: #ffffff;
+    align-self: flex-start;
+    border-top-left-radius: 4px;
+}
+
+.vc-message.user {
+    background-color: #ffffff;
+    color: #141979;
+    align-self: flex-end;
+    border-top-right-radius: 4px;
+    font-weight: 500;
+}
+
+.vc-chat-footer-mock {
+    padding: 1.2rem 1.5rem;
+    background-color: #1f2368;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.vc-placeholder-text {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.95rem;
+}
+
+.vc-chat-footer-mock i {
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+}
+
+/* --- BLOCK 5: DISCLAIMER --- */
+.vc-disclaimer-section {
+    padding: 6rem 0;
+}
+
+.vc-disclaimer-card {
+    background-color: #141979;
+    border-radius: 14px;
+    padding: 3rem;
+    border-left: 5px solid #ef4444;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.vc-disclaimer-header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.vc-disclaimer-header i {
+    color: #ef4444;
+    font-size: 2.2rem;
+}
+
+.vc-disclaimer-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.vc-disclaimer-content p {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 1.2rem 0;
+}
+
+.vc-disclaimer-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- ACTIONS --- */
+.vc-action-btn {
+    background-color: #ffffff;
+    color: #141979;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.8rem 2.8rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.vc-action-btn:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-2px);
+}
+
+/* --- MOBILE & RESPONSIVE ADAPTATION --- */
+@media (max-width: 900px) {
+    .vc-hero-layout, .vc-about-layout, .vc-chat-layout {
+        flex-direction: column;
+        text-align: center;
+        gap: 3rem;
+    }
+
+    .vc-hero-image-block, .vc-about-image, .vc-chat-frame-block {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .vc-hero-title {
+        font-size: 2.4rem;
+    }
+
+    .vc-about-title {
+        font-size: 1.8rem;
+    }
+
+    .vc-section-center-title {
+        font-size: 1.8rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .vc-message {
+        text-align: left;
+    }
+
+    .vc-disclaimer-card {
+        padding: 2rem;
+    }
+
+    .vc-disclaimer-header h2 {
+        font-size: 1.4rem;
+    }
+}
