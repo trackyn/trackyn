@@ -4166,12 +4166,13 @@ a { text-decoration: none; color: inherit; }
 
 .md-hero-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 4.8rem;
+    font-size: 4rem; 
     font-weight: 900;
-    line-height: 1.05;
+    line-height: 1.1;
     text-transform: uppercase;
     margin: 0 0 1.5rem 0;
     color: #ffffff;
+    word-wrap: break-word; 
 }
 
 .md-hero-description {
@@ -4185,7 +4186,7 @@ a { text-decoration: none; color: inherit; }
 .md-hero-image-block {
     flex: 1;
     position: relative;
-    min-height: 300px; /* For mobile scaling */
+    min-height: 300px; 
 }
 
 .md-hero-img {
@@ -4358,7 +4359,7 @@ a { text-decoration: none; color: inherit; }
 /* --- MOBILE & RESPONSIVE ADJUSTMENTS --- */
 @media (max-width: 1024px) {
     .md-hero-title {
-        font-size: 3.5rem;
+        font-size: 3.2rem;
     }
     .md-section-center-title {
         font-size: 2.5rem;
@@ -4377,6 +4378,11 @@ a { text-decoration: none; color: inherit; }
 
     .md-hero-text-block {
         padding: 4rem 5%;
+        text-align: center;
+    }
+
+    .md-hero-title {
+        font-size: 2.8rem;
         text-align: center;
     }
 
@@ -4403,5 +4409,9 @@ a { text-decoration: none; color: inherit; }
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+    
+    .md-hero-title {
+        font-size: 2rem; 
     }
 }
