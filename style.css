@@ -2963,7 +2963,7 @@ a { text-decoration: none; color: inherit; }
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.po-pricing-card:hover, .highlighted-tier {
+.po-pricing-card:hover {
     transform: translateY(-8px);
     border-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
@@ -2999,14 +2999,14 @@ a { text-decoration: none; color: inherit; }
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.85);
     margin: 0;
-    min-height: 65px; /* Keeps header heights uniform */
+    min-height: 65px; 
 }
 
 .po-tier-features {
     list-style: none;
     padding: 0;
     margin: 0 0 2.5rem 0;
-    flex-grow: 1; /* Pushes the button to the bottom */
+    flex-grow: 1; 
 }
 
 .po-tier-features li {
@@ -3021,7 +3021,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .po-tier-features li i {
-    color: #4ade80; /* A soft green checkmark to indicate inclusion */
+    color: #4ade80; 
     font-size: 1.1rem;
 }
 
@@ -3036,7 +3036,7 @@ a { text-decoration: none; color: inherit; }
     border: none;
     border-radius: 50px; 
     cursor: pointer;
-    width: 100%; /* Spans the width of the card for a prominent call to action */
+    width: 100%; 
     transition: background-color 0.2s ease, transform 0.1s ease;
     margin-top: auto;
 }
