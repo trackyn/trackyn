@@ -50,6 +50,7 @@ body {
 
 a { text-decoration: none; color: inherit; }
 .mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
 
 /* --- Navbar & Logo Global Resizing --- */
 .navbar {
@@ -174,6 +175,10 @@ a { text-decoration: none; color: inherit; }
 
 /* --- Buttons --- */
 .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 12px 24px;
     font-weight: 600;
     border: none;
