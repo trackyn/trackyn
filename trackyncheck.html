@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackyn</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Tektur:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #141979;
+            --neon-blue: #00f3ff;
+            --neon-blue-dark: #0055ff;
+            --error-red: #ff0055;
+            --text-light: #e0f7fa;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            font-family: 'IBM Plex Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .search-container {
+            background: rgba(0, 10, 40, 0.85);
+            padding: clamp(20px, 5vw, 40px);
+            border-radius: 15px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Tektur', sans-serif;
+            font-size: clamp(24px, 7vw, 42px);
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px var(--neon-blue);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .search-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--neon-blue);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--neon-blue-dark);
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: clamp(14px, 4vw, 18px);
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .error-msg {
+            color: var(--error-red);
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .primary-btn {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+            padding: 15px;
+            font-family: 'Tektur', sans-serif;
+            font-size: clamp(14px, 4vw, 18px);
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .primary-btn:hover {
+            background: var(--neon-blue);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        /* Result ID Card Style */
+        #id-card {
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            padding: clamp(15px, 5vw, 25px);
+            background: linear-gradient(135deg, #000822 0%, #141979 100%);
+            border: 2px solid var(--neon-blue);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .pet-photo {
+            width: clamp(120px, 40vw, 200px);
+            height: clamp(120px, 40vw, 200px);
+            border: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 0 15px var(--neon-blue);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(0, 243, 255, 0.1);
+        }
+
+        .drive-link {
+            font-size: clamp(10px, 2.5vw, 12px);
+            color: var(--neon-blue);
+            text-decoration: none;
+            margin-bottom: 15px;
+            opacity: 0.8;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .drive-link:hover {
+            opacity: 1;
+            text-shadow: 0 0 8px var(--neon-blue);
+            text-decoration: underline;
+        }
+
+        .pet-name {
+            font-family: 'Tektur', sans-serif;
+            font-size: clamp(22px, 6vw, 32px);
+            color: #fff;
+            margin: 10px 0;
+            text-transform: uppercase;
+            text-align: center;
+            word-wrap: break-word;
+            width: 100%;
+        }
+
+        .id-details {
+            font-size: clamp(12px, 3.5vw, 14px);
+            color: var(--neon-blue);
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            text-align: left;
+            line-height: 1.8;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        .id-details span {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; 
+            width: 100%;
+        }
+
+        .download-btn {
+            background: var(--neon-blue);
+            color: var(--bg-color);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+            font-size: clamp(12px, 3.5vw, 14px);
+        }
+
+        .download-btn:hover {
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .download-btn.secondary {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+        }
+
+        .download-btn.secondary:hover {
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        /* Hazard / Found Pet Button */
+        .hazard-btn {
+            background: rgba(255, 0, 85, 0.1);
+            color: var(--error-red);
+            border: 2px solid var(--error-red);
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+            font-size: clamp(12px, 3.5vw, 14px);
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .hazard-btn:hover {
+            background: var(--error-red);
+            color: #fff;
+            box-shadow: 0 0 15px var(--error-red);
+        }
+
+        /* Recovery Protocol Message Box */
+        #recoveryMessage {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 0, 85, 0.05);
+            border: 1px solid var(--error-red);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: clamp(12px, 3vw, 13px);
+            text-align: left;
+            line-height: 1.6;
+            width: 100%;
+            box-shadow: inset 0 0 15px rgba(255, 0, 85, 0.1);
+        }
+
+        #recoveryMessage a {
+            color: var(--neon-blue);
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px 0;
+            word-break: break-word;
+        }
+
+        #recoveryMessage a:hover {
+            text-decoration: underline;
+        }
+
+        #loading { display: none; margin: 20px 0; color: var(--neon-blue); font-size: clamp(12px, 3.5vw, 16px); }
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <h1>Trackyn</h1>
+        
+        <div class="search-group">
+            <label>Input Pet's Microchip Number</label>
+            <!-- FIX APPLIED HERE: Added autocomplete="off" and name="microchip_number" -->
+            <input type="text" id="microchipInput" maxlength="15" autocomplete="off" name="microchip_number">
+            <div id="validationError" class="error-msg">Please enter a valid microchip number.</div>
+        </div>
+
+        <button class="primary-btn" onclick="searchPet()">Verify Identity</button>
+        <div id="loading">SCANNING DATABASE...</div>
+
+        <div id="id-card">
+            <div id="displayPhoto" class="pet-photo" aria-label="Pet Photo"></div>
+            
+            <a id="driveImageLink" class="drive-link" target="_blank" rel="noopener noreferrer" data-html2canvas-ignore="true">View Original Photo</a>
+            
+            <div class="pet-name" id="displayName">Buddy</div>
+            <div class="id-details">
+                OWNER: <span id="displayOwner"></span><br>
+                MICROCHIP ID: <span id="displayChip"></span><br>
+                SEX: <span id="displaySex"></span><br>
+                DESCRIPTION: <span id="displayDesc"></span><br>
+                HOTLINE: <span>0712345678</span><br>
+                STATUS: <span style="color:#00ff88;">VERIFIED RESIDENT</span>
+            </div>
+            
+            <div class="button-group" data-html2canvas-ignore="true">
+                <button class="download-btn" onclick="downloadID()">Download Digital ID</button>
+                <button class="download-btn secondary" onclick="downloadQR()">Download QR Code</button>
+                <button class="hazard-btn" id="foundPetBtn" onclick="triggerFoundProtocol()">I found this pet</button>
+            </div>
+
+            <div id="recoveryMessage" data-html2canvas-ignore="true"></div>
+        </div>
+        
+        <div id="notFoundError" class="error-msg" style="margin-top:20px;">No pet found in the registry.</div>
+    </div>
+
+    <script>
+        // Database Configuration
+        const SPREADSHEET_ID = '1S4N6l2JLJdwfPA7pwz-32zEj1aW67ZinTf0mUA5TZeU'; 
+        const SHEET_NAME = 'PetRegistry';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhzo5dmcDui2KWgGKypQ1SE2PKedMR0inaE2A3KDX6AzP55BCtdjSKeSupa4yHs_vFzw/exec';
+
+        let watchId = null;
+        let locationTimeout = null;
+
+        function stopWatching() {
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
+            if (locationTimeout !== null) {
+                clearTimeout(locationTimeout);
+                locationTimeout = null;
+            }
+        }
+
+        // TELEMETRY POST FUNCTION (Triggers the backend email alert)
+        async function postTelemetryData(chipId, lat, long) {
+            const params = new URLSearchParams();
+            params.append('action', 'update_location');
+            params.append('Microchip', chipId);
+            params.append('Lat', lat);
+            params.append('Long', long);
+
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: params,
+                    mode: 'no-cors'
+                });
+                console.log("Telemetry synced successfully. Email triggered.");
+            } catch (e) {
+                console.error("Telemetry sync failed.");
+            }
+        }
+
+        // SEARCH/SCAN TELEMETRY LOCATION SYNC WITH WARMUP & MANUAL ENFORCEMENT
+        async function sendLocationUpdate(chipId) {
+            stopWatching();
+
+            const showTelemetryManualEntry = (reason) => {
+                const msgDiv = document.getElementById('recoveryMessage');
+                msgDiv.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <span style="color: var(--error-red); font-weight: bold; font-size: 16px; text-transform: uppercase;">Location Sync Failed</span>
+                    </div>
+                    <p style="margin-bottom: 15px; font-size: 12px;">${reason}</p>
+                    <label style="color: var(--neon-blue); font-size: 11px;">PLEASE TURN ON LOCATION AND DATA/WIFI AND CLICK VERIFY IDENTITY BUTTON(IF ON PLEASE CLICK VERIFY IDENTITY BUTTON AGAIN) OR ENTER COORDINATES MANUALLY TO COMPLETE SYNC (LAT, LON)</label>
+                    <input type="text" id="telemetryCoordsInput" placeholder="e.g. -1.286389, 36.817223" style="margin-bottom: 15px; margin-top: 5px;" autocomplete="off">
+                    <button class="primary-btn" style="padding: 12px; font-size: 14px;" onclick="processTelemetryManualCoordinates('${chipId}')">Sync Location</button>
+                    <div id="telemetryCoordError" class="error-msg" style="text-align: center;">Invalid format. Please use: Latitude, Longitude</div>
+                `;
+                msgDiv.style.display = "block";
+            };
+
+            let bestPos = null;
+            let syncCompleted = false;
+
+            // 20 Second Timeout (Increased to allow for 30m accuracy lock)
+            locationTimeout = setTimeout(() => {
+                stopWatching();
+                if (!syncCompleted) {
+                    showTelemetryManualEntry("Could not achieve required 30m GPS accuracy in time.");
+                }
+            }, 20000);
+
+            if ("geolocation" in navigator) {
+                watchId = navigator.geolocation.watchPosition(
+                    (pos) => {
+                        bestPos = pos;
+                        const accuracy = pos.coords.accuracy;
+                        console.log(`Telemetry GPS Accuracy: ${accuracy} meters`);
+                        
+                        // Capture first location within 30 meters
+                        if (!syncCompleted && accuracy <= 30) {
+                            syncCompleted = true;
+                            stopWatching();
+                            postTelemetryData(chipId, pos.coords.latitude, pos.coords.longitude);
+                        }
+                    },
+                    (err) => {
+                        stopWatching();
+                        if (!syncCompleted) {
+                            showTelemetryManualEntry("Device location access denied or signal completely lost.");
+                        }
+                    },
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                );
+            } else {
+                showTelemetryManualEntry("Geolocation is not supported by your browser.");
+            }
+        }
+
+        // PROCESS TELEMETRY MANUAL COORDINATES
+        window.processTelemetryManualCoordinates = function(chipId) {
+            const input = document.getElementById('telemetryCoordsInput').value.trim();
+            const errDiv = document.getElementById('telemetryCoordError');
+            
+            const match = input.match(/(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/);
+            if (match) {
+                errDiv.style.display = 'none';
+                postTelemetryData(chipId, match[1], match[3]);
+                const msgDiv = document.getElementById('recoveryMessage');
+                msgDiv.innerHTML = '<div style="text-align:center; color:#00ff88; font-weight: bold; font-size: 14px; padding: 10px;">TELEMETRY SYNCED SUCCESSFULLY.</div>';
+                setTimeout(() => { msgDiv.style.display = 'none'; }, 3000);
+            } else {
+                errDiv.style.display = 'block';
+            }
+        };
+
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const chipParam = urlParams.get('chip');
+            if (chipParam) {
+                document.getElementById('microchipInput').value = chipParam;
+                searchPet(); 
+            }
+        };
+
+        // --- NEW HELPER FUNCTION: Convert Drive View URLs to Direct Render URLs ---
+        function getDirectImageUrl(url) {
+            if (!url) return "";
+            let fileId = "";
+            
+            // Check for /file/d/ID/view format
+            const match1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (match1) fileId = match1[1];
+            
+            // Check for ?id=ID format
+            const match2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (!fileId && match2) fileId = match2[1];
+            
+            // Check for /d/ID format
+            const match3 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (!fileId && match3) fileId = match3[1];
+            
+            // If we extracted a Drive ID, return the export URL format
+            if (fileId) {
+                return `https://drive.google.com/uc?export=view&id=${fileId}`;
+            }
+            return url; // Fallback to returning original URL
+        }
+
+        async function searchPet() {
+            const input = document.getElementById('microchipInput').value.trim();
+            const valError = document.getElementById('validationError');
+            const nfError = document.getElementById('notFoundError');
+            const idCard = document.getElementById('id-card');
+            const loading = document.getElementById('loading');
+            const recoveryMsg = document.getElementById('recoveryMessage');
+
+            recoveryMsg.style.display = 'none';
+
+            if (!/^\d{15}$/.test(input)) {
+                valError.style.display = 'block';
+                idCard.style.display = 'none';
+                return;
+            }
+
+            valError.style.display = 'none';
+            nfError.style.display = 'none';
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/${SHEET_NAME}`);
+                const data = await response.json();
+                const pet = data.find(p => p.Microchip.toString() === input);
+
+                if (pet) {
+                    document.getElementById('displayName').textContent = pet.PetName;
+                    
+                    const firstName = pet.OwnerName1 || pet.Owner || "";
+                    const secondName = pet.OwnerName2 || "";
+                    const fullName = (firstName + " " + secondName).trim();
+                    
+                    document.getElementById('displayOwner').textContent = fullName ? fullName : "Owner Details Not Provided";
+                    document.getElementById('displayChip').textContent = pet.Microchip;
+                    
+                    // Populate Sex and Description
+                    document.getElementById('displaySex').textContent = pet.Sex ? pet.Sex : "N/A";
+                    document.getElementById('displayDesc').textContent = pet.Description ? pet.Description : "N/A";
+                    
+                    // NEW: Update the Drive Image Link with the original Google Drive URL
+                    const driveLink = document.getElementById('driveImageLink');
+                    if (pet.PetPhoto) {
+                        driveLink.href = pet.PetPhoto;
+                        driveLink.style.display = 'inline-block';
+                    } else {
+                        driveLink.style.display = 'none';
+                    }
+                    
+                    // UPDATED: Target the new div and fetch the image as Base64
+                    const photoDiv = document.getElementById('displayPhoto');
+                    photoDiv.style.backgroundImage = 'none'; // Clear previous image
+                    
+                    const directUrl = getDirectImageUrl(pet.PetPhoto);
+                    
+                    fetch(`https://corsproxy.io/?${encodeURIComponent(directUrl)}`)
+                        .then(res => {
+                            if (!res.ok) throw new Error("Proxy response not OK");
+                            return res.blob();
+                        })
+                        .then(blob => {
+                            // Convert Blob to Base64 so HTML2Canvas doesn't throw a CORS error
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                                const base64data = reader.result;
+                                photoDiv.style.backgroundImage = `url(${base64data})`;
+                            }
+                            reader.readAsDataURL(blob);
+                        })
+                        .catch(err => {
+                            console.error("CORS proxy failed, using direct URL as fallback", err);
+                            photoDiv.style.backgroundImage = `url(${directUrl})`; 
+                        });
+                    
+                    idCard.style.display = 'flex';
+
+                    // Trigger warm-up watch location mapping whenever pet card is verified/loaded
+                    sendLocationUpdate(pet.Microchip);
+                    
+                } else {
+                    nfError.style.display = 'block';
+                    idCard.style.display = 'none';
+                }
+            } catch (e) {
+                alert("Connection Error");
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // --- FOUND PET PROTOCOL ---
+        function displayProtocolMessage(facilityName, mapLink) {
+            const msgDiv = document.getElementById('recoveryMessage');
+            const btn = document.getElementById('foundPetBtn');
+            
+            msgDiv.innerHTML = `
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <span style="color: var(--error-red); font-weight: bold; font-size: 16px; text-transform: uppercase;">Found Pet Recovery Protocol</span>
+                </div>
+                Thank you for your kindness in securing this animal. To reunite this pet with its owner, please proceed to the nearest authorized rescue or clinic.<br><br>
+                <strong>Action Required:</strong> Please go to <strong>${facilityName}</strong> from the map.<br>
+                <a href="${mapLink}" target="_blank" rel="noopener noreferrer">📍 Open Map & Directions</a><br><br>
+                If you cannot transport them, please call us at <strong>(0712345678)</strong> immediately.<br><br>
+                <span style="color: var(--error-red); font-weight: bold;">Safety Warning:</span> If the pet seems aggressive do not attempt transport but call for assistance on number above. Thank you!
+            `;
+            msgDiv.style.display = "block";
+            btn.textContent = "I FOUND THIS PET";
+            btn.disabled = false;
+        }
+
+        function showManualCoordinateEntry(reason) {
+            const msgDiv = document.getElementById('recoveryMessage');
+            const btn = document.getElementById('foundPetBtn');
+            
+            msgDiv.innerHTML = `
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <span style="color: var(--error-red); font-weight: bold; font-size: 16px; text-transform: uppercase;">Location Inaccurate</span>
+                </div>
+                <p style="margin-bottom: 15px; font-size: 12px;">${reason}</p>
+                <label style="color: var(--neon-blue); font-size: 11px;">ENTER COORDINATES MANUALLY (LAT, LON)</label>
+                <input type="text" id="manualCoordsInput" placeholder="e.g. -1.286389, 36.817223" style="margin-bottom: 15px; margin-top: 5px;" autocomplete="off">
+                <button class="primary-btn" style="padding: 12px; font-size: 14px;" onclick="processManualCoordinates()">Locate Nearby Clinics</button>
+                <div id="manualCoordError" class="error-msg" style="text-align: center;">Invalid format. Please use: Latitude, Longitude</div>
+            `;
+            msgDiv.style.display = "block";
+            btn.textContent = "I FOUND THIS PET";
+            btn.disabled = false;
+        }
+
+        window.processManualCoordinates = function() {
+            const input = document.getElementById('manualCoordsInput').value.trim();
+            const errDiv = document.getElementById('manualCoordError');
+            
+            const match = input.match(/(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/);
+            if (match) {
+                errDiv.style.display = 'none';
+                const msgDiv = document.getElementById('recoveryMessage');
+                msgDiv.innerHTML = '<div style="text-align:center; color:var(--neon-blue); font-weight: bold; font-size: 14px; padding: 10px;">SEARCHING NEARBY CLINICS...</div>';
+                
+                // Force location sync to sheet when found via manual entry
+                const currentChip = document.getElementById('displayChip').textContent;
+                postTelemetryData(currentChip, match[1], match[3]);
+                
+                fetchAndProcessLocation(match[1], match[3]);
+            } else {
+                errDiv.style.display = 'block';
+            }
+        };
+
+        async function fetchAndProcessLocation(lat, lon) {
+            let facilityName = "a nearby veterinary clinic, shelter, or pet rescue";
+            
+            // UPDATED: Broadened the search terms to include small and large animal clinics.
+            const searchTerms = encodeURIComponent("vet clinic OR animal shelter OR pet rescue OR small animal clinic OR large animal clinic");
+            
+            // UPDATED: Using the standard Google Maps Search URL API to ensure the redirect works perfectly.
+            let mapLink = `https://www.google.com/maps/search/?api=1&query=$${searchTerms}+near+${lat},${lon}`;
+
+            try {
+                const query = `[out:json];(nwr["amenity"="veterinary"](around:15000,${lat},${lon});nwr["amenity"="animal_shelter"](around:15000,${lat},${lon});nwr["amenity"="animal_boarding"](around:15000,${lat},${lon}););out center limit 1;`;
+                const overpassUrl = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+                
+                const response = await fetch(overpassUrl);
+                const data = await response.json();
+                
+                if (data.elements && data.elements.length > 0) {
+                    const foundFacility = data.elements[0];
+                    if(foundFacility.tags && foundFacility.tags.name) {
+                        facilityName = foundFacility.tags.name;
+                    }
+                }
+            } catch (e) {
+                console.log("Overpass API failed, falling back to generic UI text.");
+            }
+
+            displayProtocolMessage(facilityName, mapLink);
+        }
+
+        async function triggerFoundProtocol() {
+            const msgDiv = document.getElementById('recoveryMessage');
+            const btn = document.getElementById('foundPetBtn');
+            const currentChip = document.getElementById('displayChip').textContent;
+            
+            btn.textContent = "Please Wait...";
+            btn.disabled = true;
+            msgDiv.style.display = "none";
+
+            stopWatching(); 
+
+            let bestPos = null;
+            let syncCompleted = false;
+
+            // Increased to 20 seconds to allow hardware to achieve 30m accuracy 
+            locationTimeout = setTimeout(() => {
+                stopWatching();
+                if (!syncCompleted) {
+                    showManualCoordinateEntry("Could not achieve required 30m GPS accuracy in time.");
+                }
+            }, 20000);
+
+            if ("geolocation" in navigator) {
+                watchId = navigator.geolocation.watchPosition(
+                    async (pos) => {
+                        bestPos = pos;
+                        const accuracy = pos.coords.accuracy;
+                        console.log(`Current GPS Accuracy: ${accuracy} meters`);
+                        
+                        // Condition updated to 30 meters
+                        if (!syncCompleted && accuracy <= 30) {
+                            syncCompleted = true;
+                            stopWatching(); 
+                            btn.textContent = "LOCATING NEAREST CLINICS...";
+                            
+                            // Trigger background email with exact coordinates
+                            postTelemetryData(currentChip, pos.coords.latitude, pos.coords.longitude);
+                            
+                            await fetchAndProcessLocation(pos.coords.latitude, pos.coords.longitude);
+                        }
+                    },
+                    (err) => {
+                        stopWatching();
+                        if (!syncCompleted) {
+                            showManualCoordinateEntry("Device location access denied or signal completely lost.");
+                        }
+                    },
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                );
+            } else {
+                stopWatching();
+                showManualCoordinateEntry("Geolocation is not supported by your browser.");
+            }
+        }
+
+        function downloadID() {
+            const card = document.getElementById('id-card');
+            html2canvas(card, { useCORS: true, backgroundColor: '#141979' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `PetID_${document.getElementById('displayName').textContent}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        async function downloadQR() {
+            const chip = document.getElementById('displayChip').textContent;
+            const petName = document.getElementById('displayName').textContent;
+            if (!chip) return;
+
+            const baseUrl = window.location.href.split('?')[0];
+            const publicLink = `${baseUrl}?chip=${chip}`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(publicLink)}&margin=10`;
+
+            try {
+                const response = await fetch(qrUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = `${petName}_QR_Code.png`;
+                
+                document.body.appendChild(link);
+                link.click();
+                
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                console.error("Error fetching QR Code:", error);
+                alert("Failed to download QR code.");
+            }
+        }
+    </script>
+</body>
+</html>
