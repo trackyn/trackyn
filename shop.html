@@ -7,6 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Temporarily hide the main content until the session is validated to prevent flashing */
+        #shop-content {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #shop-content.visible {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body id="top">
 
@@ -40,378 +50,417 @@
         </div>
     </nav>
 
-    <main class="shop-main bg-color-1">
-        
-        <div class="shop-breadcrumbs">
-            <a href="index.html">Home</a>
-            <i class="fa-solid fa-chevron-right separator"></i>
-            <span class="current">All Products</span>
-        </div>
-
-        <section class="shop-banner">
-            <div class="banner-image-container">
-                <img src="images/shop-banner.png" alt="Trackyn Abstract Geometric Art Pieces">
+    <div id="shop-content">
+        <main class="shop-main bg-color-1">
+            
+            <div class="shop-breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fa-solid fa-chevron-right separator"></i>
+                <span class="current">All Products</span>
             </div>
-            <div class="banner-title-bar">
-                <h1 class="shop-main-title">All Products</h1>
-            </div>
-        </section>
 
-        <section class="shop-content-section">
-            <div class="shop-layout">
-                
-                <aside class="shop-sidebar">
-                    <div class="sidebar-block">
-                        <h2 class="filter-main-title">Browse by</h2>
-                        <ul class="browse-list">
-                            <li><a href="#" class="browse-link active">All Products</a></li>
-                            <li><a href="#" class="browse-link">ID Tags</a></li>
-                            <li><a href="#" class="browse-link">Scanners</a></li>
-                            <li><a href="#" class="browse-link">Pet Accessories</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="sidebar-block border-top">
-                        <h2 class="filter-main-title">Filter by</h2>
-                        
-                        <div class="filter-group">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Product type</span>
-                                <i class="fa-solid fa-minus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body open">
-                                <label class="checkbox-container">
-                                    <input type="checkbox" name="product-type" value="id-tags">
-                                    <span class="checkmark"></span>
-                                    ID Tags
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox" name="product-type" value="scanners">
-                                    <span class="checkmark"></span>
-                                    Scanners
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox" name="product-type" value="pet-accessories">
-                                    <span class="checkmark"></span>
-                                    Pet Accessories
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Price</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <div class="price-inputs">
-                                    <input type="number" placeholder="Min" class="price-input">
-                                    <span>to</span>
-                                    <input type="number" placeholder="Max" class="price-input">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Color</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <div class="color-options-grid">
-                                    <button class="color-dot bg-black" title="Black"></button>
-                                    <button class="color-dot bg-white" title="White"></button>
-                                    <button class="color-dot bg-silver" title="Silver"></button>
-                                    <button class="color-dot bg-blue" title="Blue"></button>
-                                    <button class="color-dot bg-red" title="Red"></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Display Type</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    LCD Screen
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    OLED Screen
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Finish</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Matte
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Glossy
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Length</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    1.2 meters
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    1.8 meters
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Material</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Nylon
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Metal
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Silicone
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Power Source</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Rechargeable Battery
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Replaceable Battery
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Range</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Up to 10cm
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Up to 20cm
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Shape</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Circular
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Rectangular
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter-group border-top-thin">
-                            <div class="filter-header" onclick="toggleFilter(this)">
-                                <span>Size</span>
-                                <i class="fa-solid fa-plus icon-toggle"></i>
-                            </div>
-                            <div class="filter-body">
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Small (20mm)
-                                </label>
-                                <label class="checkbox-container">
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                    Large (30mm)
-                                </label>
-                            </div>
-                        </div>
-
-                    </div>
-                </aside>
-
-                <div class="shop-grid-area">
-                    
-                    <div class="grid-controls">
-                        <span class="products-count">9 products</span>
-                        <div class="sort-selector-container">
-                            <span class="sort-label">Sort by:</span>
-                            <div class="sort-dropdown-wrapper">
-                                <select class="sort-select">
-                                    <option value="recommended" selected>Recommended</option>
-                                    <option value="price-low">Price: Low to High</option>
-                                    <option value="price-high">Price: High to Low</option>
-                                    <option value="newest">Newest Arrivals</option>
-                                </select>
-                                <i class="fa-solid fa-chevron-down sort-chevron"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="products-grid">
-                        
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-bowl.jpg" alt="Collapsible Pet Bowl">
-                            </div>
-                            <h3 class="product-item-title">Collapsible Pet Bowl</h3>
-                            <p class="product-item-price">Ksh 20.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-collar.jpg" alt="Waterproof Pet Collar">
-                            </div>
-                            <h3 class="product-item-title">Waterproof Pet Collar</h3>
-                            <p class="product-item-price">Ksh 30.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-leash.jpg" alt="Reflective Dog Leash">
-                            </div>
-                            <h3 class="product-item-title">Reflective Dog Leash</h3>
-                            <p class="product-item-price">Ksh 40.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-scanner-wand.jpg" alt="Compact RFID Scanner Wand">
-                            </div>
-                            <h3 class="product-item-title">Compact RFID Scanner Wand</h3>
-                            <p class="product-item-price">Ksh 85.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-reader.jpg" alt="Professional Microchip Reader">
-                            </div>
-                            <h3 class="product-item-title">Professional Microchip Reader</h3>
-                            <p class="product-item-price">Ksh 250.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-scanner-handheld.jpg" alt="Handheld Microchip Scanner">
-                            </div>
-                            <h3 class="product-item-title">Handheld Microchip Scanner</h3>
-                            <p class="product-item-price">Ksh 120.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-qr-tag.jpg" alt="QR Code Pet Tag">
-                            </div>
-                            <h3 class="product-item-title">QR Code Pet Tag</h3>
-                            <p class="product-item-price">Ksh 45.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-silicone-tag.jpg" alt="Silicone Collar Tag">
-                            </div>
-                            <h3 class="product-item-title">Silicone Collar Tag</h3>
-                            <p class="product-item-price">Ksh 25.00</p>
-                        </div>
-
-                        <div class="product-item">
-                            <div class="product-image-wrapper">
-                                <img src="images/product-metal-tag.jpg" alt="Engraved Metal Tag">
-                            </div>
-                            <h3 class="product-item-title">Engraved Metal Tag</h3>
-                            <p class="product-item-price">Ksh 35.00</p>
-                        </div>
-
-                    </div>
+            <section class="shop-banner">
+                <div class="banner-image-container">
+                    <img src="images/shop-banner.png" alt="Trackyn Abstract Geometric Art Pieces">
                 </div>
+                <div class="banner-title-bar">
+                    <h1 class="shop-main-title">All Products</h1>
+                </div>
+            </section>
 
-            </div>
-        </section>
+            <section class="shop-content-section">
+                <div class="shop-layout">
+                    
+                    <aside class="shop-sidebar">
+                        <div class="sidebar-block">
+                            <h2 class="filter-main-title">Browse by</h2>
+                            <ul class="browse-list">
+                                <li><a href="#" class="browse-link active">All Products</a></li>
+                                <li><a href="#" class="browse-link">ID Tags</a></li>
+                                <li><a href="#" class="browse-link">Scanners</a></li>
+                                <li><a href="#" class="browse-link">Pet Accessories</a></li>
+                            </ul>
+                        </div>
 
-    </main>
+                        <div class="sidebar-block border-top">
+                            <h2 class="filter-main-title">Filter by</h2>
+                            
+                            <div class="filter-group">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Product type</span>
+                                    <i class="fa-solid fa-minus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body open">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="product-type" value="id-tags">
+                                        <span class="checkmark"></span>
+                                        ID Tags
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="product-type" value="scanners">
+                                        <span class="checkmark"></span>
+                                        Scanners
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="product-type" value="pet-accessories">
+                                        <span class="checkmark"></span>
+                                        Pet Accessories
+                                    </label>
+                                </div>
+                            </div>
 
-    <footer class="footer bg-color-1">
-        <div class="footer-left">
-            <p class="email-text">trackyn.id@gmail.com</p>
-            <div class="footer-bottom-text">
-                <p>Trackyn</p>
-                <p class="copyright">&copy; 2026 Trackyn. All rights reserved.</p>
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Price</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <div class="price-inputs">
+                                        <input type="number" placeholder="Min" class="price-input">
+                                        <span>to</span>
+                                        <input type="number" placeholder="Max" class="price-input">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Color</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <div class="color-options-grid">
+                                        <button class="color-dot bg-black" title="Black"></button>
+                                        <button class="color-dot bg-white" title="White"></button>
+                                        <button class="color-dot bg-silver" title="Silver"></button>
+                                        <button class="color-dot bg-blue" title="Blue"></button>
+                                        <button class="color-dot bg-red" title="Red"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Display Type</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        LCD Screen
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        OLED Screen
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Finish</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Matte
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Glossy
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Length</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        1.2 meters
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        1.8 meters
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Material</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Nylon
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Metal
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Silicone
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Power Source</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Rechargeable Battery
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Replaceable Battery
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Range</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Up to 10cm
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Up to 20cm
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Shape</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Circular
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Rectangular
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group border-top-thin">
+                                <div class="filter-header" onclick="toggleFilter(this)">
+                                    <span>Size</span>
+                                    <i class="fa-solid fa-plus icon-toggle"></i>
+                                </div>
+                                <div class="filter-body">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Small (20mm)
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Large (30mm)
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </aside>
+
+                    <div class="shop-grid-area">
+                        
+                        <div class="grid-controls">
+                            <span class="products-count">9 products</span>
+                            <div class="sort-selector-container">
+                                <span class="sort-label">Sort by:</span>
+                                <div class="sort-dropdown-wrapper">
+                                    <select class="sort-select">
+                                        <option value="recommended" selected>Recommended</option>
+                                        <option value="price-low">Price: Low to High</option>
+                                        <option value="price-high">Price: High to Low</option>
+                                        <option value="newest">Newest Arrivals</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down sort-chevron"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="products-grid">
+                            
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-bowl.jpg" alt="Collapsible Pet Bowl">
+                                </div>
+                                <h3 class="product-item-title">Collapsible Pet Bowl</h3>
+                                <p class="product-item-price">Ksh 20.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-collar.jpg" alt="Waterproof Pet Collar">
+                                </div>
+                                <h3 class="product-item-title">Waterproof Pet Collar</h3>
+                                <p class="product-item-price">Ksh 30.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-leash.jpg" alt="Reflective Dog Leash">
+                                </div>
+                                <h3 class="product-item-title">Reflective Dog Leash</h3>
+                                <p class="product-item-price">Ksh 40.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-scanner-wand.jpg" alt="Compact RFID Scanner Wand">
+                                </div>
+                                <h3 class="product-item-title">Compact RFID Scanner Wand</h3>
+                                <p class="product-item-price">Ksh 85.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-reader.jpg" alt="Professional Microchip Reader">
+                                </div>
+                                <h3 class="product-item-title">Professional Microchip Reader</h3>
+                                <p class="product-item-price">Ksh 250.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-scanner-handheld.jpg" alt="Handheld Microchip Scanner">
+                                </div>
+                                <h3 class="product-item-title">Handheld Microchip Scanner</h3>
+                                <p class="product-item-price">Ksh 120.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-qr-tag.jpg" alt="QR Code Pet Tag">
+                                </div>
+                                <h3 class="product-item-title">QR Code Pet Tag</h3>
+                                <p class="product-item-price">Ksh 45.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-silicone-tag.jpg" alt="Silicone Collar Tag">
+                                </div>
+                                <h3 class="product-item-title">Silicone Collar Tag</h3>
+                                <p class="product-item-price">Ksh 25.00</p>
+                            </div>
+
+                            <div class="product-item">
+                                <div class="product-image-wrapper">
+                                    <img src="images/product-metal-tag.jpg" alt="Engraved Metal Tag">
+                                </div>
+                                <h3 class="product-item-title">Engraved Metal Tag</h3>
+                                <p class="product-item-price">Ksh 35.00</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="footer bg-color-1">
+            <div class="footer-left">
+                <p class="email-text">trackyn.id@gmail.com</p>
+                <div class="footer-bottom-text">
+                    <p>Trackyn</p>
+                    <p class="copyright">&copy; 2026 Trackyn. All rights reserved.</p>
+                </div>
             </div>
-        </div>
-        <div class="footer-right">
-            <div class="footer-logo-container">
-                <img src="images/logo.png" alt="Trackyn Logo" class="footer-logo-img">
+            <div class="footer-right">
+                <div class="footer-logo-container">
+                    <img src="images/logo.png" alt="Trackyn Logo" class="footer-logo-img">
+                </div>
+                <div class="social-icons vibrant">
+                    <a href="#" class="social-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-ig"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-yt"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="social-x"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="social-li"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="social-tt"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
             </div>
-            <div class="social-icons vibrant">
-                <a href="#" class="social-fb"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" class="social-ig"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="social-yt"><i class="fa-brands fa-youtube"></i></a>
-                <a href="#" class="social-x"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" class="social-li"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="#" class="social-tt"><i class="fa-brands fa-tiktok"></i></a>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
+        // Session Validation Logic (Redirects to pet-owner.html where gateway modal exists)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for the locally stored active user identifier
+            const activeUser = localStorage.getItem('trackyn_user'); 
+            
+            // Step 1: Immediate local check
+            if (!activeUser) {
+                // No session found, boot them to the gateway page
+                window.location.href = 'pet-owner.html';
+                return;
+            }
+
+            // Step 2: Validate via Apps Script backend against "PetRegistry"
+            if (typeof google !== 'undefined' && google.script) {
+                google.script.run
+                    .withSuccessHandler((isValid) => {
+                        if (isValid) {
+                            // User verified. Un-hide the shop content.
+                            document.getElementById('shop-content').classList.add('visible');
+                        } else {
+                            // Backend rejected the user. Clear invalid data and boot to gateway.
+                            localStorage.removeItem('trackyn_user');
+                            window.location.href = 'pet-owner.html';
+                        }
+                    })
+                    .withFailureHandler((error) => {
+                        console.error("Backend validation failed:", error);
+                        // Fallback constraint: boot out to gateway if backend fails to connect
+                        window.location.href = 'pet-owner.html';
+                    })
+                    .verifyShopAccess(activeUser);
+            } else {
+                // If not running inside the GAS environment yet, just reveal the content for local testing
+                document.getElementById('shop-content').classList.add('visible');
+            }
+        });
+
         // Mobile Navigation Logic
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
