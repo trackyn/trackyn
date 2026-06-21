@@ -70,7 +70,7 @@
                             <li><i class="fa-solid fa-check"></i> Report Lost Pet</li>
                             <li><i class="fa-solid fa-check"></i> Update Pet/Owner Details</li>
                         </ul>
-                        <a href="basic-tier.html" class="po-card-btn" style="text-decoration: none; text-align: center; display: block; box-sizing: border-box;">Subscribe/Login</a>
+                        <a href="#" onclick="openGateway('Basic', event)" class="po-card-btn" style="text-decoration: none; text-align: center; display: block; box-sizing: border-box;">Subscribe/Login</a>
                     </div>
 
                     <div class="po-pricing-card">
@@ -86,7 +86,7 @@
                             <li><i class="fa-solid fa-check"></i> Update Pet/Owner Details</li>
                             <li><i class="fa-solid fa-check"></i> Vetconnect</li>
                         </ul>
-                        <a href="standard-tier.html" class="po-card-btn" style="text-decoration: none; text-align: center; display: block; box-sizing: border-box;">Subscribe/Login</a>
+                        <a href="#" onclick="openGateway('Standard', event)" class="po-card-btn" style="text-decoration: none; text-align: center; display: block; box-sizing: border-box;">Subscribe/Login</a>
                     </div>
 
                     <div class="po-pricing-card">
@@ -103,7 +103,7 @@
                             <li><i class="fa-solid fa-check"></i> Vetconnect</li>
                             <li><i class="fa-solid fa-check"></i> My Documents</li>
                         </ul>
-                        <a href="premium-tier.html" class="po-card-btn" style="text-decoration: none; text-align: center; display: block; box-sizing: border-box;">Subscribe/Login</a>
+                        <a href="#" onclick="openGateway('Premium', event)" class="po-card-btn" style="text-decoration: none; text-align: center; display: block; box-sizing: border-box;">Subscribe/Login</a>
                     </div>
 
                 </div>
@@ -135,7 +135,61 @@
         </div>
     </footer>
 
+    <div id="tknGatewayModal" class="tkn-overlay" style="display: none;">
+        <div class="tkn-window">
+            <span class="tkn-close" onclick="closeGateway()">&times;</span>
+            
+            <div class="tkn-status-badge">
+                <span id="tknTierBadge">Selected Tier: Basic</span>
+            </div>
+            
+            <div class="tkn-tabs">
+                <button class="tkn-tab active" id="tabLogin" onclick="switchTab('login')">Secure Login</button>
+                <button class="tkn-tab" id="tabSubscribe" onclick="switchTab('subscribe')">New Subscription</button>
+            </div>
+
+            <div id="tknFormContainer">
+                <div class="tkn-group">
+                    <label>Username (Email)</label>
+                    <div class="tkn-input-box">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="email" id="tknUser" placeholder="petowner@email.com" required>
+                    </div>
+                </div>
+                <div class="tkn-group">
+                    <label>Password</label>
+                    <div class="tkn-input-box">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="tknPass" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <div id="tknSubscribeFields" style="display: none;">
+                    <div class="tkn-divider"><span>PAYMENT VALIDATION</span></div>
+                    <div class="tkn-instruction">
+                        Send the exact tier amount to our Paybill/Bank and paste the full confirmation message below.
+                    </div>
+                    <div class="tkn-group">
+                        <label>Payment Message</label>
+                        <textarea id="tknPaymentMsg" placeholder="Paste full transaction confirmation text here..."></textarea>
+                    </div>
+                </div>
+
+                <button class="tkn-btn-primary" id="tknSubmitBtn" onclick="processGateway()">Authenticate</button>
+            </div>
+
+            <div id="tknTerminal" class="tkn-terminal-bg" style="display: none;">
+                <div class="tkn-loader" id="tknLoader"></div>
+                <h3 id="tknTerminalHeader">Processing...</h3>
+                <div class="tkn-console" id="tknConsoleOutput"></div>
+                <div class="tkn-feedback" id="tknFeedback" style="display: none;"></div>
+                <button class="tkn-btn-primary" id="tknRetryBtn" style="display:none; margin-top:15px;" onclick="resetGateway()">Retry</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // --- 1. MOBILE NAV LOGIC ---
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
@@ -152,6 +206,151 @@
                 navLinks.classList.remove('active');
                 document.body.style.overflow = 'auto'; 
             });
+        }
+
+        // --- 2. GATEWAY MODAL LOGIC ---
+        
+        // REPLACE THIS WITH YOUR NEW DEPLOYMENT URL FROM APPS SCRIPT
+        const TARGET_API_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"; 
+        
+        let currentTier = 'Basic';
+        let currentMode = 'login'; // 'login' or 'subscribe'
+
+        // SHA-256 Hashing for secure password transmission
+        async function hashPassword(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function openGateway(tier, event) {
+            if(event) event.preventDefault();
+            currentTier = tier;
+            document.getElementById('tknTierBadge').innerText = `Selected Tier: ${tier}`;
+            document.getElementById('tknGatewayModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            resetGateway();
+        }
+
+        function closeGateway() {
+            document.getElementById('tknGatewayModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetGateway();
+        }
+
+        function switchTab(mode) {
+            currentMode = mode;
+            document.getElementById('tabLogin').classList.remove('active');
+            document.getElementById('tabSubscribe').classList.remove('active');
+            
+            if(mode === 'login') {
+                document.getElementById('tabLogin').classList.add('active');
+                document.getElementById('tknSubscribeFields').style.display = 'none';
+                document.getElementById('tknSubmitBtn').innerText = 'Authenticate';
+            } else {
+                document.getElementById('tabSubscribe').classList.add('active');
+                document.getElementById('tknSubscribeFields').style.display = 'block';
+                document.getElementById('tknSubmitBtn').innerText = 'Submit Subscription';
+            }
+        }
+
+        function logToConsole(message) {
+            const consoleOutput = document.getElementById('tknConsoleOutput');
+            consoleOutput.innerHTML += `> ${message}<br>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function resetGateway() {
+            document.getElementById('tknFormContainer').style.display = 'block';
+            document.getElementById('tknTerminal').style.display = 'none';
+            document.getElementById('tknUser').value = '';
+            document.getElementById('tknPass').value = '';
+            document.getElementById('tknPaymentMsg').value = '';
+            document.getElementById('tknConsoleOutput').innerHTML = '';
+            document.getElementById('tknFeedback').style.display = 'none';
+            document.getElementById('tknLoader').style.display = 'block';
+            document.getElementById('tknRetryBtn').style.display = 'none';
+            document.getElementById('tknTerminalHeader').innerText = 'Processing...';
+        }
+
+        async function processGateway() {
+            const user = document.getElementById('tknUser').value.trim();
+            const pass = document.getElementById('tknPass').value.trim();
+            const paymentMsg = document.getElementById('tknPaymentMsg').value.trim();
+
+            if(!user || !pass) {
+                alert("Username and Password are required.");
+                return;
+            }
+            if(currentMode === 'subscribe' && !paymentMsg) {
+                alert("Payment validation message is required for new subscriptions.");
+                return;
+            }
+
+            // Switch UI to Terminal
+            document.getElementById('tknFormContainer').style.display = 'none';
+            document.getElementById('tknTerminal').style.display = 'flex';
+            
+            logToConsole("Initializing secure handshake...");
+            
+            try {
+                logToConsole("Encrypting credentials...");
+                const hashedPass = await hashPassword(pass);
+                
+                logToConsole("Constructing payload...");
+                const payload = new URLSearchParams();
+                payload.append('Username', user);
+                payload.append('PasswordHash', hashedPass);
+                
+                if (currentMode === 'subscribe') {
+                    payload.append('action', 'subscribe_user');
+                    payload.append('Tier', currentTier);
+                    payload.append('PaymentMessage', paymentMsg);
+                    logToConsole("Action: SUBSCRIBE to " + currentTier + " Tier");
+                } else {
+                    payload.append('action', 'validate_user');
+                    logToConsole("Action: AUTHENTICATE User");
+                }
+
+                logToConsole("Transmitting to Trackyn Registry...");
+
+                const response = await fetch(TARGET_API_URL, {
+                    method: 'POST',
+                    body: payload
+                });
+
+                const result = await response.json();
+                
+                if(result.success) {
+                    logToConsole("VERIFIED: 200 OK");
+                    logToConsole("Access Granted.");
+                    
+                    document.getElementById('tknLoader').style.display = 'none';
+                    document.getElementById('tknTerminalHeader').innerText = "Access Granted";
+                    document.getElementById('tknTerminalHeader').style.color = "#34d399";
+
+                    // Store session data so groups.html knows who is logged in and what tier they have
+                    sessionStorage.setItem('trackynUser', user);
+                    sessionStorage.setItem('trackynTier', result.statusTier || currentTier);
+
+                    logToConsole("Redirecting to Dashboard in 2 seconds...");
+                    
+                    setTimeout(() => {
+                        window.location.href = 'groups.html';
+                    }, 2000);
+
+                } else {
+                    throw new Error(result.message || "Authentication Failed.");
+                }
+
+            } catch (error) {
+                logToConsole(`ERROR: ${error.message}`);
+                document.getElementById('tknLoader').style.display = 'none';
+                document.getElementById('tknTerminalHeader').innerText = "Access Denied";
+                document.getElementById('tknTerminalHeader').style.color = "#ef4444";
+                document.getElementById('tknRetryBtn').style.display = 'block';
+            }
         }
     </script>
 </body>
