@@ -9,16 +9,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <script>
-        // Immediately check if a valid session exists before rendering the page
-        const currentUser = sessionStorage.getItem('trackynUser');
-        const currentTier = sessionStorage.getItem('trackynTier');
-
-        // All tiers (Basic, Standard, Premium) are allowed, but they MUST be logged in
-        if (!currentUser || !currentTier) {
-            // Redirect to login portal, replacing the current history state
-            window.location.replace('pet-owner.html');
+    // 1. Immediate local check
+    const currentUser = sessionStorage.getItem('trackynUser');
+    
+    if (!currentUser) {
+        window.location.replace('pet-owner.html');
+    } else {
+        // 2. Server-side verification against PetRegistry
+        // This ensures the user hasn't been removed from the backend
+        if (typeof google !== 'undefined' && google.script) {
+            google.script.run
+                .withSuccessHandler((isValid) => {
+                    if (!isValid) {
+                        sessionStorage.clear();
+                        window.location.replace('pet-owner.html');
+                    }
+                })
+                .withFailureHandler(() => {
+                    // If backend is unreachable, force re-login for security
+                    window.location.replace('pet-owner.html');
+                })
+                .verifyGroupAccess(currentUser);
         }
-    </script>
+    }
+</script>
 </head>
 <body id="top" class="bg-primary">
 
