@@ -7,6 +7,70 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- NEW: Modern User-Friendly #141979 Loading Animation --- */
+        .tkn-modern-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .tkn-spinner-container {
+            position: relative;
+            width: 65px;
+            height: 65px;
+            margin-bottom: 24px;
+        }
+
+        .tkn-spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid rgba(20, 25, 121, 0.1); 
+            border-top-color: #141979;
+            animation: tkn-spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+
+        .tkn-spinner-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
+            background-color: #141979;
+            border-radius: 50%;
+            animation: tkn-pulse 1.5s ease-in-out infinite;
+        }
+
+        .tkn-auth-text {
+            color: #141979;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0;
+            animation: tkn-fade-text 1.5s infinite alternate;
+        }
+
+        @keyframes tkn-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes tkn-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+        }
+
+        @keyframes tkn-fade-text {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+    </style>
 </head>
 <body id="top">
 
@@ -178,13 +242,15 @@
                 <button class="tkn-btn-primary" id="tknSubmitBtn" onclick="processGateway()">Authenticate</button>
             </div>
 
-            <div id="tknTerminal" class="tkn-terminal-bg" style="display: none;">
-                <div class="tkn-loader" id="tknLoader"></div>
-                <h3 id="tknTerminalHeader">Processing...</h3>
-                <div class="tkn-console" id="tknConsoleOutput"></div>
-                <div class="tkn-feedback" id="tknFeedback" style="display: none;"></div>
-                <button class="tkn-btn-primary" id="tknRetryBtn" style="display:none; margin-top:15px;" onclick="resetGateway()">Retry</button>
+            <div id="tknLoadingScreen" class="tkn-modern-loader" style="display: none;">
+                <div id="tknLoaderAnim" class="tkn-spinner-container">
+                    <div class="tkn-spinner-ring"></div>
+                    <div class="tkn-spinner-dot"></div>
+                </div>
+                <h3 id="tknLoadingHeader" class="tkn-auth-text">Authenticating...</h3>
+                <button class="tkn-btn-primary" id="tknRetryBtn" style="display:none; margin-top:20px; width:100%;" onclick="resetGateway()">Try Again</button>
             </div>
+            
         </div>
     </div>
 
@@ -214,7 +280,7 @@
         const TARGET_API_URL = "https://script.google.com/macros/s/AKfycbzbaAx7vyC6Ma1d-F_wZGMVvDQjfgEtVs_7nD5TR1PDpAs6LXRPlWPOL1y_DjRWJfAiyA/exec"; 
         
         let currentTier = 'Basic';
-        let currentMode = 'login'; // 'login' or 'subscribe'
+        let currentMode = 'login';
 
         // SHA-256 Hashing for secure password transmission
         async function hashPassword(message) {
@@ -224,12 +290,26 @@
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        // TIER-BASED ROUTING LOGIC
+        function routeUserByTier(tier) {
+            const normalizedTier = tier.trim().toLowerCase();
+            if (normalizedTier === 'basic') {
+                window.location.href = 'basic-tier.html';
+            } else if (normalizedTier === 'standard') {
+                window.location.href = 'standard-tier.html';
+            } else if (normalizedTier === 'premium') {
+                window.location.href = 'premium-tier.html';
+            } else {
+                window.location.href = 'index.html'; 
+            }
+        }
+
         function openGateway(tier, event) {
             if(event) event.preventDefault();
             currentTier = tier;
             document.getElementById('tknTierBadge').innerText = `Selected Tier: ${tier}`;
             document.getElementById('tknGatewayModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            document.body.style.overflow = 'hidden'; 
             resetGateway();
         }
 
@@ -255,23 +335,18 @@
             }
         }
 
-        function logToConsole(message) {
-            const consoleOutput = document.getElementById('tknConsoleOutput');
-            consoleOutput.innerHTML += `> ${message}<br>`;
-            consoleOutput.scrollTop = consoleOutput.scrollHeight;
-        }
-
         function resetGateway() {
             document.getElementById('tknFormContainer').style.display = 'block';
-            document.getElementById('tknTerminal').style.display = 'none';
+            document.getElementById('tknLoadingScreen').style.display = 'none';
             document.getElementById('tknUser').value = '';
             document.getElementById('tknPass').value = '';
             document.getElementById('tknPaymentMsg').value = '';
-            document.getElementById('tknConsoleOutput').innerHTML = '';
-            document.getElementById('tknFeedback').style.display = 'none';
-            document.getElementById('tknLoader').style.display = 'block';
+            
+            // Reset Loading UI
+            document.getElementById('tknLoaderAnim').style.display = 'block';
             document.getElementById('tknRetryBtn').style.display = 'none';
-            document.getElementById('tknTerminalHeader').innerText = 'Processing...';
+            document.getElementById('tknLoadingHeader').innerText = 'Authenticating...';
+            document.getElementById('tknLoadingHeader').style.color = '#141979';
         }
 
         async function processGateway() {
@@ -288,18 +363,14 @@
                 return;
             }
 
-            // Switch UI to Terminal
+            // Switch UI to Modern Loader
             document.getElementById('tknFormContainer').style.display = 'none';
-            document.getElementById('tknTerminal').style.display = 'flex';
-            
-            logToConsole("Initializing secure handshake...");
+            document.getElementById('tknLoadingScreen').style.display = 'flex';
             
             try {
-                logToConsole("Encrypting credentials...");
                 const hashedPass = await hashPassword(pass);
-                
-                logToConsole("Constructing payload...");
                 const payload = new URLSearchParams();
+                
                 payload.append('Username', user);
                 payload.append('PasswordHash', hashedPass);
                 
@@ -307,13 +378,9 @@
                     payload.append('action', 'subscribe_user');
                     payload.append('Tier', currentTier);
                     payload.append('PaymentMessage', paymentMsg);
-                    logToConsole("Action: SUBSCRIBE to " + currentTier + " Tier");
                 } else {
                     payload.append('action', 'validate_user');
-                    logToConsole("Action: AUTHENTICATE User");
                 }
-
-                logToConsole("Transmitting to Trackyn Registry...");
 
                 const response = await fetch(TARGET_API_URL, {
                     method: 'POST',
@@ -323,32 +390,31 @@
                 const result = await response.json();
                 
                 if(result.success) {
-                    logToConsole("VERIFIED: 200 OK");
-                    logToConsole("Access Granted.");
-                    
-                    document.getElementById('tknLoader').style.display = 'none';
-                    document.getElementById('tknTerminalHeader').innerText = "Access Granted";
-                    document.getElementById('tknTerminalHeader').style.color = "#34d399";
+                    // Update UI to Success State
+                    document.getElementById('tknLoaderAnim').style.display = 'none';
+                    document.getElementById('tknLoadingHeader').innerText = "Access Granted";
+                    document.getElementById('tknLoadingHeader').style.color = "#34d399"; // Green indicator for success
 
-                    // Store session data so groups.html knows who is logged in and what tier they have
+                    const activeTier = result.statusTier || currentTier;
+
+                    // Store session data
                     sessionStorage.setItem('trackynUser', user);
-                    sessionStorage.setItem('trackynTier', result.statusTier || currentTier);
-
-                    logToConsole("Redirecting to Dashboard in 2 seconds...");
+                    sessionStorage.setItem('trackynTier', activeTier);
                     
+                    // Quicker redirect since there are no terminal logs to read
                     setTimeout(() => {
-                        window.location.href = 'groups.html';
-                    }, 2000);
+                        routeUserByTier(activeTier);
+                    }, 1200);
 
                 } else {
                     throw new Error(result.message || "Authentication Failed.");
                 }
 
             } catch (error) {
-                logToConsole(`ERROR: ${error.message}`);
-                document.getElementById('tknLoader').style.display = 'none';
-                document.getElementById('tknTerminalHeader').innerText = "Access Denied";
-                document.getElementById('tknTerminalHeader').style.color = "#ef4444";
+                // Update UI to Error State
+                document.getElementById('tknLoaderAnim').style.display = 'none';
+                document.getElementById('tknLoadingHeader').innerText = error.message;
+                document.getElementById('tknLoadingHeader').style.color = "#ef4444"; // Red indicator for error
                 document.getElementById('tknRetryBtn').style.display = 'block';
             }
         }
