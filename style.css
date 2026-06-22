@@ -4617,63 +4617,74 @@ a { text-decoration: none; color: inherit; }
     background: #2563eb;
 }
 
-/* Simulated Processing Terminal */
-.tkn-terminal-bg {
+/* ==========================================================================
+   MODERN USER-FRIENDLY CREATIVE LOADER STYLES
+   ========================================================================== */
+.tkn-modern-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.tkn-spinner-container {
+    position: relative;
+    width: 65px;
+    height: 65px;
+    margin-bottom: 24px;
+}
+
+.tkn-spinner-ring {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #030712;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 25px;
-    box-sizing: border-box;
-    z-index: 20;
-}
-.tkn-loader {
-    width: 45px;
-    height: 45px;
-    border: 3px solid #1f2937;
-    border-top: 3px solid #10b981;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-#tknTerminalHeader {
-    font-family: 'Orbitron', sans-serif;
-    margin: 20px 0 10px;
-    color: #fff;
-    font-size: 1.1rem;
-    text-align: center;
-}
-.tkn-console {
-    width: 100%;
-    height: 140px;
-    background: #111827;
-    border: 1px solid #374151;
-    border-radius: 4px;
-    padding: 12px;
-    font-family: monospace;
-    font-size: 0.8rem;
-    color: #34d399;
-    overflow-y: auto;
-    text-align: left;
-    line-height: 1.6;
+    border: 4px solid rgba(20, 25, 121, 0.15); 
+    border-top-color: #141979; /* Signature Request Theme Color */
+    animation: tkn-spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
     box-sizing: border-box;
-}
-.tkn-feedback {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 0.85rem;
-    font-weight: 600;
 }
 
-@keyframes spin {
+.tkn-spinner-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background-color: #141979;
+    border-radius: 50%;
+    animation: tkn-pulse 1.5s ease-in-out infinite;
+}
+
+.tkn-auth-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+    letter-spacing: 0.3px;
+    animation: tkn-fade-text 1.5s infinite alternate;
+}
+
+/* Creative Animations Keyframes */
+@keyframes tkn-spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes tkn-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.4); opacity: 1; }
+}
+
+@keyframes tkn-fade-text {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
 }
 
 /* ==========================================================================
@@ -4689,8 +4700,8 @@ a { text-decoration: none; color: inherit; }
         padding: 10px;
         font-size: 0.9rem;
     }
-    .tkn-console {
-        height: 110px; /* Shrink console slightly on small screens */
+    .tkn-modern-loader {
+        padding: 25px 10px; /* Tighten layout container for small screens */
     }
     .tkn-close {
         top: 10px;
@@ -4712,7 +4723,12 @@ a { text-decoration: none; color: inherit; }
     .tkn-divider {
         margin: 10px 0;
     }
-    .tkn-terminal-bg {
-        padding: 15px;
+    .tkn-modern-loader {
+        padding: 15px 10px;
+    }
+    .tkn-spinner-container {
+        margin-bottom: 15px;
+        width: 50px;
+        height: 50px;
     }
 }
