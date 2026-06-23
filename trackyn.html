@@ -11,13 +11,13 @@
 
     <style>
         :root {
-            /* Updated background color matched from the uploaded photo */
             --bg-color: #23257b; 
             --neon-blue: #00f3ff;
             --neon-blue-dark: #0055ff;
             --neon-purple: #d500f9;
             --error-red: #ff0055;
             --text-light: #e0f7fa;
+            --loader-color: #141979; /* Requested custom color */
         }
 
         * { box-sizing: border-box; }
@@ -177,15 +177,11 @@
             background: rgba(0, 243, 255, 0.05);
         }
 
-        .price-badge.premium {
-            border-color: var(--neon-purple);
-        }
-
+        .price-badge.premium { border-color: var(--neon-purple); }
         .price-badge.premium span {
             color: var(--neon-purple);
             text-shadow: 0 0 8px rgba(213, 0, 249, 0.4);
         }
-
         .price-badge.premium:hover {
             box-shadow: 0 0 12px rgba(213, 0, 249, 0.3);
             background: rgba(213, 0, 249, 0.05);
@@ -241,14 +237,55 @@
             font-size: 32px;
         }
 
+        /* --- Creative #141979 Loading Animation --- */
         #loading {
             display: none;
-            text-align: center;
-            color: var(--neon-blue);
+            flex-direction: column;
+            align-items: center;
             margin-top: 20px;
-            font-family: 'Tektur', sans-serif;
-            letter-spacing: 2px;
         }
+
+        .creative-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .creative-loader div {
+            width: 16px;
+            height: 16px;
+            background-color: var(--loader-color);
+            border-radius: 50%;
+            animation: loader-bounce 1.4s infinite ease-in-out both;
+            box-shadow: 0 0 8px rgba(20, 25, 121, 0.6); 
+        }
+
+        .creative-loader div:nth-child(1) { animation-delay: -0.32s; }
+        .creative-loader div:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loader-bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .loading-text {
+            color: var(--loader-color);
+            font-family: 'Tektur', sans-serif;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(20, 25, 121, 0.4);
+        }
+
+        .loading-text small {
+            font-size: 12px;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+        /* ------------------------------------------- */
 
         @media (max-width: 480px) {
             .form-container { padding: 25px; }
@@ -316,6 +353,7 @@
                 <label>Microchip Number</label>
                 <input type="text" id="microchip" name="Microchip" required autocomplete="off" class="no-autofill">
                 <div id="microchipError" class="error-msg">The Microchip Number is invalid. Please try again.</div>
+                <div id="microchipExistError" class="error-msg">Microchip Number Exists in our records.</div>
             </div>
 
             <div class="form-group"><label>Upload Microchip Sticker Photo</label><input type="file" id="stickerFile" accept="image/*" required></div>
@@ -343,7 +381,16 @@
             <div id="paidError" class="error-msg">Please pay to proceed. Thank you.</div>
 
             <button type="submit" id="submitBtn">Register My Pet</button>
-            <div id="loading">UPLOADING TO TRACKYN...<br><small style="font-size:12px; font-family:'IBM Plex Sans', sans-serif;">(This may take a moment...)</small></div>
+            
+            <div id="loading">
+                <div class="creative-loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="loading-text">REGISTERING...<br><small>(This may take a moment...)</small></div>
+            </div>
+
         </form>
     </div>
 
@@ -354,7 +401,6 @@
             noAutofillFields.forEach(field => {
                 field.setAttribute('readonly', 'readonly');
                 
-                // Allow typing once the user interacts with the field
                 field.addEventListener('focus', function() {
                     this.removeAttribute('readonly');
                 });
@@ -365,7 +411,6 @@
         });
         // ----------------------------------
 
-        // Ensure you update this with your new deployment URL if you make a new deployment in Apps Script
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOc5dvzm0wGFonY2myvAtOwI_L6_kqON1usmh9AmcqImJgLqx7Bon205MB9TXdtR8iEw/exec';
 
         const getBase64 = (file) => new Promise((resolve, reject) => {
@@ -383,20 +428,29 @@
             const paid = document.getElementById('paid').checked;
             
             let isValid = true;
+            
+            // Format check
             if (!/^\d{15}$/.test(microchip)) {
                 document.getElementById('microchipError').style.display = 'block';
                 isValid = false;
-            } else { document.getElementById('microchipError').style.display = 'none'; }
+            } else { 
+                document.getElementById('microchipError').style.display = 'none'; 
+            }
+            
+            // Reset duplicate error on new submission attempt
+            document.getElementById('microchipExistError').style.display = 'none';
 
             if (!paid) {
                 document.getElementById('paidError').style.display = 'block';
                 isValid = false;
-            } else { document.getElementById('paidError').style.display = 'none'; }
+            } else { 
+                document.getElementById('paidError').style.display = 'none'; 
+            }
 
             if (!isValid) return;
 
             document.getElementById('submitBtn').style.display = 'none';
-            document.getElementById('loading').style.display = 'block';
+            document.getElementById('loading').style.display = 'flex'; // Changed to flex for centering
 
             try {
                 const stickerFile = document.getElementById('stickerFile').files[0];
@@ -422,18 +476,27 @@
 
                 const params = new URLSearchParams(formData);
 
+                // VERY IMPORTANT: Removed `mode: 'no-cors'` so the frontend can read the response
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    body: params,
-                    mode: 'no-cors'
+                    body: params
                 })
-                .then(() => {
-                    document.getElementById('success-overlay').style.display = 'flex';
+                .then(response => response.json()) // Assumes Apps Script returns JSON
+                .then(data => {
+                    // Assuming your Google Apps Script returns {"exists": true} or {"error": "Microchip Number Exists"} if it finds a duplicate
+                    if (data.exists === true || data.error === 'Microchip Number Exists' || data.message === 'Microchip Number Exists') {
+                        document.getElementById('microchipExistError').style.display = 'block';
+                        document.getElementById('submitBtn').style.display = 'block';
+                        document.getElementById('loading').style.display = 'none';
+                    } else {
+                        document.getElementById('success-overlay').style.display = 'flex';
+                    }
                 })
                 .catch(err => {
                     alert("Critical Link Error. Please check your connection.");
                     document.getElementById('submitBtn').style.display = 'block';
                     document.getElementById('loading').style.display = 'none';
+                    console.error("Fetch Error:", err);
                 });
 
             } catch (error) {
