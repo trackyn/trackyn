@@ -8,19 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Hide main content and show a clean loading state until session is verified */
-        #shop-content {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out;
-        }
-        #shop-content.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        /* Optional basic loading indicator overlay */
-        #shop-loading-overlay {
+        /* Security Shield Layer overlaying content during backend handshakes */
+        #tknAuthShield {
             position: fixed;
             top: 0;
             left: 0;
@@ -36,15 +25,88 @@
             color: #00ffcc;
             letter-spacing: 2px;
         }
-        #shop-loading-overlay.hidden {
+
+        /* Sidebar Accordion Smooth Transitions */
+        .filter-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
             opacity: 0;
-            pointer-events: none;
+        }
+        .filter-body.open {
+            max-height: 500px; /* Generous max height for filter contents */
+            opacity: 1;
+            padding-top: 12px;
+            padding-bottom: 8px;
+        }
+        .filter-header {
+            cursor: pointer;
+            user-select: none;
         }
     </style>
+    <script>
+        // 1. Immediate local session check to prevent rendering flash
+        const currentUser = sessionStorage.getItem('trackynUser');
+        
+        // Deployed Google Apps Script Web App Endpoint URL
+        const TRACKYN_BACKEND_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+        
+        if (!currentUser) {
+            window.location.replace('pet-owner.html');
+        } else {
+            // 2. Server-side verification loop targeting the updated doPost backend endpoint
+            document.addEventListener("DOMContentLoaded", () => {
+                
+                // Pure local environment testing fallback bypass:
+                if (TRACKYN_BACKEND_URL.includes('YOUR_DEPLOYMENT_ID')) {
+                    console.warn("Trackyn Development Notice: Running decoupled from backend. Access shield removed.");
+                    const shield = document.getElementById('tknAuthShield');
+                    if (shield) shield.remove();
+                    
+                    // Initialize UI listeners for sandbox testing
+                    initMobileNav();
+                    initSidebarAccordions();
+                    return;
+                }
+
+                // Construct endpoint URL targeting Module E's verification parameter rules
+                const verificationUrl = `${TRACKYN_BACKEND_URL}?action=verify_group_access&Username=${encodeURIComponent(currentUser)}`;
+
+                fetch(verificationUrl, {
+                    method: 'POST',
+                    mode: 'cors'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.success) {
+                        // Access confirmed by Column V (GRANTED): Remove shield cleanly
+                        const shield = document.getElementById('tknAuthShield');
+                        if (shield) shield.remove();
+                        
+                        // Initialize layout UI components safely
+                        initMobileNav();
+                        initSidebarAccordions();
+                    } else {
+                        // Status verification mismatch or access revoked
+                        handleAuthFailure();
+                    }
+                })
+                .catch(error => {
+                    console.error("Security authorization network handshake failed:", error);
+                    handleAuthFailure();
+                });
+            });
+        }
+
+        function handleAuthFailure() {
+            sessionStorage.clear();
+            window.location.replace('pet-owner.html');
+        }
+    </script>
 </head>
 <body id="top">
 
-    <div id="shop-loading-overlay">
+    <div id="tknAuthShield">
         <div><i class="fa-solid fa-circle-notch fa-spin"></i> VERIFYING ACCESS...</div>
     </div>
 
@@ -114,7 +176,7 @@
                             <h2 class="filter-main-title">Filter by</h2>
                             
                             <div class="filter-group">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Product type</span>
                                     <i class="fa-solid fa-minus icon-toggle"></i>
                                 </div>
@@ -138,7 +200,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Price</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -152,7 +214,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Color</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -168,7 +230,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Display Type</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -187,7 +249,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Finish</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -206,7 +268,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Length</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -225,7 +287,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Material</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -249,7 +311,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Power Source</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -268,7 +330,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Range</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -287,7 +349,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Shape</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -306,7 +368,7 @@
                             </div>
 
                             <div class="filter-group border-top-thin">
-                                <div class="filter-header" onclick="toggleFilter(this)">
+                                <div class="filter-header">
                                     <span>Size</span>
                                     <i class="fa-solid fa-plus icon-toggle"></i>
                                 </div>
@@ -452,85 +514,67 @@
     </div>
 
     <script>
-        // Session Validation Logic (Redirects to pet-owner.html where gateway modal exists)
-        document.addEventListener('DOMContentLoaded', () => {
-            const activeUser = localStorage.getItem('trackyn_user'); 
-            const loadingOverlay = document.getElementById('shop-loading-overlay');
-            const shopContent = document.getElementById('shop-content');
-            
-            // Helper function to handle unmasking UI
-            const revealContent = () => {
-                if (loadingOverlay) loadingOverlay.classList.add('hidden');
-                if (shopContent) shopContent.classList.add('visible');
-            };
+        // Mobile Navigation Responsive Observers
+        function initMobileNav() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const closeMenu = document.querySelector('.close-menu');
+            const navLinks = document.querySelector('.nav-links');
 
-            // Helper function to handle failed session rejection
-            const rejectAccess = () => {
-                localStorage.removeItem('trackyn_user');
-                window.location.href = 'pet-owner.html';
-            };
-
-            // Step 1: Immediate local validation
-            if (!activeUser) {
-                rejectAccess();
-                return;
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.add('active');
+                    document.body.style.overflow = 'hidden'; 
+                });
             }
 
-            // Step 2: Validate via Google Apps Script runtime context
-            if (typeof google !== 'undefined' && google.script) {
-                google.script.run
-                    .withSuccessHandler((isValid) => {
-                        if (isValid) {
-                            revealContent();
-                        } else {
-                            rejectAccess();
-                        }
-                    })
-                    .withFailureHandler((error) => {
-                        console.error("Backend runtime validation error:", error);
-                        rejectAccess();
-                    })
-                    .verifyShopAccess(activeUser);
-            } else {
-                // local environment/testing simulation fallback configuration
-                console.warn("Running outside Google Apps Script environment. Skipping backend pipeline validation check.");
-                revealContent();
+            if (closeMenu) {
+                closeMenu.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    document.body.style.overflow = 'auto'; 
+                });
             }
-        });
-
-        // Mobile Navigation Logic
-        const menuToggle = document.querySelector('.menu-toggle');
-        const closeMenu = document.querySelector('.close-menu');
-        const navLinks = document.querySelector('.nav-links');
-
-        if(menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                navLinks.classList.add('active');
-                document.body.style.overflow = 'hidden'; 
-            });
         }
 
-        if(closeMenu) {
-            closeMenu.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                document.body.style.overflow = 'auto'; 
-            });
-        }
-
-        // Sidebar Accordion Logic
-        function toggleFilter(header) {
-            const body = header.nextElementSibling;
-            const toggleIcon = header.querySelector('.icon-toggle');
+        // Sidebar Accordion Architecture Setup
+        function initSidebarAccordions() {
+            const filterHeaders = document.querySelectorAll('.filter-header');
             
-            if (body.classList.contains('open')) {
-                body.classList.remove('open');
-                toggleIcon.classList.remove('fa-minus');
-                toggleIcon.classList.add('fa-plus');
-            } else {
-                body.classList.add('open');
-                toggleIcon.classList.remove('fa-plus');
-                toggleIcon.classList.add('fa-minus');
+            // Explicit layout rendering calculation frame update for default open tabs
+            const defaultOpenBody = document.querySelector('.filter-body.open');
+            if (defaultOpenBody) {
+                defaultOpenBody.style.maxHeight = defaultOpenBody.scrollHeight + "px";
             }
+
+            filterHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const body = header.nextElementSibling;
+                    const toggleIcon = header.querySelector('.icon-toggle');
+                    
+                    if (!body) return;
+
+                    const isOpen = body.classList.contains('open');
+                    
+                    if (isOpen) {
+                        body.style.maxHeight = body.scrollHeight + "px"; 
+                        setTimeout(() => {
+                            body.classList.remove('open');
+                            body.style.maxHeight = "0";
+                        }, 10);
+                        toggleIcon.classList.replace('fa-minus', 'fa-plus');
+                    } else {
+                        body.classList.add('open');
+                        body.style.maxHeight = body.scrollHeight + "px";
+                        toggleIcon.classList.replace('fa-plus', 'fa-minus');
+                        
+                        body.addEventListener('transitionend', function resetBounds(e) {
+                            if (e.propertyName === 'max-height' && body.classList.contains('open')) {
+                                body.style.maxHeight = '500px'; 
+                                body.removeEventListener('transitionend', resetBounds);
+                            }
+                        });
+                    }
+                });
+            });
         }
     </script>
 </body>
