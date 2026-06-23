@@ -24,35 +24,45 @@
         // 1. Immediate local session check
         const currentUser = sessionStorage.getItem('trackynUser');
         
+        // TODO: Replace with your actual deployed Google Apps Script Web App URL
+        const TRACKYN_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzOc5dvzm0wGFonY2myvAtOwI_L6_kqON1usmh9AmcqImJgLqx7Bon205MB9TXdtR8iEw/exec';
+        
         if (!currentUser) {
             window.location.replace('pet-owner.html');
         } else {
-            // 2. Server-side verification loop matching your Apps Script function
+            // 2. Server-side verification loop targeting the updated doPost backend endpoint
             document.addEventListener("DOMContentLoaded", () => {
-                if (typeof google !== 'undefined' && google.script) {
-                    google.script.run
-                        .withSuccessHandler((isValid) => {
-                            if (isValid) {
-                                // Access confirmed: Remove shield cleanly
-                                const shield = document.getElementById('tknAuthShield');
-                                if(shield) shield.remove();
-                            } else {
-                                // Invalid credential or status mismatch
-                                handleAuthFailure();
-                            }
-                        })
-                        .withFailureHandler(() => {
-                            // Backup fallback network failure handling
-                            handleAuthFailure();
-                        })
-                        .verifyGroupAccess(currentUser);
-                } else {
-                    // Local testing development bypass notice:
-                    // If running completely decoupled from GAS container, remove shield or point to fetch endpoint.
-                    console.warn("Google Apps Script environment context not found.");
-                    // Optional fallback logic if testing outside of standard GAS iframe:
-                    // document.getElementById('tknAuthShield').remove();
+                
+                // Pure local environment testing fallback bypass:
+                if (TRACKYN_BACKEND_URL.includes('AKfycbzOc5dvzm0wGFonY2myvAtOwI_L6_kqON1usmh9AmcqImJgLqx7Bon205MB9TXdtR8iEw')) {
+                    console.warn("Trackyn Development Notice: Running decoupled from backend. Access shield removed.");
+                    const shield = document.getElementById('tknAuthShield');
+                    if (shield) shield.remove();
+                    return;
                 }
+
+                // Construct endpoint URL targeting Module E's verification parameter rules
+                const verificationUrl = `${TRACKYN_BACKEND_URL}?action=verify_group_access&Username=${encodeURIComponent(currentUser)}`;
+
+                fetch(verificationUrl, {
+                    method: 'POST',
+                    mode: 'cors'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.success) {
+                        // Access confirmed by Column V (GRANTED): Remove shield cleanly
+                        const shield = document.getElementById('tknAuthShield');
+                        if (shield) shield.remove();
+                    } else {
+                        // Status verification mismatch or access revoked
+                        handleAuthFailure();
+                    }
+                })
+                .catch(error => {
+                    console.error("Security authorization network handshake failed:", error);
+                    handleAuthFailure();
+                });
             });
         }
 
