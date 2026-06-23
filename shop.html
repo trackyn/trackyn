@@ -8,17 +8,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Temporarily hide the main content until the session is validated to prevent flashing */
+        /* Hide main content and show a clean loading state until session is verified */
         #shop-content {
             opacity: 0;
+            visibility: hidden;
             transition: opacity 0.3s ease-in-out;
         }
         #shop-content.visible {
             opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Optional basic loading indicator overlay */
+        #shop-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0d0e12; /* Matches deep app layout themes */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffcc;
+            letter-spacing: 2px;
+        }
+        #shop-loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body id="top">
+
+    <div id="shop-loading-overlay">
+        <div><i class="fa-solid fa-circle-notch fa-spin"></i> VERIFYING ACCESS...</div>
+    </div>
 
     <nav class="navbar bg-color-1 shop-nav">
         <div class="logo-container">
@@ -426,38 +454,47 @@
     <script>
         // Session Validation Logic (Redirects to pet-owner.html where gateway modal exists)
         document.addEventListener('DOMContentLoaded', () => {
-            // Check for the locally stored active user identifier
             const activeUser = localStorage.getItem('trackyn_user'); 
+            const loadingOverlay = document.getElementById('shop-loading-overlay');
+            const shopContent = document.getElementById('shop-content');
             
-            // Step 1: Immediate local check
-            if (!activeUser) {
-                // No session found, boot them to the gateway page
+            // Helper function to handle unmasking UI
+            const revealContent = () => {
+                if (loadingOverlay) loadingOverlay.classList.add('hidden');
+                if (shopContent) shopContent.classList.add('visible');
+            };
+
+            // Helper function to handle failed session rejection
+            const rejectAccess = () => {
+                localStorage.removeItem('trackyn_user');
                 window.location.href = 'pet-owner.html';
+            };
+
+            // Step 1: Immediate local validation
+            if (!activeUser) {
+                rejectAccess();
                 return;
             }
 
-            // Step 2: Validate via Apps Script backend against "PetRegistry"
+            // Step 2: Validate via Google Apps Script runtime context
             if (typeof google !== 'undefined' && google.script) {
                 google.script.run
                     .withSuccessHandler((isValid) => {
                         if (isValid) {
-                            // User verified. Un-hide the shop content.
-                            document.getElementById('shop-content').classList.add('visible');
+                            revealContent();
                         } else {
-                            // Backend rejected the user. Clear invalid data and boot to gateway.
-                            localStorage.removeItem('trackyn_user');
-                            window.location.href = 'pet-owner.html';
+                            rejectAccess();
                         }
                     })
                     .withFailureHandler((error) => {
-                        console.error("Backend validation failed:", error);
-                        // Fallback constraint: boot out to gateway if backend fails to connect
-                        window.location.href = 'pet-owner.html';
+                        console.error("Backend runtime validation error:", error);
+                        rejectAccess();
                     })
                     .verifyShopAccess(activeUser);
             } else {
-                // If not running inside the GAS environment yet, just reveal the content for local testing
-                document.getElementById('shop-content').classList.add('visible');
+                // local environment/testing simulation fallback configuration
+                console.warn("Running outside Google Apps Script environment. Skipping backend pipeline validation check.");
+                revealContent();
             }
         });
 
