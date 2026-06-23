@@ -7,6 +7,43 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- INJECTED: Custom UI states for the Report button -->
+    <style>
+        .bt-action-btn.is-loading {
+            background-color: #f1f5f9 !important;
+            color: #141979 !important;
+            border: 2px solid #141979 !important;
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        .bt-action-btn.is-success {
+            background-color: #10b981 !important; /* Success Green */
+            color: #ffffff !important;
+            border-color: #10b981 !important;
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .tkn-creative-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(20, 25, 121, 0.15);
+            border-top-color: #141979; /* #141979 branding */
+            border-radius: 50%;
+            animation: tkn-report-spin 0.75s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+        }
+        @keyframes tkn-report-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body id="top">
 
@@ -101,7 +138,8 @@
                         <li><i class="fa-solid fa-circle-check"></i> Share key details that help identify your pet</li>
                         <li><i class="fa-solid fa-circle-check"></i> Make it easier for vets and shelters to reach you quickly</li>
                     </ul>
-                    <button class="bt-action-btn">Report</button>
+                    <!-- UPDATED: Hooked to trigger reportLostPet(this) -->
+                    <button class="bt-action-btn" onclick="reportLostPet(this)">Report</button>
                 </div>
                 <div class="bt-feature-image">
                     <img src="images/report-lost-ui.jpg" alt="Report Lost Pet Feature" class="bt-ui-img">
@@ -169,6 +207,61 @@
                 navLinks.classList.remove('active');
                 document.body.style.overflow = 'auto'; 
             });
+        }
+
+        // --- INJECTED: Report Lost Pet functionality ---
+        const TARGET_API_URL = "https://script.google.com/macros/s/AKfycbyXgSOP7BQPS4jI1Xwk7c66N4fAWMGhelXQTsK57ODlwrRbgLxRflehqY5Nd2RdGTP2oQ/exec";
+
+        async function reportLostPet(buttonInstance) {
+            const currentUser = sessionStorage.getItem('trackynUser');
+
+            if (!currentUser) {
+                alert("Your session has expired. Please log in again to access this tool.");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // 1. Store original button state
+            const defaultText = buttonInstance.innerText;
+
+            // 2. Trigger #141979 loading state
+            buttonInstance.classList.add('is-loading');
+            buttonInstance.innerHTML = `<span class="tkn-creative-spinner"></span><span>Broadcasting...</span>`;
+
+            const payload = new URLSearchParams();
+            payload.append('action', 'report_lost');
+            payload.append('Username', currentUser);
+
+            try {
+                const response = await fetch(TARGET_API_URL, {
+                    method: 'POST',
+                    body: payload
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // 3. Apply 3-second Success message
+                    buttonInstance.classList.remove('is-loading');
+                    buttonInstance.classList.add('is-success');
+                    buttonInstance.innerHTML = `<i class="fa-solid fa-check"></i><span>Pet Reported Lost</span>`;
+
+                    setTimeout(() => {
+                        buttonInstance.classList.remove('is-success');
+                        buttonInstance.innerText = defaultText;
+                    }, 3000);
+
+                } else {
+                    throw new Error(result.message || "Registry failed to update.");
+                }
+
+            } catch (error) {
+                console.error("Report failed:", error);
+                // Graceful fallback on failure
+                buttonInstance.classList.remove('is-loading');
+                buttonInstance.innerText = defaultText;
+                alert("Failed to update status. Please verify your internet connection and try again.");
+            }
         }
     </script>
 </body>
