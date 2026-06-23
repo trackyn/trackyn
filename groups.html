@@ -6,35 +6,75 @@
     <title>Trackyn | Groups</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght=400;600&display=swap" rel="stylesheet">
     
-    <script>
-    // 1. Immediate local check
-    const currentUser = sessionStorage.getItem('trackynUser');
-    
-    if (!currentUser) {
-        window.location.replace('pet-owner.html');
-    } else {
-        // 2. Server-side verification against PetRegistry
-        // This ensures the user hasn't been removed from the backend
-        if (typeof google !== 'undefined' && google.script) {
-            google.script.run
-                .withSuccessHandler((isValid) => {
-                    if (!isValid) {
-                        sessionStorage.clear();
-                        window.location.replace('pet-owner.html');
-                    }
-                })
-                .withFailureHandler(() => {
-                    // If backend is unreachable, force re-login for security
-                    window.location.replace('pet-owner.html');
-                })
-                .verifyGroupAccess(currentUser);
+    <style>
+        .tkn-page-shield {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff;
+            z-index: 100000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            font-family: 'Inter', sans-serif;
         }
-    }
-</script>
+    </style>
+
+    <script>
+        // 1. Immediate local session check
+        const currentUser = sessionStorage.getItem('trackynUser');
+        
+        if (!currentUser) {
+            window.location.replace('pet-owner.html');
+        } else {
+            // 2. Server-side verification loop matching your Apps Script function
+            document.addEventListener("DOMContentLoaded", () => {
+                if (typeof google !== 'undefined' && google.script) {
+                    google.script.run
+                        .withSuccessHandler((isValid) => {
+                            if (isValid) {
+                                // Access confirmed: Remove shield cleanly
+                                const shield = document.getElementById('tknAuthShield');
+                                if(shield) shield.remove();
+                            } else {
+                                // Invalid credential or status mismatch
+                                handleAuthFailure();
+                            }
+                        })
+                        .withFailureHandler(() => {
+                            // Backup fallback network failure handling
+                            handleAuthFailure();
+                        })
+                        .verifyGroupAccess(currentUser);
+                } else {
+                    // Local testing development bypass notice:
+                    // If running completely decoupled from GAS container, remove shield or point to fetch endpoint.
+                    console.warn("Google Apps Script environment context not found.");
+                    // Optional fallback logic if testing outside of standard GAS iframe:
+                    // document.getElementById('tknAuthShield').remove();
+                }
+            });
+        }
+
+        function handleAuthFailure() {
+            sessionStorage.clear();
+            window.location.replace('pet-owner.html');
+        }
+    </script>
 </head>
 <body id="top" class="bg-primary">
+
+    <div id="tknAuthShield" class="tkn-page-shield">
+        <div class="tkn-modern-loader">
+            <div class="tkn-spinner-container">
+                <div class="tkn-spinner-ring" style="border-top-color: #141979;"></div>
+                <div class="tkn-spinner-dot" style="background-color: #141979;"></div>
+            </div>
+            <h3 class="tkn-auth-text" style="color: #141979; font-weight: 600; margin-top: 20px; font-size: 1.1rem; letter-spacing: -0.02em;">
+                Verifying Credentials...
+            </h3>
+        </div>
+    </div>
 
     <nav class="navbar">
         <div class="logo-container">
@@ -163,8 +203,7 @@
                     <div class="suggested-groups-list">
                         
                         <div class="group-item">
-                            <div class="group-thumbnail" style="background-color: #e0e0e0;">
-                                </div>
+                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
                             <div class="group-details">
                                 <h4 class="group-name">Pet Rescue & Recovery...</h4>
                                 <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
@@ -173,8 +212,7 @@
                         </div>
 
                         <div class="group-item">
-                            <div class="group-thumbnail" style="background-color: #e0e0e0;">
-                                </div>
+                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
                             <div class="group-details">
                                 <h4 class="group-name">Trackyn Members Circle</h4>
                                 <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
@@ -183,8 +221,7 @@
                         </div>
 
                         <div class="group-item">
-                            <div class="group-thumbnail" style="background-color: #e0e0e0;">
-                                </div>
+                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
                             <div class="group-details">
                                 <h4 class="group-name">Trackyn Owner Comm...</h4>
                                 <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
@@ -223,20 +260,24 @@
     </footer>
 
     <script>
-        // Mobile Navigation Logic
+        // Mobile Navigation Toggle Handling
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
 
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.add('active');
-            document.body.style.overflow = 'hidden'; 
-        });
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            });
+        }
 
-        closeMenu.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            document.body.style.overflow = 'auto'; 
-        });
+        if(closeMenu) {
+            closeMenu.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                document.body.style.overflow = 'auto'; 
+            });
+        }
     </script>
 </body>
 </html>
