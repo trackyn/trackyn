@@ -6,7 +6,7 @@
     <title>Trackyn | My Pet Documents</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- INJECTED: Global Loading & Modal Styling Foundations --- */
@@ -198,6 +198,34 @@
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
         }
+
+        /* Modification 1: Restored Core Typography Stylings for Headings */
+        .md-hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: #ffffff;
+        }
+        .md-section-center-title, .md-medical-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .md-card-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* Linked Title Consistency Setup */
+        .md-card-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.3s ease;
+        }
+        .md-card-title a:hover {
+            opacity: 0.8; /* Subtle hover effect */
+        }
+
         /* Modification 2: Overrode card-hover dependencies to make the submit button universally visible */
         #tknSubmitUploadBtn.md-upload-btn {
             opacity: 1 !important;
@@ -633,7 +661,7 @@
                                 if (vaultContainerList.children.length === 0) {
                                     vaultContainerList.innerHTML = `<div class="tkn-vault-empty-state"><i class="fa-solid fa-folder-open" style="display:block; font-size:2rem; margin-bottom:8px; color:#cbd5e1;"></i>No secure documents available in your vault.</div>`;
                                 }
-                            }, 3000);
+                            }, 300);
                         }
                     }, 800);
                 } else {
