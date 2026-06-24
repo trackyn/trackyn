@@ -73,8 +73,9 @@
             position: relative;
             animation: tkn-modal-slide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             color: #1e293b;
-            max-height: 85vh;
+            max-height: calc(100vh - 40px); /* Ensured accessibility across all viewport sizes */
             overflow-y: auto;
+            box-sizing: border-box;
         }
         @keyframes tkn-modal-slide {
             from { transform: translateY(20px); opacity: 0; }
@@ -196,6 +197,52 @@
             color: #64748b;
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
+        }
+
+        /* Modification 1: Restored Core Typography Stylings for Headings */
+        .md-hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: #141979;
+        }
+        .md-section-center-title, .md-medical-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: #141979;
+        }
+        .md-card-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #141979;
+        }
+
+        /* Modification 2: Overrode card-hover dependencies to make the submit button universally visible */
+        #tknSubmitUploadBtn.md-upload-btn {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            pointer-events: auto !important;
+            background-color: #141979 !important;
+            color: #ffffff !important;
+        }
+        #tknSubmitUploadBtn.md-upload-btn:hover {
+            background-color: #0f1356 !important;
+        }
+
+        /* Modification 3: Complete Mobile & Multi-Screen Responsiveness Foundation Rules */
+        @media (max-width: 576px) {
+            .tkn-modal-overlay {
+                padding: 10px;
+            }
+            .tkn-modal-content {
+                padding: 20px;
+                max-height: calc(100vh - 20px);
+                border-radius: 12px;
+            }
+            .tkn-upload-dropzone {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
         }
     </style>
 </head>
