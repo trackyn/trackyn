@@ -25,7 +25,7 @@
         const currentUser = sessionStorage.getItem('trackynUser');
         
         // TODO: Replace with your actual deployed Google Apps Script Web App URL
-        const TRACKYN_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyXgSOP7BQPS4jI1Xwk7c66N4fAWMGhelXQTsK57ODlwrRbgLxRflehqY5Nd2RdGTP2oQ/exec';
+        const TRACKYN_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzRwVluxodwhiBrQ3uj9JDw6u9vF8nrFYqWGZs2buBsuLNAqu--LaNUfyQL0HBJI5pGew/exec';
         
         if (!currentUser) {
             window.location.replace('pet-owner.html');
@@ -34,7 +34,7 @@
             document.addEventListener("DOMContentLoaded", () => {
                 
                 // Pure local environment testing fallback bypass:
-                if (TRACKYN_BACKEND_URL.includes('AKfycbyXgSOP7BQPS4jI1Xwk7c66N4fAWMGhelXQTsK57ODlwrRbgLxRflehqY5Nd2RdGTP2oQ')) {
+                if (TRACKYN_BACKEND_URL.includes('AKfycbzRwVluxodwhiBrQ3uj9JDw6u9vF8nrFYqWGZs2buBsuLNAqu--LaNUfyQL0HBJI5pGew')) {
                     console.warn("Trackyn Development Notice: Running decoupled from backend. Access shield removed.");
                     const shield = document.getElementById('tknAuthShield');
                     if (shield) shield.remove();
