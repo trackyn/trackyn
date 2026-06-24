@@ -138,7 +138,6 @@
                         <li><i class="fa-solid fa-circle-check"></i> Share identifying details and notes that help others recognize your pet</li>
                         <li><i class="fa-solid fa-circle-check"></i> Make it easier for vets and shelters to reach you quickly</li>
                     </ul>
-                    <!-- UPDATED: Hooked to trigger reportLostPet(this) -->
                     <button class="st-action-btn" onclick="reportLostPet(this)">Report</button>
                 </div>
                 <div class="st-feature-image">
@@ -157,7 +156,8 @@
                         <li><i class="fa-solid fa-circle-check"></i> Update your pet’s description, photo, or medical notes</li>
                         <li><i class="fa-solid fa-circle-check"></i> Improve the chances of a safe reunion if your pet is lost</li>
                     </ul>
-                    <button class="st-action-btn">Update</button>
+                    <!-- UPDATED: Hooked to trigger updatePetDetails(this) -->
+                    <button class="st-action-btn" onclick="updatePetDetails(this)">Update</button>
                 </div>
                 <div class="st-feature-image">
                     <img src="images/standard-update-ui.jpg" alt="Profile Details Editing View" class="st-ui-img">
@@ -222,9 +222,9 @@
             });
         }
 
-        // --- INJECTED: Report Lost Pet functionality ---
         const TARGET_API_URL = "https://script.google.com/macros/s/AKfycbzRwVluxodwhiBrQ3uj9JDw6u9vF8nrFYqWGZs2buBsuLNAqu--LaNUfyQL0HBJI5pGew/exec";
 
+        // --- 1. Report Lost Pet Function ---
         async function reportLostPet(buttonInstance) {
             const currentUser = sessionStorage.getItem('trackynUser');
 
@@ -234,10 +234,8 @@
                 return;
             }
 
-            // 1. Store original button state
             const defaultText = buttonInstance.innerText;
 
-            // 2. Trigger #141979 loading state
             buttonInstance.classList.add('is-loading');
             buttonInstance.innerHTML = `<span class="tkn-creative-spinner"></span><span>Broadcasting...</span>`;
 
@@ -254,7 +252,6 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // 3. Apply 3-second Success message
                     buttonInstance.classList.remove('is-loading');
                     buttonInstance.classList.add('is-success');
                     buttonInstance.innerHTML = `<i class="fa-solid fa-check"></i><span>Pet Reported Lost</span>`;
@@ -270,10 +267,58 @@
 
             } catch (error) {
                 console.error("Report failed:", error);
-                // Graceful fallback on failure
                 buttonInstance.classList.remove('is-loading');
                 buttonInstance.innerText = defaultText;
                 alert("Failed to update status. Please verify your internet connection and try again.");
+            }
+        }
+
+        // --- 2. Update Details Function ---
+        async function updatePetDetails(buttonInstance) {
+            const currentUser = sessionStorage.getItem('trackynUser');
+
+            if (!currentUser) {
+                alert("Your session has expired. Please log in again to access this tool.");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const defaultText = buttonInstance.innerText;
+
+            buttonInstance.classList.add('is-loading');
+            buttonInstance.innerHTML = `<span class="tkn-creative-spinner"></span><span>Syncing...</span>`;
+
+            const payload = new URLSearchParams();
+            payload.append('action', 'update_details');
+            payload.append('Username', currentUser);
+
+            try {
+                const response = await fetch(TARGET_API_URL, {
+                    method: 'POST',
+                    body: payload
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    buttonInstance.classList.remove('is-loading');
+                    buttonInstance.classList.add('is-success');
+                    buttonInstance.innerHTML = `<i class="fa-solid fa-check"></i><span>Details Updated</span>`;
+
+                    setTimeout(() => {
+                        buttonInstance.classList.remove('is-success');
+                        buttonInstance.innerText = defaultText;
+                    }, 3000);
+
+                } else {
+                    throw new Error(result.message || "Registry failed to update.");
+                }
+
+            } catch (error) {
+                console.error("Update failed:", error);
+                buttonInstance.classList.remove('is-loading');
+                buttonInstance.innerText = defaultText;
+                alert("Failed to sync details. Please verify your internet connection and try again.");
             }
         }
     </script>
