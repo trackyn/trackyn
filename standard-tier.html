@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- INJECTED: Custom UI states for the Report button -->
     <style>
         .st-action-btn.is-loading {
             background-color: #f1f5f9 !important;
@@ -42,6 +41,99 @@
         @keyframes tkn-report-spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* --- INJECTED: Modal UI Components --- */
+        .tkn-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .tkn-modal-overlay.modal-active {
+            display: flex;
+        }
+        .tkn-modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: tkn-modal-slide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #1e293b;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        @keyframes tkn-modal-slide {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .tkn-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .tkn-modal-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #141979;
+            margin: 0;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+        }
+        .close-modal-btn {
+            font-size: 1.25rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .close-modal-btn:hover {
+            color: #1e293b;
+        }
+        .tkn-form-row {
+            display: flex;
+            gap: 14px;
+        }
+        .tkn-form-group {
+            margin-bottom: 18px;
+            text-align: left;
+            flex: 1;
+        }
+        .tkn-form-group label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+        .tkn-form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #0f172a;
+            background-color: #f8fafc;
+            box-sizing: border-box;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        .tkn-form-group input:focus {
+            outline: none;
+            border-color: #141979;
+            background-color: #ffffff;
         }
     </style>
 </head>
@@ -156,8 +248,7 @@
                         <li><i class="fa-solid fa-circle-check"></i> Update your pet’s description, photo, or medical notes</li>
                         <li><i class="fa-solid fa-circle-check"></i> Improve the chances of a safe reunion if your pet is lost</li>
                     </ul>
-                    <!-- UPDATED: Hooked to trigger updatePetDetails(this) -->
-                    <button class="st-action-btn" onclick="updatePetDetails(this)">Update</button>
+                    <button class="st-action-btn" onclick="openUpdateModal()">Update</button>
                 </div>
                 <div class="st-feature-image">
                     <img src="images/standard-update-ui.jpg" alt="Profile Details Editing View" class="st-ui-img">
@@ -179,6 +270,40 @@
         </section>
 
     </main>
+
+    <div id="tknUpdateModal" class="tkn-modal-overlay">
+        <div class="tkn-modal-content">
+            <div class="tkn-modal-header">
+                <h3>Update Registry</h3>
+                <i class="fa-solid fa-xmark close-modal-btn" onclick="closeUpdateModal()"></i>
+            </div>
+            <form id="tknUpdateDetailsForm">
+                <div class="tkn-form-row">
+                    <div class="tkn-form-group">
+                        <label for="tknFirstName">First Name</label>
+                        <input type="text" id="tknFirstName" name="FirstName" placeholder="John" required>
+                    </div>
+                    <div class="tkn-form-group">
+                        <label for="tknSecondName">Second Name</label>
+                        <input type="text" id="tknSecondName" name="SecondName" placeholder="Doe" required>
+                    </div>
+                </div>
+                <div class="tkn-form-group">
+                    <label for="tknEmail">Email Address</label>
+                    <input type="email" id="tknEmail" name="Email" placeholder="johndoe@example.com" required>
+                </div>
+                <div class="tkn-form-group">
+                    <label for="tknPhone">Phone Number</label>
+                    <input type="tel" id="tknPhone" name="Phone" placeholder="e.g. +1234567890" required>
+                </div>
+                <div class="tkn-form-group">
+                    <label for="tknPetName">Pet's Name</label>
+                    <input type="text" id="tknPetName" name="PetName" placeholder="e.g. Max" required>
+                </div>
+                <button type="submit" id="tknSubmitUpdateBtn" class="st-action-btn" style="width: 100%; border: none; margin-top: 10px;">Save Profile Changes</button>
+            </form>
+        </div>
+    </div>
 
     <footer class="footer bg-color-1">
         <div class="footer-left">
@@ -273,24 +398,59 @@
             }
         }
 
-        // --- 2. Update Details Function ---
-        async function updatePetDetails(buttonInstance) {
-            const currentUser = sessionStorage.getItem('trackynUser');
+        // --- 2. Update Details Function (Modal Flow) ---
+        const updateModal = document.getElementById('tknUpdateModal');
+        const updateForm = document.getElementById('tknUpdateDetailsForm');
+        const submitUpdateBtn = document.getElementById('tknSubmitUpdateBtn');
 
+        function openUpdateModal() {
+            const currentUser = sessionStorage.getItem('trackynUser');
             if (!currentUser) {
-                alert("Your session has expired. Please log in again to access this tool.");
+                alert("Your session has expired. Please log in again to update details.");
+                window.location.href = 'index.html';
+                return;
+            }
+            updateModal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUpdateModal() {
+            updateModal.classList.remove('modal-active');
+            document.body.style.overflow = 'auto';
+            updateForm.reset();
+        }
+
+        // Close when clicking outside modal content
+        updateModal.addEventListener('click', (e) => {
+            if (e.target === updateModal) {
+                closeUpdateModal();
+            }
+        });
+
+        updateForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const currentUser = sessionStorage.getItem('trackynUser');
+            if (!currentUser) {
+                alert("Session expired. Please log in again.");
                 window.location.href = 'index.html';
                 return;
             }
 
-            const defaultText = buttonInstance.innerText;
+            const originalBtnText = submitUpdateBtn.innerText;
 
-            buttonInstance.classList.add('is-loading');
-            buttonInstance.innerHTML = `<span class="tkn-creative-spinner"></span><span>Syncing...</span>`;
+            submitUpdateBtn.classList.add('is-loading');
+            submitUpdateBtn.innerHTML = `<span class="tkn-creative-spinner"></span><span>Saving Changes...</span>`;
 
+            // Configured exactly as expected by your Google Apps Script backend
             const payload = new URLSearchParams();
             payload.append('action', 'update_details');
             payload.append('Username', currentUser);
+            payload.append('FirstName', document.getElementById('tknFirstName').value);
+            payload.append('SecondName', document.getElementById('tknSecondName').value);
+            payload.append('Email', document.getElementById('tknEmail').value);
+            payload.append('Phone', document.getElementById('tknPhone').value);
+            payload.append('PetName', document.getElementById('tknPetName').value);
 
             try {
                 const response = await fetch(TARGET_API_URL, {
@@ -301,26 +461,27 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    buttonInstance.classList.remove('is-loading');
-                    buttonInstance.classList.add('is-success');
-                    buttonInstance.innerHTML = `<i class="fa-solid fa-check"></i><span>Details Updated</span>`;
+                    submitUpdateBtn.classList.remove('is-loading');
+                    submitUpdateBtn.classList.add('is-success');
+                    submitUpdateBtn.innerHTML = `<i class="fa-solid fa-check"></i><span>Details Updated!</span>`;
 
                     setTimeout(() => {
-                        buttonInstance.classList.remove('is-success');
-                        buttonInstance.innerText = defaultText;
-                    }, 3000);
+                        submitUpdateBtn.classList.remove('is-success');
+                        submitUpdateBtn.innerText = originalBtnText;
+                        closeUpdateModal();
+                    }, 2000);
 
                 } else {
-                    throw new Error(result.message || "Registry failed to update.");
+                    throw new Error(result.message || "Profile data failed to save.");
                 }
 
             } catch (error) {
                 console.error("Update failed:", error);
-                buttonInstance.classList.remove('is-loading');
-                buttonInstance.innerText = defaultText;
-                alert("Failed to sync details. Please verify your internet connection and try again.");
+                submitUpdateBtn.classList.remove('is-loading');
+                submitUpdateBtn.innerText = originalBtnText;
+                alert("Failed to submit changes. Please check your network connectivity and try again.");
             }
-        }
+        });
     </script>
 </body>
 </html>
