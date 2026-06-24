@@ -6,7 +6,198 @@
     <title>Trackyn | My Pet Documents</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- INJECTED: Global Loading & Modal Styling Foundations --- */
+        .md-upload-btn.is-loading, .md-view-all-btn.is-loading, .tkn-modal-btn.is-loading {
+            background-color: #f1f5f9 !important;
+            color: #141979 !important;
+            border: 2px solid #141979 !important;
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        .md-upload-btn.is-success, .md-view-all-btn.is-success, .tkn-modal-btn.is-success {
+            background-color: #10b981 !important; /* Success Green */
+            color: #ffffff !important;
+            border-color: #10b981 !important;
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .tkn-creative-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(20, 25, 121, 0.15);
+            border-top-color: #141979; /* Brand core #141979 */
+            border-radius: 50%;
+            animation: tkn-vault-spin 0.75s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+        }
+        @keyframes tkn-vault-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Modal Layout System */
+        .tkn-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .tkn-modal-overlay.modal-active {
+            display: flex;
+        }
+        .tkn-modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: tkn-modal-slide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #1e293b;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        @keyframes tkn-modal-slide {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .tkn-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 12px;
+        }
+        .tkn-modal-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #141979;
+            margin: 0;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+        }
+        .close-modal-btn {
+            font-size: 1.25rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .close-modal-btn:hover {
+            color: #0f172a;
+        }
+
+        /* Upload Area Fields */
+        .tkn-upload-dropzone {
+            border: 2px dashed #cbd5e1;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            background: #f8fafc;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .tkn-upload-dropzone:hover {
+            border-color: #141979;
+        }
+        .tkn-upload-dropzone i {
+            font-size: 2rem;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        .tkn-file-input-hidden {
+            display: none;
+        }
+        .tkn-file-selection-info {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: #475569;
+            word-break: break-all;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Document Manager Viewer rows */
+        .tkn-vault-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .tkn-vault-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            gap: 14px;
+            transition: background-color 0.2s;
+        }
+        .tkn-vault-row:hover {
+            background: #f1f5f9;
+        }
+        .tkn-doc-link {
+            color: #141979;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+        .tkn-doc-link:hover {
+            text-decoration: underline;
+        }
+        .tkn-delete-btn {
+            background: none;
+            border: none;
+            color: #ef4444; /* Highly identifiable red delete indicator */
+            cursor: pointer;
+            padding: 6px;
+            font-size: 1.15rem;
+            transition: color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tkn-delete-btn:hover {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+        .tkn-vault-empty-state {
+            text-align: center;
+            padding: 30px 10px;
+            color: #64748b;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+    </style>
 </head>
 <body id="top">
 
@@ -60,7 +251,7 @@
                     <div class="md-travel-card">
                         <div class="md-card-top">
                             <span class="md-card-label">MANDATORY</span>
-                            <button class="md-upload-btn">Upload</button>
+                            <button class="md-upload-btn" onclick="openUploadModal()">Upload</button>
                         </div>
                         <h3 class="md-card-title">Pet Passport</h3>
                         <p class="md-card-desc">Vaccination Book: Pet & Owner Details, Microchip Sticker, Vaccination Records, Health Record with Deworming Proof and Flea & Tick Treatment, Medical Notes.</p>
@@ -69,7 +260,7 @@
                     <div class="md-travel-card">
                         <div class="md-card-top">
                             <span class="md-card-label">ESSENTIAL</span>
-                            <button class="md-upload-btn">Upload</button>
+                            <button class="md-upload-btn" onclick="openUploadModal()">Upload</button>
                         </div>
                         <h3 class="md-card-title">Medical Records</h3>
                         <p class="md-card-desc">Documented history of your pet's health, including veterinary consultations, diagnoses, vaccinations, deworming, medications, surgeries, laboratory results, imaging, allergies, chronic conditions, weight records, and other treatments or medical events throughout the pet's lifetime.</p>
@@ -78,7 +269,7 @@
                     <div class="md-travel-card">
                         <div class="md-card-top">
                             <span class="md-card-label">REGULATORY</span>
-                            <button class="md-upload-btn">Upload</button>
+                            <button class="md-upload-btn" onclick="openUploadModal()">Upload</button>
                         </div>
                         <h3 class="md-card-title">Import/Export Permits</h3>
                         <p class="md-card-desc">Special government authorizations required by specific countries to manage the movement of animals through safe corridors.</p>
@@ -87,7 +278,7 @@
                     <div class="md-travel-card">
                         <div class="md-card-top">
                             <span class="md-card-label">LOGISTICAL</span>
-                            <button class="md-upload-btn">Upload</button>
+                            <button class="md-upload-btn" onclick="openUploadModal()">Upload</button>
                         </div>
                         <h3 class="md-card-title">Airlines Forms</h3>
                         <p class="md-card-desc">Carrier-specific documentation focusing on pet health and container compliance for cabin or cargo transport safety.</p>
@@ -95,7 +286,7 @@
                 </div>
 
                 <div class="md-view-all-wrapper">
-                    <button class="md-view-all-btn">View All</button>
+                    <button class="md-view-all-btn" onclick="viewAllDocuments(this)">View All</button>
                 </div>
             </div>
         </section>
@@ -117,6 +308,34 @@
         </section>
 
     </main>
+
+    <div id="tknUploadModal" class="tkn-modal-overlay">
+        <div class="tkn-modal-content">
+            <div class="tkn-modal-header">
+                <h3>Secure Vault Upload</h3>
+                <i class="fa-solid fa-xmark close-modal-btn" onclick="closeUploadModal()"></i>
+            </div>
+            <div class="tkn-upload-dropzone" onclick="triggerFileInput()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <p style="font-family:'Inter',sans-serif; font-size:1rem; margin:0; font-weight:600; color:#1e293b;">Click to browse files</p>
+                <p style="font-family:'Inter',sans-serif; font-size:0.8rem; margin:4px 0 0 0; color:#64748b;">Supports PDF, Images, and Docs</p>
+                <input type="file" id="docUpload" class="tkn-file-input-hidden" onchange="handleFileSelection(this)">
+                <div id="tknFileDetails" class="tkn-file-selection-info"></div>
+            </div>
+            <button type="button" id="tknSubmitUploadBtn" class="md-upload-btn" onclick="uploadDocument(this)" style="width: 100%; border: none; justify-content: center; height: 45px;">Upload to Vault</button>
+        </div>
+    </div>
+
+    <div id="tknViewModal" class="tkn-modal-overlay">
+        <div class="tkn-modal-content">
+            <div class="tkn-modal-header">
+                <h3>Secure Cloud Vault</h3>
+                <i class="fa-solid fa-xmark close-modal-btn" onclick="closeViewModal()"></i>
+            </div>
+            <div id="tknVaultList" class="tkn-vault-list-container">
+                </div>
+        </div>
+    </div>
 
     <footer class="footer bg-color-1">
         <div class="footer-left">
@@ -142,6 +361,7 @@
     </footer>
 
     <script>
+        // --- Core Menu Handlers ---
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
@@ -158,6 +378,245 @@
                 navLinks.classList.remove('active');
                 document.body.style.overflow = 'auto'; 
             });
+        }
+
+        // --- INJECTED: Microservice Automation Controls ---
+        const TARGET_API_URL = "https://script.google.com/macros/s/AKfycbzRwVluxodwhiBrQ3uj9JDw6u9vF8nrFYqWGZs2buBsuLNAqu--LaNUfyQL0HBJI5pGew/exec";
+
+        // Modal DOM Target Queries
+        const uploadModal = document.getElementById('tknUploadModal');
+        const viewModal = document.getElementById('tknViewModal');
+        const fileInputInstance = document.getElementById('docUpload');
+        const fileDetailsContainer = document.getElementById('tknFileDetails');
+        const vaultContainerList = document.getElementById('tknVaultList');
+        const executeUploadBtn = document.getElementById('tknSubmitUploadBtn');
+
+        // Modal Utility Helpers
+        function openUploadModal() {
+            const currentUser = sessionStorage.getItem('trackynUser');
+            if (!currentUser) return handleSessionExpiration();
+            uploadModal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUploadModal() {
+            uploadModal.classList.remove('modal-active');
+            document.body.style.overflow = 'auto';
+            fileInputInstance.value = "";
+            fileDetailsContainer.innerText = "";
+        }
+
+        function openViewModal() {
+            viewModal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeViewModal() {
+            viewModal.classList.remove('modal-active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function triggerFileInput() {
+            fileInputInstance.click();
+        }
+
+        function handleFileSelection(input) {
+            if (input.files.length > 0) {
+                fileDetailsContainer.innerHTML = `<i class="fa-solid fa-file" style="font-size:1rem; margin:0 4px 0 0; color:#141979;"></i> Selected: <strong>${input.files[0].name}</strong>`;
+            } else {
+                fileDetailsContainer.innerText = "";
+            }
+        }
+
+        function handleSessionExpiration() {
+            alert("Your session has expired. Please log in again to manage documents.");
+            window.location.href = 'index.html';
+        }
+
+        // Overlay Escape Click Targets
+        window.addEventListener('click', (e) => {
+            if (e.target === uploadModal) closeUploadModal();
+            if (e.target === viewModal) closeViewModal();
+        });
+
+        // --- 1. Base64 Conversion Tool ---
+        const convertToBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+
+        // --- 2. Upload Execution Procedure ---
+        async function uploadDocument(buttonInstance) {
+            const currentUser = sessionStorage.getItem('trackynUser');
+            if (!currentUser) return handleSessionExpiration();
+
+            if (!fileInputInstance || fileInputInstance.files.length === 0) {
+                return alert("Please select a file to upload.");
+            }
+
+            const file = fileInputInstance.files[0];
+            const defaultText = buttonInstance.innerText;
+            
+            buttonInstance.classList.add('is-loading');
+            buttonInstance.innerHTML = `<span class="tkn-creative-spinner"></span><span>Uploading to Vault...</span>`;
+
+            try {
+                const base64Data = await convertToBase64(file);
+
+                const payload = new URLSearchParams();
+                payload.append('action', 'upload_document');
+                payload.append('Username', currentUser);
+                payload.append('FileName', file.name);
+                payload.append('MimeType', file.type);
+                payload.append('FileBase64', base64Data);
+
+                const response = await fetch(TARGET_API_URL, {
+                    method: 'POST',
+                    body: payload
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    buttonInstance.classList.remove('is-loading');
+                    buttonInstance.classList.add('is-success');
+                    buttonInstance.innerHTML = `<i class="fa-solid fa-check"></i><span>Document(s) Uploaded</span>`;
+                    
+                    // Closes down into the background after exactly 3 seconds
+                    setTimeout(() => {
+                        buttonInstance.classList.remove('is-success');
+                        buttonInstance.innerText = defaultText;
+                        closeUploadModal();
+                    }, 3000);
+                } else {
+                    throw new Error("Vault upload failed.");
+                }
+            } catch (error) {
+                console.error("Upload sequence error:", error);
+                buttonInstance.classList.remove('is-loading');
+                buttonInstance.innerText = defaultText;
+                alert("Failed to upload document. Please try again.");
+            }
+        }
+
+        // --- 3. View All Fetch and Matrix Generation Flow ---
+        async function viewAllDocuments(buttonInstance) {
+            const currentUser = sessionStorage.getItem('trackynUser');
+            if (!currentUser) return handleSessionExpiration();
+
+            const defaultText = buttonInstance.innerText;
+            buttonInstance.classList.add('is-loading');
+            buttonInstance.innerHTML = `<span class="tkn-creative-spinner"></span><span>Accessing Vault...</span>`;
+
+            const fetchUrl = `${TARGET_API_URL}?action=get_documents&Username=${encodeURIComponent(currentUser)}`;
+
+            try {
+                const response = await fetch(fetchUrl);
+                const result = await response.json();
+
+                if (result.success) {
+                    buttonInstance.classList.remove('is-loading');
+                    buttonInstance.classList.add('is-success');
+                    buttonInstance.innerHTML = `<i class="fa-solid fa-vault"></i><span>Vault Opened</span>`;
+
+                    // Parse & populate vault list matrix mapping template rows
+                    vaultContainerList.innerHTML = "";
+                    const userDocs = result.documents || [];
+
+                    if (userDocs.length === 0) {
+                        vaultContainerList.innerHTML = `<div class="tkn-vault-empty-state"><i class="fa-solid fa-folder-open" style="display:block; font-size:2rem; margin-bottom:8px; color:#cbd5e1;"></i>No secure documents available in your vault.</div>`;
+                    } else {
+                        userDocs.forEach(doc => {
+                            const row = document.createElement('div');
+                            row.className = 'tkn-vault-row';
+                            row.setAttribute('data-doc-id', doc.DocID);
+                            row.innerHTML = `
+                                <a href="${doc.FileURL}" target="_blank" class="tkn-doc-link">
+                                    <i class="fa-solid fa-file-pdf" style="color: #141979;"></i>
+                                    <span>${doc.FileName}</span>
+                                </a>
+                                <button type="button" class="tkn-delete-btn" onclick="deleteDocument(this, '${doc.DocID}')" title="Delete Permanent Record">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            `;
+                            vaultContainerList.appendChild(row);
+                        });
+                    }
+
+                    // Delay opening view window to maximize visual effect tracking feedback loop
+                    setTimeout(() => {
+                        buttonInstance.classList.remove('is-success');
+                        buttonInstance.innerText = defaultText;
+                        openViewModal();
+                    }, 1000);
+
+                } else {
+                    throw new Error("Failed to retrieve vault contents.");
+                }
+            } catch (error) {
+                console.error("Retrieval sequence error:", error);
+                buttonInstance.classList.remove('is-loading');
+                buttonInstance.innerText = defaultText;
+                alert("Failed to fetch documents. Please verify your connection.");
+            }
+        }
+
+        // --- 4. Permanent Purge Deletion Method ---
+        async function deleteDocument(buttonInstance, docId) {
+            const currentUser = sessionStorage.getItem('trackynUser');
+            if (!currentUser) return handleSessionExpiration();
+
+            if (!confirm("Are you sure you want to permanently delete this document from your cloud vault?")) return;
+
+            // Cache standard red mark node structure during processing sequence configuration changes
+            const originalStructure = buttonInstance.innerHTML;
+            buttonInstance.disabled = true;
+            buttonInstance.style.color = "#64748b";
+            buttonInstance.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="font-size:0.9rem;"></i>`;
+
+            const payload = new URLSearchParams();
+            payload.append('action', 'delete_document');
+            payload.append('Username', currentUser);
+            payload.append('DocID', docId);
+
+            try {
+                const response = await fetch(TARGET_API_URL, {
+                    method: 'POST',
+                    body: payload
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    buttonInstance.style.color = "#10b981";
+                    buttonInstance.innerHTML = `<i class="fa-solid fa-check"></i>`;
+
+                    // Gracefully slide and strip structural item target element block out of active DOM wrapper matrix view array list 
+                    setTimeout(() => {
+                        const targetsRowElement = buttonInstance.closest('.tkn-vault-row');
+                        if (targetsRowElement) {
+                            targetsRowElement.style.transition = "all 0.3s ease";
+                            targetsRowElement.style.opacity = "0";
+                            targetsRowElement.style.transform = "translateX(30px)";
+                            setTimeout(() => {
+                                targetsRowElement.remove();
+                                // Recalculate layout condition tracking check if last item dropped
+                                if (vaultContainerList.children.length === 0) {
+                                    vaultContainerList.innerHTML = `<div class="tkn-vault-empty-state"><i class="fa-solid fa-folder-open" style="display:block; font-size:2rem; margin-bottom:8px; color:#cbd5e1;"></i>No secure documents available in your vault.</div>`;
+                                }
+                            }, 3000);
+                        }
+                    }, 800);
+                } else {
+                    throw new Error(result.message || "Deletion sequence failed.");
+                }
+            } catch (error) {
+                console.error("Deletion sequence error:", error);
+                buttonInstance.disabled = false;
+                buttonInstance.style.color = "#ef4444";
+                buttonInstance.innerHTML = originalStructure;
+                alert("Failed to delete the document. Please try again.");
+            }
         }
     </script>
 </body>
