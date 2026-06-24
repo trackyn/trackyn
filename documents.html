@@ -6,7 +6,7 @@
     <title>Trackyn | My Pet Documents</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- INJECTED: Global Loading & Modal Styling Foundations --- */
@@ -214,6 +214,16 @@
             font-family: 'Inter', sans-serif;
             font-weight: 600;
             color: #141979;
+        }
+
+        /* Linked Title Consistency Setup */
+        .md-card-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.3s ease;
+        }
+        .md-card-title a:hover {
+            opacity: 0.8; /* Subtle hover effect */
         }
 
         /* Modification 2: Overrode card-hover dependencies to make the submit button universally visible */
