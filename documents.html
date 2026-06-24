@@ -11,8 +11,8 @@
     <style>
         /* --- INJECTED: Global Loading & Modal Styling Foundations --- */
         .md-upload-btn.is-loading, .md-view-all-btn.is-loading, .tkn-modal-btn.is-loading {
-            background-color: #f1f5f9 !important;
-            color: #141979 !important;
+            background-color: #141979 !important; /* Changed to dark blue so white spinner is visible */
+            color: #ffffff !important; /* Changed to white */
             border: 2px solid #141979 !important;
             pointer-events: none;
             display: inline-flex;
@@ -34,8 +34,8 @@
         .tkn-creative-spinner {
             width: 16px;
             height: 16px;
-            border: 2.5px solid rgba(20, 25, 121, 0.15);
-            border-top-color: #141979; /* Brand core #141979 */
+            border: 2.5px solid rgba(255, 255, 255, 0.3); /* Changed to white */
+            border-top-color: #ffffff; /* Changed to white */
             border-radius: 50%;
             animation: tkn-vault-spin 0.75s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
         }
@@ -199,6 +199,11 @@
             font-size: 0.95rem;
         }
 
+        /* Added to apply Orbitron to MANDATORY, ESSENTIAL, REGULATORY, LOGISTICAL */
+        .md-card-label {
+            font-family: 'Orbitron', sans-serif;
+        }
+
         /* Modification 1: Restored Core Typography Stylings for Headings */
         .md-hero-title {
             font-family: 'Orbitron', sans-serif;
@@ -211,7 +216,7 @@
             color: #ffffff;
         }
         .md-card-title {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Orbitron', sans-serif; /* Changed from Inter to Orbitron */
             font-weight: 600;
             color: #ffffff;
         }
