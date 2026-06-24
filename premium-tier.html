@@ -46,6 +46,99 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* --- INJECTED: Modal UI Components --- */
+        .tkn-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .tkn-modal-overlay.modal-active {
+            display: flex;
+        }
+        .tkn-modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: tkn-modal-slide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #1e293b;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        @keyframes tkn-modal-slide {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .tkn-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .tkn-modal-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #141979;
+            margin: 0;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+        }
+        .close-modal-btn {
+            font-size: 1.25rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .close-modal-btn:hover {
+            color: #1e293b;
+        }
+        .tkn-form-row {
+            display: flex;
+            gap: 14px;
+        }
+        .tkn-form-group {
+            margin-bottom: 18px;
+            text-align: left;
+            flex: 1;
+        }
+        .tkn-form-group label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+        .tkn-form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #0f172a;
+            background-color: #f8fafc;
+            box-sizing: border-box;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        .tkn-form-group input:focus {
+            outline: none;
+            border-color: #141979;
+            background-color: #ffffff;
+        }
     </style>
 </head>
 <body id="top">
@@ -146,7 +239,8 @@
                 <div class="pt-feature-text">
                     <h2 class="pt-feature-title">4. Update Pet/Owner Details</h2>
                     <p class="pt-feature-desc">Maintaining accurate information is vital for the integrity of our technocratic registry. Premium members have exclusive, real-time access to modify their pet's bio, medical notes, and primary owner contact details. Our secure management infrastructure ensures every update is encrypted and instantly synchronized across our global scanning modules, keeping your connection with your pet unbreakable.</p>
-                    <button class="pt-action-btn">Update</button>
+                    <!-- UPDATED: Hooked to openUpdateModal() -->
+                    <button class="pt-action-btn" onclick="openUpdateModal()">Update</button>
                 </div>
                 <div class="pt-feature-image">
                     <img src="images/premium-update-ui.jpg" alt="Realtime Profile Synchronization Settings" class="pt-ui-img">
@@ -159,7 +253,7 @@
                 <div class="pt-feature-text">
                     <h2 class="pt-feature-title">5. Vetconnect</h2>
                     <p class="pt-feature-desc">Premium subscribers gain instant, one-click access to their pet's complete digital health advice support from Trackyn. Vetconnect bridges the information gap between you and emergency veterinary services, ensuring critical life-saving data is always available and accessible globally.</p>
-                    <a href="vetconnect.html" style="text-decoration: none;"><button class="st-action-btn">Vetconnect</button></a>
+                    <a href="vetconnect.html" style="text-decoration: none;"><button class="pt-action-btn">Vetconnect</button></a>
                 </div>
                 <div class="pt-feature-image">
                     <img src="images/premium-vetconnect-ui.jpg" alt="Emergency Veterinary Network Dashboard View" class="pt-ui-img">
@@ -172,7 +266,7 @@
                 <div class="pt-feature-text">
                     <h2 class="pt-feature-title">6. My Documents</h2>
                     <p class="pt-feature-desc">Manage all your pet's critical records in one secure, encrypted cloud vault. From vaccination certificates and medical histories to ownership deeds, your companion's vital documents are organized and instantly accessible whenever they are needed.</p>
-                    <a href="documents.html" style="text-decoration: none;"><button class="st-action-btn">Documents</button></a>
+                    <a href="documents.html" style="text-decoration: none;"><button class="pt-action-btn">Documents</button></a>
                 </div>
                 <div class="pt-feature-image">
                     <img src="images/premium-documents-ui.jpg" alt="Encrypted Cloud Vault Document Manager UI" class="pt-ui-img">
@@ -181,6 +275,41 @@
         </section>
 
     </main>
+
+    <!-- INJECTED: Premium Update Modal Form -->
+    <div id="tknUpdateModal" class="tkn-modal-overlay">
+        <div class="tkn-modal-content">
+            <div class="tkn-modal-header">
+                <h3>Update Registry</h3>
+                <i class="fa-solid fa-xmark close-modal-btn" onclick="closeUpdateModal()"></i>
+            </div>
+            <form id="tknUpdateDetailsForm">
+                <div class="tkn-form-row">
+                    <div class="tkn-form-group">
+                        <label for="tknFirstName">First Name</label>
+                        <input type="text" id="tknFirstName" name="FirstName" placeholder="John" required>
+                    </div>
+                    <div class="tkn-form-group">
+                        <label for="tknSecondName">Second Name</label>
+                        <input type="text" id="tknSecondName" name="SecondName" placeholder="Doe" required>
+                    </div>
+                </div>
+                <div class="tkn-form-group">
+                    <label for="tknEmail">Email Address</label>
+                    <input type="email" id="tknEmail" name="Email" placeholder="johndoe@example.com" required>
+                </div>
+                <div class="tkn-form-group">
+                    <label for="tknPhone">Phone Number</label>
+                    <input type="tel" id="tknPhone" name="Phone" placeholder="e.g. +1234567890" required>
+                </div>
+                <div class="tkn-form-group">
+                    <label for="tknPetName">Pet's Name</label>
+                    <input type="text" id="tknPetName" name="PetName" placeholder="e.g. Max" required>
+                </div>
+                <button type="submit" id="tknSubmitUpdateBtn" class="pt-action-btn" style="width: 100%; border: none; margin-top: 10px;">Save Profile Changes</button>
+            </form>
+        </div>
+    </div>
 
     <footer class="footer bg-color-1">
         <div class="footer-left">
@@ -224,9 +353,9 @@
             });
         }
 
-        // --- INJECTED: Premium Priority Lost Pet Broadcasting Utility ---
         const TARGET_API_URL = "https://script.google.com/macros/s/AKfycbzRwVluxodwhiBrQ3uj9JDw6u9vF8nrFYqWGZs2buBsuLNAqu--LaNUfyQL0HBJI5pGew/exec";
 
+        // --- 1. Report Lost Pet Utility ---
         async function reportLostPet(buttonInstance) {
             const currentUser = sessionStorage.getItem('trackynUser');
 
@@ -236,10 +365,8 @@
                 return;
             }
 
-            // 1. Snapshot default inner configuration
             const defaultText = buttonInstance.innerText;
 
-            // 2. Activate specific structural #141979 loading node
             buttonInstance.classList.add('is-loading');
             buttonInstance.innerHTML = `<span class="tkn-creative-spinner"></span><span>Broadcasting...</span>`;
 
@@ -256,7 +383,6 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // 3. Initiate success interface state for 3000ms execution
                     buttonInstance.classList.remove('is-loading');
                     buttonInstance.classList.add('is-success');
                     buttonInstance.innerHTML = `<i class="fa-solid fa-check"></i><span>Pet Reported Lost</span>`;
@@ -272,12 +398,94 @@
 
             } catch (error) {
                 console.error("Transmission sequence caught an error:", error);
-                // Clean recovery on failure state
                 buttonInstance.classList.remove('is-loading');
                 buttonInstance.innerText = defaultText;
                 alert("Failed to update status. Please verify your internet connection and try again.");
             }
         }
+
+        // --- 2. Update Details Modal Logic ---
+        const updateModal = document.getElementById('tknUpdateModal');
+        const updateForm = document.getElementById('tknUpdateDetailsForm');
+        const submitUpdateBtn = document.getElementById('tknSubmitUpdateBtn');
+
+        function openUpdateModal() {
+            const currentUser = sessionStorage.getItem('trackynUser');
+            if (!currentUser) {
+                alert("Your session has expired. Please log in again to update details.");
+                window.location.href = 'index.html';
+                return;
+            }
+            updateModal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUpdateModal() {
+            updateModal.classList.remove('modal-active');
+            document.body.style.overflow = 'auto';
+            updateForm.reset();
+        }
+
+        updateModal.addEventListener('click', (e) => {
+            if (e.target === updateModal) {
+                closeUpdateModal();
+            }
+        });
+
+        updateForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const currentUser = sessionStorage.getItem('trackynUser');
+            if (!currentUser) {
+                alert("Session expired. Please log in again.");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const originalBtnText = submitUpdateBtn.innerText;
+
+            submitUpdateBtn.classList.add('is-loading');
+            submitUpdateBtn.innerHTML = `<span class="tkn-creative-spinner"></span><span>Saving Changes...</span>`;
+
+            const payload = new URLSearchParams();
+            payload.append('action', 'update_details');
+            payload.append('Username', currentUser);
+            payload.append('FirstName', document.getElementById('tknFirstName').value);
+            payload.append('SecondName', document.getElementById('tknSecondName').value);
+            payload.append('Email', document.getElementById('tknEmail').value);
+            payload.append('Phone', document.getElementById('tknPhone').value);
+            payload.append('PetName', document.getElementById('tknPetName').value);
+
+            try {
+                const response = await fetch(TARGET_API_URL, {
+                    method: 'POST',
+                    body: payload
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    submitUpdateBtn.classList.remove('is-loading');
+                    submitUpdateBtn.classList.add('is-success');
+                    submitUpdateBtn.innerHTML = `<i class="fa-solid fa-check"></i><span>Details Updated!</span>`;
+
+                    setTimeout(() => {
+                        submitUpdateBtn.classList.remove('is-success');
+                        submitUpdateBtn.innerText = originalBtnText;
+                        closeUpdateModal();
+                    }, 2000);
+
+                } else {
+                    throw new Error(result.message || "Profile data failed to save.");
+                }
+
+            } catch (error) {
+                console.error("Update failed:", error);
+                submitUpdateBtn.classList.remove('is-loading');
+                submitUpdateBtn.innerText = originalBtnText;
+                alert("Failed to submit changes. Please check your network connectivity and try again.");
+            }
+        });
     </script>
 </body>
 </html>
