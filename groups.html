@@ -6,7 +6,7 @@
     <title>Trackyn | Groups</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght=400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         .tkn-page-shield {
@@ -24,13 +24,13 @@
         // 1. Immediate local session check
         const currentUser = sessionStorage.getItem('trackynUser');
         
-        // TODO: Replace with your actual deployed Google Apps Script Web App URL
+        // Target Deployed Apps Script Web App Endpoint
         const TRACKYN_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzRwVluxodwhiBrQ3uj9JDw6u9vF8nrFYqWGZs2buBsuLNAqu--LaNUfyQL0HBJI5pGew/exec';
         
         if (!currentUser) {
             window.location.replace('pet-owner.html');
         } else {
-            // 2. Server-side verification loop targeting the updated doPost backend endpoint
+            // 2. Server-side verification loop targeting backend configuration rules
             document.addEventListener("DOMContentLoaded", () => {
                 
                 // Pure local environment testing fallback bypass:
@@ -38,10 +38,12 @@
                     console.warn("Trackyn Development Notice: Running decoupled from backend. Access shield removed.");
                     const shield = document.getElementById('tknAuthShield');
                     if (shield) shield.remove();
+                    // Populate with client simulation fallback values
+                    fetchInitialData(true);
                     return;
                 }
 
-                // Construct endpoint URL targeting Module E's verification parameter rules
+                // Construct verification payload
                 const verificationUrl = `${TRACKYN_BACKEND_URL}?action=verify_group_access&Username=${encodeURIComponent(currentUser)}`;
 
                 fetch(verificationUrl, {
@@ -51,11 +53,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.success) {
-                        // Access confirmed by Column V (GRANTED): Remove shield cleanly
-                        const shield = document.getElementById('tknAuthShield');
-                        if (shield) shield.remove();
+                        // Drop shield and fetch operational layout parameters
+                        fetchInitialData(false);
                     } else {
-                        // Status verification mismatch or access revoked
                         handleAuthFailure();
                     }
                 })
@@ -125,121 +125,31 @@
 
         <div class="groups-layout">
             
-            <section class="feed-column">
+            <section class="feed-column" id="feedColumnContainer">
                 
-                <article class="feed-card">
-                    <div class="card-suggestion-header">
-                        <span><i class="fa-solid fa-circle-info"></i> This post is from a suggested group</span>
-                        <button class="btn-outline-sm">Join</button>
+                <div class="create-post-card">
+                    <textarea id="tkn-post-textarea" placeholder="Share an update, request rescue tracking, or write an announcement..."></textarea>
+                    <div class="create-post-card-actions">
+                        <button class="btn-submit-post" id="btnSubmitPost" onclick="executePostPublish()">
+                            Publish Post <i class="fa-solid fa-paper-plane" style="margin-left: 6px;"></i>
+                        </button>
                     </div>
-                    
-                    <div class="card-author-info">
-                        <div class="author-avatar">P</div>
-                        <div class="author-meta">
-                            <span class="author-name">Petid Registry <i class="fa-solid fa-certificate"></i></span>
-                            <span class="post-date">March 23, 2026 &bull; posted in <strong>Pet Rescue & Recovery Stories</strong></span>
-                        </div>
-                        <button class="share-btn-icon"><i class="fa-solid fa-share"></i></button>
-                    </div>
+                </div>
 
-                    <div class="card-body">
-                        <p>Welcome to our group <strong>Pet Rescue & Recovery Stories!</strong> A space for us to connect and share with each other. Start by posting your thoughts, sharing media, or creating a poll.</p>
-                    </div>
-
-                    <div class="card-interaction-bar">
-                        <div class="action-buttons">
-                            <button class="action-btn"><i class="fa-regular fa-thumbs-up"></i> 0</button>
-                            <button class="action-btn"><i class="fa-solid fa-plus"></i> <i class="fa-regular fa-face-smile"></i></button>
-                        </div>
-                        
-                        <div class="stats-row">
-                            <span><i class="fa-regular fa-comment"></i> 0 Comments</span>
-                            <span><i class="fa-regular fa-eye"></i> 26 Views</span>
-                        </div>
-                    </div>
-
-                    <div class="card-comment-section">
-                        <input type="text" class="comment-input" placeholder="Write a comment...">
-                    </div>
-                </article>
-
-                <article class="feed-card">
-                    <div class="card-suggestion-header">
-                        <span><i class="fa-solid fa-circle-info"></i> This post is from a suggested group</span>
-                        <button class="btn-outline-sm">Join</button>
-                    </div>
-                    
-                    <div class="card-author-info">
-                        <div class="author-avatar">P</div>
-                        <div class="author-meta">
-                            <span class="author-name">Petid Registry <i class="fa-solid fa-certificate"></i></span>
-                            <span class="post-date">March 23, 2026 &bull; posted in <strong>Trackyn Members Circle</strong></span>
-                        </div>
-                        <button class="share-btn-icon"><i class="fa-solid fa-share"></i></button>
-                    </div>
-
-                    <div class="card-body">
-                        <p>Welcome to our group <strong>Trackyn Members Circle!</strong> A space for us to connect and share with each other. Start by posting your thoughts, sharing media, or creating a poll.</p>
-                    </div>
-
-                    <div class="card-interaction-bar">
-                        <div class="action-buttons">
-                            <button class="action-btn"><i class="fa-regular fa-thumbs-up"></i> 0</button>
-                            <button class="action-btn"><i class="fa-solid fa-plus"></i> <i class="fa-regular fa-face-smile"></i></button>
-                        </div>
-                        
-                        <div class="stats-row">
-                            <span><i class="fa-regular fa-comment"></i> 0 Comments</span>
-                            <span><i class="fa-regular fa-eye"></i> 9 Views</span>
-                        </div>
-                    </div>
-
-                    <div class="card-comment-section">
-                        <input type="text" class="comment-input" placeholder="Write a comment...">
-                    </div>
-                </article>
-
+                <div id="dynamicFeedZone"></div>
             </section>
 
             <aside class="sidebar-column">
                 <div class="sidebar-content-box">
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" class="sidebar-search" placeholder="Search">
+                        <input type="text" class="sidebar-search" placeholder="Search groups...">
                     </div>
 
                     <h3 class="sidebar-title">Suggested Groups</h3>
                     
-                    <div class="suggested-groups-list">
-                        
-                        <div class="group-item">
-                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
-                            <div class="group-details">
-                                <h4 class="group-name">Pet Rescue & Recovery...</h4>
-                                <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
-                                <button class="btn-outline-sm full-width">Join</button>
-                            </div>
+                    <div class="suggested-groups-list" id="dynamicGroupsZone">
                         </div>
-
-                        <div class="group-item">
-                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
-                            <div class="group-details">
-                                <h4 class="group-name">Trackyn Members Circle</h4>
-                                <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
-                                <button class="btn-outline-sm full-width">Join</button>
-                            </div>
-                        </div>
-
-                        <div class="group-item">
-                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
-                            <div class="group-details">
-                                <h4 class="group-name">Trackyn Owner Comm...</h4>
-                                <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
-                                <button class="btn-outline-sm full-width">Join</button>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
             </aside>
 
@@ -270,7 +180,7 @@
     </footer>
 
     <script>
-        // Mobile Navigation Toggle Handling
+        // Global Navigation Toggle Handling
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
@@ -287,6 +197,229 @@
                 navLinks.classList.remove('active');
                 document.body.style.overflow = 'auto'; 
             });
+        }
+
+        // ==========================================
+        // DYNAMIC CONTENT PLATFORM PIPELINE HANDLERS
+        // ==========================================
+
+        async function executeBackendAction(action, payload) {
+            const formData = new URLSearchParams();
+            formData.append('action', action);
+            for (const item in payload) {
+                formData.append(item, payload[item]);
+            }
+            const response = await fetch(TRACKYN_BACKEND_URL, { method: 'POST', body: formData });
+            return await response.json();
+        }
+
+        async function fetchInitialData(isFallbackDevMode) {
+            if (isFallbackDevMode) {
+                renderTimelineFeed(getFallbackPosts());
+                renderGroupSuggestions([]);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${TRACKYN_BACKEND_URL}?action=get_groups_data&Username=${encodeURIComponent(currentUser)}`);
+                const stateData = await response.json();
+                
+                if (stateData.success) {
+                    renderTimelineFeed(stateData.posts);
+                    renderGroupSuggestions(stateData.joinedGroups);
+                    
+                    // Smoothly remove structural access protection loader
+                    const shield = document.getElementById('tknAuthShield');
+                    if (shield) shield.remove();
+                }
+            } catch (err) {
+                console.error("Critical component synchronizer failure:", err);
+                const loaderText = document.querySelector('.tkn-auth-text');
+                if (loaderText) {
+                    loaderText.style.color = '#ef4444';
+                    loaderText.innerText = "Sync failure. Please refresh the workspace.";
+                }
+            }
+        }
+
+        function renderTimelineFeed(posts) {
+            const container = document.getElementById('dynamicFeedZone');
+            container.innerHTML = '';
+
+            if (!posts || posts.length === 0) {
+                container.innerHTML = `<p style="text-align:center; padding:30px; color:#64748b; font-family:'Inter';">No updates available in your feed loop.</p>`;
+                return;
+            }
+
+            posts.forEach(post => {
+                container.appendChild(buildPostCardNode(post.PostID, post.Username, post.Content, post.Timestamp, post.Likes, post.GroupName || 'Trackyn Global Circle'));
+            });
+        }
+
+        function buildPostCardNode(id, user, text, time, likes, groupContext) {
+            const article = document.createElement('article');
+            article.className = 'feed-card';
+            article.id = `post-card-${id}`;
+            article.innerHTML = `
+                <div class="card-suggestion-header">
+                    <span><i class="fa-solid fa-circle-info"></i> Activity feed updates from verified spaces</span>
+                    <button class="btn-outline-sm" style="display:none;">Join</button>
+                </div>
+                
+                <div class="card-author-info">
+                    <div class="author-avatar">${user.charAt(0).toUpperCase()}</div>
+                    <div class="author-meta">
+                        <span class="author-name">${user} <i class="fa-solid fa-certificate"></i></span>
+                        <span class="post-date">${new Date(time).toLocaleDateString()} &bull; posted in <strong>${groupContext}</strong></span>
+                    </div>
+                    <button class="share-btn-icon" aria-label="Share resource link"><i class="fa-solid fa-share"></i></button>
+                </div>
+
+                <div class="card-body">
+                    <p>${text}</p>
+                </div>
+
+                <div class="card-interaction-bar">
+                    <div class="action-buttons">
+                        <button class="action-btn" id="like-btn-${id}" onclick="processLikeCommit('${id}')">
+                            <i class="fa-regular fa-thumbs-up"></i> <span id="like-qty-${id}">${likes}</span>
+                        </button>
+                        <button class="action-btn" onclick="document.getElementById('comment-field-${id}').focus()">
+                            <i class="fa-regular fa-face-smile"></i> Feel
+                        </button>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <span><i class="fa-regular fa-comment"></i> Feed Comment Entry</span>
+                    </div>
+                </div>
+
+                <div class="card-comment-section">
+                    <input type="text" class="comment-input" id="comment-field-${id}" placeholder="Write a comment..." onkeypress="processCommentCommit(event, '${id}')">
+                </div>
+            `;
+            return article;
+        }
+
+        function renderGroupSuggestions(joinedGroupIds) {
+            const targetList = document.getElementById('dynamicGroupsZone');
+            targetList.innerHTML = '';
+
+            const masterGroups = [
+                { id: "G1", name: "Pet Rescue & Recovery Stories", context: "Trackyn Core Space" },
+                { id: "G2", name: "Trackyn Members Circle", context: "Global Headquarters" },
+                { id: "G3", name: "Trackyn Owner Community", context: "Regional Outpost" }
+            ];
+
+            masterGroups.forEach(group => {
+                const checkedJoinState = joinedGroupIds.includes(group.id);
+                const activationButton = checkedJoinState 
+                    ? `<button class="btn-outline-sm full-width" disabled>Joined</button>`
+                    : `<button class="btn-outline-sm full-width" id="join-target-${group.id}" onclick="processGroupJoinCommit('${group.id}')">Join</button>`;
+
+                targetList.innerHTML += `
+                    <div class="group-item">
+                        <div class="group-thumbnail" style="background-color: #141979; display: flex; align-items: center; justify-content: center; color: #fff;">
+                            <i class="fa-solid fa-shield-dog"></i>
+                        </div>
+                        <div class="group-details">
+                            <h4 class="group-name">${group.name}</h4>
+                            <span class="group-members"><i class="fa-solid fa-globe"></i> ${group.context}</span>
+                            ${activationButton}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // ==========================================
+        // OPTIMISTIC INTERFACE MUTATION ENGINE LATCH
+        // ==========================================
+
+        async function executePostPublish() {
+            const inputField = document.getElementById('tkn-post-textarea');
+            const dataString = inputField.value.trim();
+            if (!dataString) return;
+
+            const triggerBtn = document.getElementById('btnSubmitPost');
+            inputField.disabled = true;
+            triggerBtn.disabled = true;
+            triggerBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i>`;
+
+            try {
+                const executionResult = await executeBackendAction('create_post', {
+                    Username: currentUser,
+                    Content: dataString
+                });
+
+                if (executionResult.success) {
+                    const freshCardNode = buildPostCardNode(executionResult.postId, currentUser, dataString, executionResult.timestamp, 0, 'Trackyn Global Circle');
+                    const streamList = document.getElementById('dynamicFeedZone');
+                    
+                    if (streamList.firstChild) {
+                        streamList.insertBefore(freshCardNode, streamList.firstChild);
+                    } else {
+                        streamList.appendChild(freshCardNode);
+                    }
+                    inputField.value = '';
+                }
+            } catch (err) {
+                console.error("Pipeline post structural injection failure:", err);
+            } finally {
+                inputField.disabled = false;
+                triggerBtn.disabled = false;
+                triggerBtn.innerHTML = `Publish Post <i class="fa-solid fa-paper-plane" style="margin-left:6px;"></i>`;
+            }
+        }
+
+        function processLikeCommit(postId) {
+            const interactionButton = document.getElementById(`like-btn-${postId}`);
+            const textMetrics = document.getElementById(`like-qty-${postId}`);
+            const vectorIcon = interactionButton.querySelector('i');
+
+            let numericQuantity = parseInt(textMetrics.innerText);
+            let stateFlag = interactionButton.classList.contains('liked');
+            let incrementalOffset = stateFlag ? -1 : 1;
+
+            interactionButton.classList.toggle('liked');
+            textMetrics.innerText = numericQuantity + incrementalOffset;
+
+            if (stateFlag) {
+                vectorIcon.className = 'fa-regular fa-thumbs-up';
+            } else {
+                vectorIcon.className = 'fa-solid fa-thumbs-up';
+            }
+
+            executeBackendAction('like_post', { PostID: postId, Adjustment: incrementalOffset });
+        }
+
+        function processGroupJoinCommit(groupId) {
+            const buttonNode = document.getElementById(`join-target-${groupId}`);
+            buttonNode.disabled = true;
+            buttonNode.innerText = "Joined";
+
+            executeBackendAction('join_group', { Username: currentUser, GroupID: groupId });
+        }
+
+        function processCommentCommit(event, postId) {
+            if (event.key === 'Enter') {
+                const targetInput = document.getElementById(`comment-field-${postId}`);
+                const coreValue = targetInput.value.trim();
+                if (!coreValue) return;
+
+                targetInput.value = '';
+                targetInput.placeholder = "Comment posted!";
+                setTimeout(() => targetInput.placeholder = "Write a comment...", 2000);
+
+                executeBackendAction('add_comment', { Username: currentUser, PostID: postId, Content: coreValue });
+            }
+        }
+
+        function getFallbackPosts() {
+            return [
+                { PostID: "mock_1", Username: "Petid Registry", Content: "Welcome to our group Pet Rescue & Recovery Stories! A space for us to connect and share with each other.", Timestamp: new Date().toISOString(), Likes: 4, GroupName: "Pet Rescue & Recovery Stories" },
+                { PostID: "mock_2", Username: "Trackyn Moderator", Content: "Welcome to Trackyn Members Circle! Drop your introductions below.", Timestamp: new Date().toISOString(), Likes: 12, GroupName: "Trackyn Members Circle" }
+            ];
         }
     </script>
 </body>
