@@ -6,7 +6,7 @@
     <title>Trackyn | Groups</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght=400;600&display=swap" rel="stylesheet">
     
     <style>
         .tkn-page-shield {
@@ -18,19 +18,62 @@
             justify-content: center; align-items: center;
             font-family: 'Inter', sans-serif;
         }
+
+        /* Lost Pet Banner Animation */
+        #lost-pet-banner {
+            display: none;
+            background-color: #ff4d4f;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite;
+            font-weight: 600;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 77, 79, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0); }
+        }
+
+        /* Post Creation Card Adjustments */
+        .create-post-textarea {
+            width: 100%; height: 60px; border: 1px solid #ccd0d5; 
+            border-radius: 8px; padding: 10px; resize: none; 
+            font-family: inherit; margin-bottom: 10px; outline: none;
+        }
+        .btn-post {
+            float: right; background: #141979; color: white; border: none;
+        }
+
+        /* Comment Bubble Styling */
+        .comment-bubble {
+            background-color: #f0f2f5; padding: 8px 12px;
+            border-radius: 15px; margin-bottom: 8px; font-size: 0.9em;
+            color: #050505;
+        }
+        .comment-input-area {
+            display: flex; gap: 10px; align-items: center; margin-top: 10px; width: 100%;
+        }
     </style>
 
     <script>
         // 1. Immediate local session check
-        const currentUser = sessionStorage.getItem('trackynUser');
+        const currentUser = sessionStorage.getItem('trackynUser') || 'GuestUser';
         
-        // Target Deployed Apps Script Web App Endpoint
+        // TODO: Replace with your actual deployed Google Apps Script Web App URL
         const TRACKYN_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxD4bDcY_5DYCIMJadfk1jjTbUh9ERZfF4z3ZNyAaixth3MgrFDn8NKdUIvKcsesMRT9g/exec';
         
-        if (!currentUser) {
+        // Local Storage Keys for UI State Persistence
+        const LOCAL_COMMENTS_KEY = 'trackyn_local_comments';
+        const LOCAL_REACTIONS_KEY = 'trackyn_local_reactions';
+
+        if (!sessionStorage.getItem('trackynUser') && !TRACKYN_BACKEND_URL.includes('AKfycbz')) {
             window.location.replace('pet-owner.html');
         } else {
-            // 2. Server-side verification loop targeting backend configuration rules
+            // 2. Server-side verification loop targeting the updated doPost backend endpoint
             document.addEventListener("DOMContentLoaded", () => {
                 
                 // Pure local environment testing fallback bypass:
@@ -38,12 +81,11 @@
                     console.warn("Trackyn Development Notice: Running decoupled from backend. Access shield removed.");
                     const shield = document.getElementById('tknAuthShield');
                     if (shield) shield.remove();
-                    // Populate with client simulation fallback values
-                    fetchInitialData(true);
+                    initGroupsData(); // Initialize data load
                     return;
                 }
 
-                // Construct verification payload
+                // Construct endpoint URL targeting Module E's verification parameter rules
                 const verificationUrl = `${TRACKYN_BACKEND_URL}?action=verify_group_access&Username=${encodeURIComponent(currentUser)}`;
 
                 fetch(verificationUrl, {
@@ -53,9 +95,12 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.success) {
-                        // Drop shield and fetch operational layout parameters
-                        fetchInitialData(false);
+                        // Access confirmed by Column V (GRANTED): Remove shield cleanly
+                        const shield = document.getElementById('tknAuthShield');
+                        if (shield) shield.remove();
+                        initGroupsData(); // Initialize data load
                     } else {
+                        // Status verification mismatch or access revoked
                         handleAuthFailure();
                     }
                 })
@@ -69,6 +114,213 @@
         function handleAuthFailure() {
             sessionStorage.clear();
             window.location.replace('pet-owner.html');
+        }
+
+        // ==========================================
+        // GROUPS PAGE INITIALIZATION LOGIC
+        // ==========================================
+        function initGroupsData() {
+            fetchLostPets();
+            fetchFeed();
+        }
+
+        async function fetchLostPets() {
+            try {
+                // Calls Master Registry Payload (No action parameter = GET full registry)
+                const response = await fetch(TRACKYN_BACKEND_URL);
+                const registryData = await response.json();
+
+                // Filter for pets where the Status column is 'LOST'
+                const lostPets = registryData.filter(pet => pet.Status && pet.Status.toString().toUpperCase() === 'LOST');
+
+                const banner = document.getElementById('lost-pet-banner');
+                if (lostPets.length > 0) {
+                    const petAlerts = lostPets.map(p => `${p.PetName} (Owner: ${p.OwnerFirstName})`).join(' & ');
+                    banner.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> URGENT LOST PET ALERT: Please keep an eye out for ${petAlerts}!`;
+                    banner.style.display = 'block';
+                } else {
+                    banner.style.display = 'none';
+                }
+            } catch (error) {
+                console.error("Failed to load registry data for banner:", error);
+            }
+        }
+
+        async function fetchFeed() {
+            try {
+                const response = await fetch(`${TRACKYN_BACKEND_URL}?action=get_groups_data&Username=${currentUser}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderFeed(data.posts);
+                } else {
+                    document.getElementById('dynamic-feed').innerHTML = `<p style="text-align:center;">Error loading posts.</p>`;
+                }
+            } catch (error) {
+                console.error("Failed to fetch feed:", error);
+                document.getElementById('dynamic-feed').innerHTML = `<p style="text-align:center;">Network error loading feed.</p>`;
+            }
+        }
+
+        function renderFeed(posts) {
+            const feedContainer = document.getElementById('dynamic-feed');
+            feedContainer.innerHTML = ''; // Clear loading text
+
+            const localComments = JSON.parse(localStorage.getItem(LOCAL_COMMENTS_KEY)) || {};
+            const localReactions = JSON.parse(localStorage.getItem(LOCAL_REACTIONS_KEY)) || {};
+
+            if (posts.length === 0) {
+                feedContainer.innerHTML = `<p style="text-align:center; color:#65676b;">No posts yet. Be the first to post!</p>`;
+                return;
+            }
+
+            posts.forEach(post => {
+                const userReactionState = localReactions[post.PostID] || null; 
+                const postComments = localComments[post.PostID] || [];
+                const avatarInitial = post.Username ? post.Username.charAt(0).toUpperCase() : 'U';
+
+                // Format UI Colors based on state
+                const likeColor = userReactionState === 'like' ? 'color: #1877f2;' : '';
+                const reactColor = userReactionState === 'react' ? 'color: #f5c33b;' : '';
+
+                const postHTML = `
+                    <article class="feed-card" id="post-card-${post.PostID}">
+                        <div class="card-author-info">
+                            <div class="author-avatar">${avatarInitial}</div>
+                            <div class="author-meta">
+                                <span class="author-name">${post.Username}</span>
+                                <span class="post-date">${new Date(post.Timestamp).toLocaleString()}</span>
+                            </div>
+                            <button class="share-btn-icon"><i class="fa-solid fa-share"></i></button>
+                        </div>
+
+                        <div class="card-body">
+                            <p>${post.Content}</p>
+                        </div>
+
+                        <div class="card-interaction-bar">
+                            <div class="action-buttons">
+                                <button class="action-btn" onclick="toggleLike('${post.PostID}')" style="${likeColor}">
+                                    <i class="fa-regular fa-thumbs-up"></i> <span id="like-count-${post.PostID}">${post.Likes}</span>
+                                </button>
+                                <button class="action-btn" onclick="addReaction('${post.PostID}')" style="${reactColor}">
+                                    <i class="fa-solid fa-plus"></i> <i class="fa-regular fa-face-smile"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="stats-row">
+                                <span><i class="fa-regular fa-comment"></i> ${postComments.length} Comments</span>
+                            </div>
+                        </div>
+
+                        <div class="card-comment-section" style="flex-direction: column; align-items: stretch;">
+                            <div id="comments-${post.PostID}" style="margin-bottom: ${postComments.length > 0 ? '10px' : '0'};">
+                                ${postComments.map(c => `
+                                    <div class="comment-bubble">
+                                        <strong>${c.user}:</strong> ${c.text}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="comment-input-area">
+                                <input type="text" id="input-${post.PostID}" class="comment-input" placeholder="Write a comment..." style="flex-grow: 1; margin: 0;">
+                                <button class="btn-outline-sm" onclick="submitComment('${post.PostID}')">Post</button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+                feedContainer.insertAdjacentHTML('beforeend', postHTML);
+            });
+        }
+
+        // ==========================================
+        // DATA MUTATION & LOCAL STORAGE SYNC
+        // ==========================================
+        async function createPost() {
+            const content = document.getElementById('postContent').value;
+            if (!content.trim()) return;
+
+            // Loading state
+            const btn = document.getElementById('createPostBtn');
+            btn.innerText = "Posting...";
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('action', 'create_post');
+            formData.append('Username', currentUser);
+            formData.append('Content', content);
+
+            await fetch(TRACKYN_BACKEND_URL, { method: 'POST', body: formData });
+            
+            // Reset and Refresh
+            document.getElementById('postContent').value = '';
+            btn.innerText = "Post";
+            btn.disabled = false;
+            fetchFeed();
+        }
+
+        async function toggleLike(postId) {
+            let localReactions = JSON.parse(localStorage.getItem(LOCAL_REACTIONS_KEY)) || {};
+            let isCurrentlyLiked = localReactions[postId] === 'like';
+            let adjustment = isCurrentlyLiked ? -1 : 1;
+            
+            // Update Local Storage immediately
+            if (isCurrentlyLiked) {
+                delete localReactions[postId];
+            } else {
+                localReactions[postId] = 'like'; 
+            }
+            localStorage.setItem(LOCAL_REACTIONS_KEY, JSON.stringify(localReactions));
+
+            // Optimistic UI Update
+            const likeCountSpan = document.getElementById(`like-count-${postId}`);
+            likeCountSpan.innerText = parseInt(likeCountSpan.innerText) + adjustment;
+            fetchFeed(); // Re-render to update UI styles
+
+            // Sync with Backend
+            const formData = new FormData();
+            formData.append('action', 'like_post');
+            formData.append('PostID', postId);
+            formData.append('Adjustment', adjustment);
+            await fetch(TRACKYN_BACKEND_URL, { method: 'POST', body: formData });
+        }
+
+        function addReaction(postId) {
+            // Frontend local-storage interaction (no backend reaction column exists)
+            let localReactions = JSON.parse(localStorage.getItem(LOCAL_REACTIONS_KEY)) || {};
+            if (localReactions[postId] === 'react') {
+                delete localReactions[postId]; 
+            } else {
+                localReactions[postId] = 'react'; 
+            }
+            localStorage.setItem(LOCAL_REACTIONS_KEY, JSON.stringify(localReactions));
+            fetchFeed(); 
+        }
+
+        async function submitComment(postId) {
+            const inputField = document.getElementById(`input-${postId}`);
+            const content = inputField.value;
+            if (!content.trim()) return;
+
+            // 1. Persist to Local Storage
+            let localComments = JSON.parse(localStorage.getItem(LOCAL_COMMENTS_KEY)) || {};
+            if (!localComments[postId]) localComments[postId] = [];
+            
+            localComments[postId].push({ user: currentUser, text: content });
+            localStorage.setItem(LOCAL_COMMENTS_KEY, JSON.stringify(localComments));
+
+            // 2. Update UI Immediately
+            inputField.value = '';
+            fetchFeed(); 
+
+            // 3. Backup to Backend
+            const formData = new FormData();
+            formData.append('action', 'add_comment');
+            formData.append('PostID', postId);
+            formData.append('Username', currentUser);
+            formData.append('Content', content);
+            
+            await fetch(TRACKYN_BACKEND_URL, { method: 'POST', body: formData });
         }
     </script>
 </head>
@@ -123,33 +375,63 @@
             <p class="groups-subtitle">View groups and posts below.</p>
         </header>
 
+        <div id="lost-pet-banner"></div>
+
         <div class="groups-layout">
             
-            <section class="feed-column" id="feedColumnContainer">
+            <section class="feed-column">
                 
-                <div class="create-post-card">
-                    <textarea id="tkn-post-textarea" placeholder="Share an update, request rescue tracking, or write an announcement..."></textarea>
-                    <div class="create-post-card-actions">
-                        <button class="btn-submit-post" id="btnSubmitPost" onclick="executePostPublish()">
-                            Publish Post <i class="fa-solid fa-paper-plane" style="margin-left: 6px;"></i>
-                        </button>
+                <article class="feed-card">
+                    <div class="card-body">
+                        <textarea id="postContent" class="create-post-textarea" placeholder="What's on your mind?"></textarea>
+                        <button id="createPostBtn" class="btn-outline-sm btn-post" onclick="createPost()">Post</button>
+                        <div style="clear: both;"></div>
                     </div>
+                </article>
+
+                <div id="dynamic-feed">
+                    <p style="text-align:center; color:#65676b; margin-top: 20px;"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading groups feed...</p>
                 </div>
 
-                <div id="dynamicFeedZone"></div>
             </section>
 
             <aside class="sidebar-column">
                 <div class="sidebar-content-box">
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" class="sidebar-search" placeholder="Search groups...">
+                        <input type="text" class="sidebar-search" placeholder="Search">
                     </div>
 
                     <h3 class="sidebar-title">Suggested Groups</h3>
                     
-                    <div class="suggested-groups-list" id="dynamicGroupsZone">
+                    <div class="suggested-groups-list">
+                        <div class="group-item">
+                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
+                            <div class="group-details">
+                                <h4 class="group-name">Pet Rescue & Recovery...</h4>
+                                <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
+                                <button class="btn-outline-sm full-width">Join</button>
+                            </div>
                         </div>
+
+                        <div class="group-item">
+                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
+                            <div class="group-details">
+                                <h4 class="group-name">Trackyn Members Circle</h4>
+                                <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
+                                <button class="btn-outline-sm full-width">Join</button>
+                            </div>
+                        </div>
+
+                        <div class="group-item">
+                            <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
+                            <div class="group-details">
+                                <h4 class="group-name">Trackyn Owner Comm...</h4>
+                                <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
+                                <button class="btn-outline-sm full-width">Join</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </aside>
 
@@ -180,7 +462,7 @@
     </footer>
 
     <script>
-        // Global Navigation Toggle Handling
+        // Mobile Navigation Toggle Handling
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
@@ -197,229 +479,6 @@
                 navLinks.classList.remove('active');
                 document.body.style.overflow = 'auto'; 
             });
-        }
-
-        // ==========================================
-        // DYNAMIC CONTENT PLATFORM PIPELINE HANDLERS
-        // ==========================================
-
-        async function executeBackendAction(action, payload) {
-            const formData = new URLSearchParams();
-            formData.append('action', action);
-            for (const item in payload) {
-                formData.append(item, payload[item]);
-            }
-            const response = await fetch(TRACKYN_BACKEND_URL, { method: 'POST', body: formData });
-            return await response.json();
-        }
-
-        async function fetchInitialData(isFallbackDevMode) {
-            if (isFallbackDevMode) {
-                renderTimelineFeed(getFallbackPosts());
-                renderGroupSuggestions([]);
-                return;
-            }
-
-            try {
-                const response = await fetch(`${TRACKYN_BACKEND_URL}?action=get_groups_data&Username=${encodeURIComponent(currentUser)}`);
-                const stateData = await response.json();
-                
-                if (stateData.success) {
-                    renderTimelineFeed(stateData.posts);
-                    renderGroupSuggestions(stateData.joinedGroups);
-                    
-                    // Smoothly remove structural access protection loader
-                    const shield = document.getElementById('tknAuthShield');
-                    if (shield) shield.remove();
-                }
-            } catch (err) {
-                console.error("Critical component synchronizer failure:", err);
-                const loaderText = document.querySelector('.tkn-auth-text');
-                if (loaderText) {
-                    loaderText.style.color = '#ef4444';
-                    loaderText.innerText = "Sync failure. Please refresh the workspace.";
-                }
-            }
-        }
-
-        function renderTimelineFeed(posts) {
-            const container = document.getElementById('dynamicFeedZone');
-            container.innerHTML = '';
-
-            if (!posts || posts.length === 0) {
-                container.innerHTML = `<p style="text-align:center; padding:30px; color:#64748b; font-family:'Inter';">No updates available in your feed loop.</p>`;
-                return;
-            }
-
-            posts.forEach(post => {
-                container.appendChild(buildPostCardNode(post.PostID, post.Username, post.Content, post.Timestamp, post.Likes, post.GroupName || 'Trackyn Global Circle'));
-            });
-        }
-
-        function buildPostCardNode(id, user, text, time, likes, groupContext) {
-            const article = document.createElement('article');
-            article.className = 'feed-card';
-            article.id = `post-card-${id}`;
-            article.innerHTML = `
-                <div class="card-suggestion-header">
-                    <span><i class="fa-solid fa-circle-info"></i> Activity feed updates from verified spaces</span>
-                    <button class="btn-outline-sm" style="display:none;">Join</button>
-                </div>
-                
-                <div class="card-author-info">
-                    <div class="author-avatar">${user.charAt(0).toUpperCase()}</div>
-                    <div class="author-meta">
-                        <span class="author-name">${user} <i class="fa-solid fa-certificate"></i></span>
-                        <span class="post-date">${new Date(time).toLocaleDateString()} &bull; posted in <strong>${groupContext}</strong></span>
-                    </div>
-                    <button class="share-btn-icon" aria-label="Share resource link"><i class="fa-solid fa-share"></i></button>
-                </div>
-
-                <div class="card-body">
-                    <p>${text}</p>
-                </div>
-
-                <div class="card-interaction-bar">
-                    <div class="action-buttons">
-                        <button class="action-btn" id="like-btn-${id}" onclick="processLikeCommit('${id}')">
-                            <i class="fa-regular fa-thumbs-up"></i> <span id="like-qty-${id}">${likes}</span>
-                        </button>
-                        <button class="action-btn" onclick="document.getElementById('comment-field-${id}').focus()">
-                            <i class="fa-regular fa-face-smile"></i> Feel
-                        </button>
-                    </div>
-                    
-                    <div class="stats-row">
-                        <span><i class="fa-regular fa-comment"></i> Feed Comment Entry</span>
-                    </div>
-                </div>
-
-                <div class="card-comment-section">
-                    <input type="text" class="comment-input" id="comment-field-${id}" placeholder="Write a comment..." onkeypress="processCommentCommit(event, '${id}')">
-                </div>
-            `;
-            return article;
-        }
-
-        function renderGroupSuggestions(joinedGroupIds) {
-            const targetList = document.getElementById('dynamicGroupsZone');
-            targetList.innerHTML = '';
-
-            const masterGroups = [
-                { id: "G1", name: "Pet Rescue & Recovery Stories", context: "Trackyn Core Space" },
-                { id: "G2", name: "Trackyn Members Circle", context: "Global Headquarters" },
-                { id: "G3", name: "Trackyn Owner Community", context: "Regional Outpost" }
-            ];
-
-            masterGroups.forEach(group => {
-                const checkedJoinState = joinedGroupIds.includes(group.id);
-                const activationButton = checkedJoinState 
-                    ? `<button class="btn-outline-sm full-width" disabled>Joined</button>`
-                    : `<button class="btn-outline-sm full-width" id="join-target-${group.id}" onclick="processGroupJoinCommit('${group.id}')">Join</button>`;
-
-                targetList.innerHTML += `
-                    <div class="group-item">
-                        <div class="group-thumbnail" style="background-color: #141979; display: flex; align-items: center; justify-content: center; color: #fff;">
-                            <i class="fa-solid fa-shield-dog"></i>
-                        </div>
-                        <div class="group-details">
-                            <h4 class="group-name">${group.name}</h4>
-                            <span class="group-members"><i class="fa-solid fa-globe"></i> ${group.context}</span>
-                            ${activationButton}
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // ==========================================
-        // OPTIMISTIC INTERFACE MUTATION ENGINE LATCH
-        // ==========================================
-
-        async function executePostPublish() {
-            const inputField = document.getElementById('tkn-post-textarea');
-            const dataString = inputField.value.trim();
-            if (!dataString) return;
-
-            const triggerBtn = document.getElementById('btnSubmitPost');
-            inputField.disabled = true;
-            triggerBtn.disabled = true;
-            triggerBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i>`;
-
-            try {
-                const executionResult = await executeBackendAction('create_post', {
-                    Username: currentUser,
-                    Content: dataString
-                });
-
-                if (executionResult.success) {
-                    const freshCardNode = buildPostCardNode(executionResult.postId, currentUser, dataString, executionResult.timestamp, 0, 'Trackyn Global Circle');
-                    const streamList = document.getElementById('dynamicFeedZone');
-                    
-                    if (streamList.firstChild) {
-                        streamList.insertBefore(freshCardNode, streamList.firstChild);
-                    } else {
-                        streamList.appendChild(freshCardNode);
-                    }
-                    inputField.value = '';
-                }
-            } catch (err) {
-                console.error("Pipeline post structural injection failure:", err);
-            } finally {
-                inputField.disabled = false;
-                triggerBtn.disabled = false;
-                triggerBtn.innerHTML = `Publish Post <i class="fa-solid fa-paper-plane" style="margin-left:6px;"></i>`;
-            }
-        }
-
-        function processLikeCommit(postId) {
-            const interactionButton = document.getElementById(`like-btn-${postId}`);
-            const textMetrics = document.getElementById(`like-qty-${postId}`);
-            const vectorIcon = interactionButton.querySelector('i');
-
-            let numericQuantity = parseInt(textMetrics.innerText);
-            let stateFlag = interactionButton.classList.contains('liked');
-            let incrementalOffset = stateFlag ? -1 : 1;
-
-            interactionButton.classList.toggle('liked');
-            textMetrics.innerText = numericQuantity + incrementalOffset;
-
-            if (stateFlag) {
-                vectorIcon.className = 'fa-regular fa-thumbs-up';
-            } else {
-                vectorIcon.className = 'fa-solid fa-thumbs-up';
-            }
-
-            executeBackendAction('like_post', { PostID: postId, Adjustment: incrementalOffset });
-        }
-
-        function processGroupJoinCommit(groupId) {
-            const buttonNode = document.getElementById(`join-target-${groupId}`);
-            buttonNode.disabled = true;
-            buttonNode.innerText = "Joined";
-
-            executeBackendAction('join_group', { Username: currentUser, GroupID: groupId });
-        }
-
-        function processCommentCommit(event, postId) {
-            if (event.key === 'Enter') {
-                const targetInput = document.getElementById(`comment-field-${postId}`);
-                const coreValue = targetInput.value.trim();
-                if (!coreValue) return;
-
-                targetInput.value = '';
-                targetInput.placeholder = "Comment posted!";
-                setTimeout(() => targetInput.placeholder = "Write a comment...", 2000);
-
-                executeBackendAction('add_comment', { Username: currentUser, PostID: postId, Content: coreValue });
-            }
-        }
-
-        function getFallbackPosts() {
-            return [
-                { PostID: "mock_1", Username: "Petid Registry", Content: "Welcome to our group Pet Rescue & Recovery Stories! A space for us to connect and share with each other.", Timestamp: new Date().toISOString(), Likes: 4, GroupName: "Pet Rescue & Recovery Stories" },
-                { PostID: "mock_2", Username: "Trackyn Moderator", Content: "Welcome to Trackyn Members Circle! Drop your introductions below.", Timestamp: new Date().toISOString(), Likes: 12, GroupName: "Trackyn Members Circle" }
-            ];
         }
     </script>
 </body>
