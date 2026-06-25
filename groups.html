@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght=400;600&display=swap" rel="stylesheet">
     
     <style>
+        /* Modern Auth Shield Loading Layout & Components */
         .tkn-page-shield {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -17,20 +18,62 @@
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+        .tkn-modern-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .tkn-spinner-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+        }
+        .tkn-spinner-ring {
+            width: 100%;
+            height: 100%;
+            border: 4px solid rgba(20, 25, 121, 0.1);
+            border-top: 4px solid #141979;
+            border-radius: 50%;
+            animation: tkn-spin 1s linear infinite;
+            box-sizing: border-box;
+        }
+        .tkn-spinner-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            margin-top: -4px;
+            margin-left: -4px;
+            border-radius: 50%;
+            background-color: #141979;
+        }
+        @keyframes tkn-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Lost Pet Banner Animation */
+        /* Lost Pet Banner Animation & Layout Core Configuration */
         #lost-pet-banner {
             display: none;
             background-color: #ff4d4f;
             color: white;
-            padding: 15px;
+            padding: 15px 20px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             animation: pulse 2s infinite;
             font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7); }
@@ -43,6 +86,7 @@
             width: 100%; height: 60px; border: 1px solid #ccd0d5; 
             border-radius: 8px; padding: 10px; resize: none; 
             font-family: inherit; margin-bottom: 10px; outline: none;
+            box-sizing: border-box;
         }
         .btn-post {
             float: right; background: #141979; color: white; border: none;
@@ -53,9 +97,97 @@
             background-color: #f0f2f5; padding: 8px 12px;
             border-radius: 15px; margin-bottom: 8px; font-size: 0.9em;
             color: #050505;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .comment-input-area {
             display: flex; gap: 10px; align-items: center; margin-top: 10px; width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Global Grid Layout Fallbacks to protect alignment if style.css differs */
+        .groups-layout {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            width: 100%;
+        }
+        .feed-column {
+            flex: 2;
+            min-width: 0; /* Prevents flex children from breaking parent layout container boundary boxes */
+        }
+        .sidebar-column {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        /* ==========================================================================
+           COMPREHENSIVE MEDIA QUERIES FOR ALL VIEWPORTS & COMPONENT CORRECTIONS
+           ========================================================================== */
+
+        /* Tablet Viewports (Max-width: 992px) */
+        @media (max-width: 992px) {
+            .groups-layout {
+                gap: 16px;
+            }
+            .sidebar-column {
+                min-width: 240px;
+            }
+            #lost-pet-banner {
+                font-size: 0.95rem;
+                padding: 14px 18px;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Small Screen & Mobile Device Layout Optimization (Max-width: 768px) */
+        @media (max-width: 768px) {
+            .groups-layout {
+                flex-direction: column;
+                gap: 24px;
+            }
+            .feed-column, .sidebar-column {
+                width: 100% !important;
+                flex: none;
+            }
+            .sidebar-column {
+                min-width: 100%;
+            }
+            #lost-pet-banner {
+                font-size: 0.9rem;
+                padding: 12px 15px;
+                margin-bottom: 16px;
+                border-radius: 6px;
+            }
+            .comment-input-area {
+                gap: 8px;
+            }
+            .comment-input {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Micro-Screens & Legacy Devices Viewport Control (Max-width: 480px) */
+        @media (max-width: 480px) {
+            #lost-pet-banner {
+                font-size: 0.85rem;
+                padding: 10px 12px;
+                text-align: left; /* Shift alignment to maximize read-room if line breaks are frequent */
+            }
+            .comment-input-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .comment-input-area button {
+                width: 100%;
+                text-align: center;
+                margin-top: 4px;
+            }
+            .card-interaction-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start !important;
+            }
         }
     </style>
 
@@ -63,7 +195,7 @@
         // 1. Immediate local session check
         const currentUser = sessionStorage.getItem('trackynUser') || 'GuestUser';
         
-        // TODO: Replace with your actual deployed Google Apps Script Web App URL
+        // Deployed Google Apps Script Web App URL
         const TRACKYN_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbxD4bDcY_5DYCIMJadfk1jjTbUh9ERZfF4z3ZNyAaixth3MgrFDn8NKdUIvKcsesMRT9g/exec';
         
         // Local Storage Keys for UI State Persistence
@@ -371,8 +503,8 @@
     <div id="tknAuthShield" class="tkn-page-shield">
         <div class="tkn-modern-loader">
             <div class="tkn-spinner-container">
-                <div class="tkn-spinner-ring" style="border-top-color: #141979;"></div>
-                <div class="tkn-spinner-dot" style="background-color: #141979;"></div>
+                <div class="tkn-spinner-ring"></div>
+                <div class="tkn-spinner-dot"></div>
             </div>
             <h3 class="tkn-auth-text" style="color: #141979; font-weight: 600; margin-top: 20px; font-size: 1.1rem; letter-spacing: -0.02em;">
                 Verifying Credentials...
