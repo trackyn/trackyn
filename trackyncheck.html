@@ -125,6 +125,32 @@
             box-sizing: border-box;
         }
 
+        /* CREATIVE LOST BANNER */
+        .lost-ribbon {
+            display: none;
+            position: absolute;
+            top: 25px;
+            right: -40px;
+            background: var(--error-red);
+            color: #fff;
+            padding: 8px 45px;
+            font-family: 'Tektur', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 3px;
+            transform: rotate(45deg);
+            box-shadow: 0 0 20px var(--error-red);
+            animation: pulseLost 1s infinite alternate;
+            z-index: 10;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulseLost {
+            from { text-shadow: 0 0 5px #fff; box-shadow: 0 0 10px var(--error-red); }
+            to { text-shadow: 0 0 15px #fff; box-shadow: 0 0 30px var(--error-red); background: #ff1a66; }
+        }
+
         .pet-photo {
             width: clamp(120px, 40vw, 200px);
             height: clamp(120px, 40vw, 200px);
@@ -278,7 +304,6 @@
         
         <div class="search-group">
             <label>Input Pet's Microchip Number</label>
-            <!-- FIX APPLIED HERE: Added autocomplete="off" and name="microchip_number" -->
             <input type="text" id="microchipInput" maxlength="15" autocomplete="off" name="microchip_number">
             <div id="validationError" class="error-msg">Please enter a valid microchip number.</div>
         </div>
@@ -287,6 +312,7 @@
         <div id="loading">SCANNING DATABASE...</div>
 
         <div id="id-card">
+            <div id="lostBanner" class="lost-ribbon" data-html2canvas-ignore="true">LOST</div>
             <div id="displayPhoto" class="pet-photo" aria-label="Pet Photo"></div>
             
             <a id="driveImageLink" class="drive-link" target="_blank" rel="noopener noreferrer" data-html2canvas-ignore="true">View Original Photo</a>
@@ -298,7 +324,7 @@
                 SEX: <span id="displaySex"></span><br>
                 DESCRIPTION: <span id="displayDesc"></span><br>
                 HOTLINE: <span>0712345678</span><br>
-                STATUS: <span style="color:#00ff88;">VERIFIED RESIDENT</span>
+                STATUS: <span id="displayStatus" style="color:#00ff88; transition: 0.3s;">VERIFIED RESIDENT</span>
             </div>
             
             <div class="button-group" data-html2canvas-ignore="true">
@@ -499,7 +525,30 @@
                     document.getElementById('displaySex').textContent = pet.Sex ? pet.Sex : "N/A";
                     document.getElementById('displayDesc').textContent = pet.Description ? pet.Description : "N/A";
                     
-                    // NEW: Update the Drive Image Link with the original Google Drive URL
+                    // --- LOST PET LOGIC INTEGRATION ---
+                    const statusSpan = document.getElementById('displayStatus');
+                    const lostBanner = document.getElementById('lostBanner');
+                    const petStatus = pet.Status ? pet.Status.toString().trim().toUpperCase() : "";
+
+                    if (petStatus === 'LOST') {
+                        statusSpan.textContent = "LOST - SEEKING RECOVERY";
+                        statusSpan.style.color = "var(--error-red)";
+                        statusSpan.style.textShadow = "0 0 10px var(--error-red)";
+                        lostBanner.style.display = "block";
+                        document.getElementById('id-card').style.borderColor = "var(--error-red)";
+                        document.getElementById('id-card').style.boxShadow = "0 0 20px rgba(255, 0, 85, 0.4)";
+                    } else {
+                        // Retain original functionality and styling
+                        statusSpan.textContent = "VERIFIED RESIDENT";
+                        statusSpan.style.color = "#00ff88";
+                        statusSpan.style.textShadow = "none";
+                        lostBanner.style.display = "none";
+                        document.getElementById('id-card').style.borderColor = "var(--neon-blue)";
+                        document.getElementById('id-card').style.boxShadow = "none";
+                    }
+                    // ------------------------------------
+
+                    // Update the Drive Image Link with the original Google Drive URL
                     const driveLink = document.getElementById('driveImageLink');
                     if (pet.PetPhoto) {
                         driveLink.href = pet.PetPhoto;
@@ -508,7 +557,7 @@
                         driveLink.style.display = 'none';
                     }
                     
-                    // UPDATED: Target the new div and fetch the image as Base64
+                    // Target the div and fetch the image as Base64
                     const photoDiv = document.getElementById('displayPhoto');
                     photoDiv.style.backgroundImage = 'none'; // Clear previous image
                     
@@ -611,11 +660,8 @@
         async function fetchAndProcessLocation(lat, lon) {
             let facilityName = "a nearby veterinary clinic, shelter, or pet rescue";
             
-            // UPDATED: Broadened the search terms to include small and large animal clinics.
             const searchTerms = encodeURIComponent("vet clinic OR animal shelter OR pet rescue OR small animal clinic OR large animal clinic");
-            
-            // UPDATED: Using the standard Google Maps Search URL API to ensure the redirect works perfectly.
-            let mapLink = `https://www.google.com/maps/search/?api=1&query=$${searchTerms}+near+${lat},${lon}`;
+            const mapLink = `https://www.google.com/maps/search/?api=1&query=$$${searchTerms}+near+${lat},${lon}`;
 
             try {
                 const query = `[out:json];(nwr["amenity"="veterinary"](around:15000,${lat},${lon});nwr["amenity"="animal_shelter"](around:15000,${lat},${lon});nwr["amenity"="animal_boarding"](around:15000,${lat},${lon}););out center limit 1;`;
