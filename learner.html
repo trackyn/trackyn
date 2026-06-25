@@ -6,122 +6,183 @@
     <title>Trackyn | Learner Portal</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Modal Base */
+        /* Modal Backdrop Engine */
         .search-modal {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px); /* Safari support */
             z-index: 1000;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            padding: 15px; /* Visual buffer for mobile edge mapping */
         }
         .search-modal.active {
             display: flex;
             opacity: 1;
         }
+        
+        /* Modal Window Core Container */
         .search-modal-content {
             background: #ffffff;
-            width: 90%;
-            max-width: 600px;
+            width: 100%;
+            max-width: 650px;
             max-height: 80vh;
             border-radius: 12px;
-            padding: 24px;
+            padding: 28px;
             position: relative;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
             font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
         }
-        .close-modal {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #555;
-            transition: color 0.2s;
-        }
-        .close-modal:hover {
-            color: #000;
-        }
+
+        /* Safe Layout Title Elements */
         .search-modal h2 {
             margin-top: 0;
             margin-bottom: 20px;
             font-family: 'Orbitron', sans-serif;
             color: #333;
+            font-size: 1.5rem;
             border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
+            padding-right: 40px; /* Vital safety margin: text will wrap instead of overlapping close icon */
+        }
+
+        /* Top Corner Close Button */
+        .close-modal {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s, transform 0.2s;
+            z-index: 1010;
+            padding: 4px; /* Expand mobile click target space */
+        }
+        .close-modal:hover {
+            color: #000;
+            transform: scale(1.05);
         }
         
-        /* Results Container */
+        /* Scrollable Results Pane */
         .results-container {
             overflow-y: auto;
             flex-grow: 1;
-            padding-right: 5px;
+            padding-right: 8px;
+            margin-right: -4px;
+            -webkit-overflow-scrolling: touch; /* Butter-smooth scrolling on iOS */
         }
+        
+        /* Custom Clean Scrollbar Track */
         .results-container::-webkit-scrollbar {
             width: 6px;
         }
         .results-container::-webkit-scrollbar-thumb {
-            background-color: #ccc;
-            border-radius: 4px;
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+        .results-container::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        /* Result Cards inside Modal */
+        /* Individual Search Output Cards */
         .case-result {
-            background: #f9f9f9;
-            border: 1px solid #eaeaea;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            transition: transform 0.2s;
+            padding: 18px;
+            margin-bottom: 14px;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
         }
         .case-result:hover {
             transform: translateY(-2px);
-            border-color: #ccc;
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
         .case-result h4 {
-            margin: 0 0 8px 0;
-            color: #111;
-            font-size: 1.1rem;
+            margin: 0 0 6px 0;
+            color: #0f172a;
+            font-size: 1.15rem;
+            font-weight: 700;
         }
         .case-badge {
             display: inline-block;
             background: #e0e7ff;
             color: #3730a3;
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin-bottom: 10px;
+            font-size: 0.725rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .case-result p {
             margin: 0;
-            font-size: 0.9rem;
-            color: #555;
-            line-height: 1.5;
+            font-size: 0.925rem;
+            color: #475569;
+            line-height: 1.6;
         }
 
-        /* Loading Spinner */
+        /* CSS Loading Component */
         .loader {
-            border: 4px solid #f3f3f3;
+            border: 4px solid #f1f5f9;
             border-top: 4px solid #3730a3;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+            width: 44px;
+            height: 44px;
+            animation: spin 0.85s linear infinite;
+            margin: 30px auto 15px auto;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* ==========================================
+           MOBILE & TABLET RESPONSIVE BREAKPOINTS
+           ========================================== */
+        @media (max-width: 576px) {
+            .search-modal {
+                padding: 10px;
+            }
+            .search-modal-content {
+                padding: 18px;
+                max-height: 90vh; /* Give content more vertical real estate on small viewport layouts */
+                border-radius: 10px;
+            }
+            .close-modal {
+                top: 16px;
+                right: 16px;
+                font-size: 22px;
+            }
+            .search-modal h2 {
+                font-size: 1.25rem;
+                margin-bottom: 16px;
+                padding-bottom: 10px;
+                padding-right: 36px;
+            }
+            .case-result {
+                padding: 14px;
+                margin-bottom: 10px;
+            }
+            .case-result h4 {
+                font-size: 1.05rem;
+            }
+            .case-result p {
+                font-size: 0.875rem;
+            }
         }
     </style>
 </head>
@@ -304,7 +365,7 @@
 
     <div id="search-modal" class="search-modal">
         <div class="search-modal-content">
-            <i class="fa-solid fa-xmark close-modal" id="close-modal"></i>
+            <i class="fa-solid fa-xmark close-modal" id="close-modal" aria-label="Close search overlay"></i>
             <h2>Search Results</h2>
             <div id="search-results-container" class="results-container">
                 </div>
@@ -312,7 +373,7 @@
     </div>
 
     <script>
-        // === Mobile Menu Logic ===
+        // === Mobile Nav Dropdown Mechanics ===
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
@@ -331,17 +392,15 @@
             });
         }
 
-        // === API Configuration ===
-        // IMPORTANT: Paste your published Google Apps Script Web App URL below
+        // === Live Production API Route Configuration ===
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzSkXgN8Lj2d49GZJA6L5MCq_ciEAgndTN--hX4cFSjRAfQ23E8-x7z98s9R_-RUQYW/exec"; 
 
-        // === Search Modal & Fetch Logic ===
+        // === Global Modal UI Controllers ===
         const modal = document.getElementById('search-modal');
         const closeModalBtn = document.getElementById('close-modal');
         const resultsContainer = document.getElementById('search-results-container');
         const mainSearchInput = document.getElementById('main-search-input');
 
-        // Close modal listeners
         closeModalBtn.addEventListener('click', closeModal);
         window.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
@@ -354,18 +413,18 @@
 
         function openModal() {
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden'; // Stop scrolling background elements under display layer
         }
 
-        // The core search function
+        // === Core Asynchronous Fetch Gateway Handler ===
         async function triggerSearch(query) {
             if (!query || !query.trim()) return;
             
             openModal();
-            // Inject loading state
+            // Display standard infinite rotation keyframe animation
             resultsContainer.innerHTML = `
                 <div class="loader"></div>
-                <p style="text-align:center; color:#555;">Searching Clinivault...</p>
+                <p style="text-align:center; color:#64748b; font-size:0.95rem;">Querying Clinivault database...</p>
             `;
 
             try {
@@ -376,30 +435,30 @@
                     const cases = json.data;
                     
                     if (cases.length === 0) {
-                        resultsContainer.innerHTML = '<p style="text-align:center; color:#555;">No cases found matching your search.</p>';
+                        resultsContainer.innerHTML = '<p style="text-align:center; color:#64748b; margin-top:20px;">No exact matching database logs discovered.</p>';
                         return;
                     }
 
-                    // Dynamically build HTML for the returned cases
+                    // Dynamically map array instances inside clean HTML string blocks
                     resultsContainer.innerHTML = cases.map(c => `
                         <div class="case-result">
-                            <h4>${c.CaseTitle || 'Untitled Case'}</h4>
+                            <h4>${c.CaseTitle || 'Untitled Case Protocol'}</h4>
                             ${c.Category ? `<span class="case-badge">${c.Category}</span>` : ''}
-                            <p>${c.CaseDetails ? c.CaseDetails.substring(0, 150) + '...' : 'No details provided.'}</p>
+                            <p>${c.CaseDetails ? c.CaseDetails : 'No summary data cataloged for this case profile.'}</p>
                         </div>
                     `).join('');
 
                 } else {
-                    resultsContainer.innerHTML = `<p style="text-align:center; color:red;">Database Error: ${json.message}</p>`;
+                    resultsContainer.innerHTML = `<p style="text-align:center; color:#ef4444; padding:10px;">Database Error Engine Exception: ${json.message}</p>`;
                 }
 
             } catch (error) {
-                resultsContainer.innerHTML = `<p style="text-align:center; color:red;">Network Error. Please try again.</p>`;
-                console.error("Fetch error:", error);
+                resultsContainer.innerHTML = `<p style="text-align:center; color:#ef4444; padding:10px;">Cloud Gateway Network Timeout. Validate connectivity status.</p>`;
+                console.error("Fetch Exception Stack Trace:", error);
             }
         }
 
-        // Bind Main Input Bar (Search on Enter)
+        // Map Keyboard Events to Input Field Focus Elements
         if (mainSearchInput) {
             mainSearchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
@@ -408,20 +467,18 @@
             });
         }
 
-        // Bind Category Card Buttons
+        // Universal Category Grid Extraction Mapping Logic
         document.querySelectorAll('.lp-card-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const card = e.target.closest('.lp-card');
                 
-                // Grab the text from the title and paragraph, strip out emojis to make the backend search cleaner
+                // Cleanse unicode emoji ranges and text properties out of raw text blocks
                 const rawTitle = card.querySelector('.lp-card-title').innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, '');
                 const rawText = card.querySelector('.lp-card-text').innerText;
                 
-                // Combine them into one giant query string
                 const combinedQuery = `${rawTitle.trim()} ${rawText.trim()}`;
                 
-                // Populate the main input for visual consistency, then search
-                mainSearchInput.value = combinedQuery;
+                mainSearchInput.value = combinedQuery; // Keep standard inputs mirrored with user category actions
                 triggerSearch(combinedQuery);
             });
         });
