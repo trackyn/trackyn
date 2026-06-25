@@ -7,6 +7,123 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Modal Base */
+        .search-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .search-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        .search-modal-content {
+            background: #ffffff;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-family: 'Inter', sans-serif;
+        }
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #555;
+            transition: color 0.2s;
+        }
+        .close-modal:hover {
+            color: #000;
+        }
+        .search-modal h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        /* Results Container */
+        .results-container {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 5px;
+        }
+        .results-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .results-container::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+        /* Result Cards inside Modal */
+        .case-result {
+            background: #f9f9f9;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: transform 0.2s;
+        }
+        .case-result:hover {
+            transform: translateY(-2px);
+            border-color: #ccc;
+        }
+        .case-result h4 {
+            margin: 0 0 8px 0;
+            color: #111;
+            font-size: 1.1rem;
+        }
+        .case-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .case-result p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3730a3;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body id="top">
 
@@ -60,7 +177,7 @@
                 <div class="lp-search-header">
                     <h2 class="lp-section-title">Search by Case Categories or Keyword</h2>
                     <div class="lp-search-bar">
-                        <input type="text" class="lp-search-input" placeholder="🔍 Search by keyword...">
+                        <input type="text" id="main-search-input" class="lp-search-input" placeholder="🔍 Search by keyword...">
                     </div>
                 </div>
 
@@ -185,7 +302,17 @@
         </div>
     </footer>
 
+    <div id="search-modal" class="search-modal">
+        <div class="search-modal-content">
+            <i class="fa-solid fa-xmark close-modal" id="close-modal"></i>
+            <h2>Search Results</h2>
+            <div id="search-results-container" class="results-container">
+                </div>
+        </div>
+    </div>
+
     <script>
+        // === Mobile Menu Logic ===
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
@@ -203,6 +330,101 @@
                 document.body.style.overflow = 'auto'; 
             });
         }
+
+        // === API Configuration ===
+        // IMPORTANT: Paste your published Google Apps Script Web App URL below
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzSkXgN8Lj2d49GZJA6L5MCq_ciEAgndTN--hX4cFSjRAfQ23E8-x7z98s9R_-RUQYW/exec"; 
+
+        // === Search Modal & Fetch Logic ===
+        const modal = document.getElementById('search-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const resultsContainer = document.getElementById('search-results-container');
+        const mainSearchInput = document.getElementById('main-search-input');
+
+        // Close modal listeners
+        closeModalBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        // The core search function
+        async function triggerSearch(query) {
+            if (!query || !query.trim()) return;
+            
+            openModal();
+            // Inject loading state
+            resultsContainer.innerHTML = `
+                <div class="loader"></div>
+                <p style="text-align:center; color:#555;">Searching Clinivault...</p>
+            `;
+
+            try {
+                const response = await fetch(`${GAS_WEB_APP_URL}?search=${encodeURIComponent(query)}`);
+                const json = await response.json();
+
+                if (json.status === 'success') {
+                    const cases = json.data;
+                    
+                    if (cases.length === 0) {
+                        resultsContainer.innerHTML = '<p style="text-align:center; color:#555;">No cases found matching your search.</p>';
+                        return;
+                    }
+
+                    // Dynamically build HTML for the returned cases
+                    resultsContainer.innerHTML = cases.map(c => `
+                        <div class="case-result">
+                            <h4>${c.CaseTitle || 'Untitled Case'}</h4>
+                            ${c.Category ? `<span class="case-badge">${c.Category}</span>` : ''}
+                            <p>${c.CaseDetails ? c.CaseDetails.substring(0, 150) + '...' : 'No details provided.'}</p>
+                        </div>
+                    `).join('');
+
+                } else {
+                    resultsContainer.innerHTML = `<p style="text-align:center; color:red;">Database Error: ${json.message}</p>`;
+                }
+
+            } catch (error) {
+                resultsContainer.innerHTML = `<p style="text-align:center; color:red;">Network Error. Please try again.</p>`;
+                console.error("Fetch error:", error);
+            }
+        }
+
+        // Bind Main Input Bar (Search on Enter)
+        if (mainSearchInput) {
+            mainSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    triggerSearch(mainSearchInput.value);
+                }
+            });
+        }
+
+        // Bind Category Card Buttons
+        document.querySelectorAll('.lp-card-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.target.closest('.lp-card');
+                
+                // Grab the text from the title and paragraph, strip out emojis to make the backend search cleaner
+                const rawTitle = card.querySelector('.lp-card-title').innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, '');
+                const rawText = card.querySelector('.lp-card-text').innerText;
+                
+                // Combine them into one giant query string
+                const combinedQuery = `${rawTitle.trim()} ${rawText.trim()}`;
+                
+                // Populate the main input for visual consistency, then search
+                mainSearchInput.value = combinedQuery;
+                triggerSearch(combinedQuery);
+            });
+        });
     </script>
 </body>
 </html>
