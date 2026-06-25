@@ -6,7 +6,7 @@
     <title>Trackyn | Groups</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght=400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght=400;600&display=swap" rel="stylesheet">
     
     <style>
         .tkn-page-shield {
@@ -69,6 +69,9 @@
         // Local Storage Keys for UI State Persistence
         const LOCAL_COMMENTS_KEY = 'trackyn_local_comments';
         const LOCAL_REACTIONS_KEY = 'trackyn_local_reactions';
+
+        // Tracking selected group client-side
+        let selectedGroup = '';
 
         if (!sessionStorage.getItem('trackynUser') && !TRACKYN_BACKEND_URL.includes('AKfycbz')) {
             window.location.replace('pet-owner.html');
@@ -135,11 +138,12 @@
 
                 const banner = document.getElementById('lost-pet-banner');
                 if (lostPets.length > 0) {
-                    // Extracting names dynamically from B and C (assuming standard FirstName/LastName output)
-                    // The filter removes any 'undefined' or missing values.
+                    // Extracting names dynamically from Column B (OwnerName1) and Column E (Phone)
                     const petAlerts = lostPets.map(p => {
-                        const ownerName = [p.FirstName, p.LastName].filter(Boolean).join(' ') || 'Unknown';
-                        return `${p.PetName} (Owner: ${ownerName})`;
+                        const ownerName = p.OwnerName1 || p.ownername1 || 'Unknown';
+                        const phoneNum = p.Phone || p.phone;
+                        const phoneDisplay = phoneNum ? ` - Contact: ${phoneNum}` : '';
+                        return `${p.PetName} (Owner: ${ownerName}${phoneDisplay})`;
                     }).join(' & ');
                     
                     banner.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> URGENT LOST PET ALERT: Please keep an eye out for ${petAlerts}!`;
@@ -242,9 +246,42 @@
         // ==========================================
         // DATA MUTATION & LOCAL STORAGE SYNC
         // ==========================================
+        function joinGroup(buttonElement, groupName) {
+            const allGroupButtons = document.querySelectorAll('.suggested-groups-list .btn-outline-sm');
+            const postTextArea = document.getElementById('postContent');
+            
+            if (selectedGroup === groupName) {
+                // Leaving / Unselecting group
+                selectedGroup = '';
+                buttonElement.innerText = 'Join';
+                buttonElement.style.background = '';
+                buttonElement.style.color = '';
+                postTextArea.placeholder = "What's on your mind?";
+            } else {
+                // Reset all other group listing interface frames
+                allGroupButtons.forEach(btn => {
+                    btn.innerText = 'Join';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                });
+
+                // Setting active member chosen state
+                selectedGroup = groupName;
+                buttonElement.innerText = 'Joined';
+                buttonElement.style.background = '#141979';
+                buttonElement.style.color = '#ffffff';
+                postTextArea.placeholder = `Posting as a member of ${groupName}...`;
+            }
+        }
+
         async function createPost() {
-            const content = document.getElementById('postContent').value;
+            let content = document.getElementById('postContent').value;
             if (!content.trim()) return;
+
+            // Prepend chosen group membership tag to avoid redoing backend infrastructure
+            if (selectedGroup) {
+                content = `[${selectedGroup}] ${content}`;
+            }
 
             // Loading state
             const btn = document.getElementById('createPostBtn');
@@ -292,7 +329,6 @@
         }
 
         function addReaction(postId) {
-            // Frontend local-storage interaction (no backend reaction column exists)
             let localReactions = JSON.parse(localStorage.getItem(LOCAL_REACTIONS_KEY)) || {};
             if (localReactions[postId] === 'react') {
                 delete localReactions[postId]; 
@@ -414,9 +450,9 @@
                         <div class="group-item">
                             <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
                             <div class="group-details">
-                                <h4 class="group-name">Pet Rescue & Recovery...</h4>
+                                <h4 class="group-name">Pet Rescue & Recovery</h4>
                                 <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
-                                <button class="btn-outline-sm full-width">Join</button>
+                                <button class="btn-outline-sm full-width" onclick="joinGroup(this, 'Pet Rescue & Recovery')">Join</button>
                             </div>
                         </div>
 
@@ -425,16 +461,16 @@
                             <div class="group-details">
                                 <h4 class="group-name">Trackyn Members Circle</h4>
                                 <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
-                                <button class="btn-outline-sm full-width">Join</button>
+                                <button class="btn-outline-sm full-width" onclick="joinGroup(this, 'Trackyn Members Circle')">Join</button>
                             </div>
                         </div>
 
                         <div class="group-item">
                             <div class="group-thumbnail" style="background-color: #e0e0e0;"></div>
                             <div class="group-details">
-                                <h4 class="group-name">Trackyn Owner Comm...</h4>
+                                <h4 class="group-name">Trackyn Owner Community</h4>
                                 <span class="group-members"><i class="fa-solid fa-globe"></i> 1 member</span>
-                                <button class="btn-outline-sm full-width">Join</button>
+                                <button class="btn-outline-sm full-width" onclick="joinGroup(this, 'Trackyn Owner Community')">Join</button>
                             </div>
                         </div>
                     </div>
