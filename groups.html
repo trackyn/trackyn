@@ -92,6 +92,12 @@
             float: right; background: #141979; color: white; border: none;
         }
 
+        /* Profile Avatar Mobile Anti-Squish Fix */
+        .author-avatar {
+            flex-shrink: 0 !important; /* Prevents flexbox from compressing the width */
+            aspect-ratio: 1 / 1; /* Guarantees a perfect circle dimension */
+        }
+
         /* Comment Bubble Styling */
         .comment-bubble {
             background-color: #f0f2f5; padding: 8px 12px;
