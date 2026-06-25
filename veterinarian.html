@@ -7,6 +7,187 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           Authentication Modal Styles
+           ========================================= */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 15px;
+        }
+        .auth-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .auth-modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .close-auth {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s, transform 0.2s;
+            padding: 5px;
+        }
+        .close-auth:hover {
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .auth-modal h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #111;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        /* Form Elements */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .auth-input:focus {
+            outline: none;
+            border-color: #141979;
+            box-shadow: 0 0 0 3px rgba(20, 25, 121, 0.1);
+        }
+
+        .auth-btn {
+            width: 100%;
+            background-color: #141979;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 5px;
+        }
+        .auth-btn:hover {
+            background-color: #0f135e;
+        }
+        .auth-btn:active {
+            transform: scale(0.98);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .auth-switch a {
+            color: #141979;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* Alert Box */
+        .auth-alert {
+            display: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        .auth-alert.error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        .auth-alert.success {
+            background-color: #dcfce3;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Creative Target-Colored Loading Animation (#141979) */
+        .loading-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .auth-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(20, 25, 121, 0.15); /* Light transparent base */
+            border-top: 4px solid #141979; /* Requested specific color */
+            border-right: 4px solid #141979; 
+            border-radius: 50%;
+            animation: authSpin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+        .loading-text {
+            color: #141979;
+            font-weight: 600;
+            font-size: 1rem;
+            animation: pulseText 1.5s ease-in-out infinite;
+        }
+
+        @keyframes authSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
 </head>
 <body id="top">
 
@@ -69,7 +250,7 @@
                     <div class="icon-header">
                         <i class="fa-solid fa-clipboard-list clipboard-icon"></i>
                     </div>
-                    <a href="clinivault.html" class="clinivault-link">Access Clinivault</a>
+                    <a href="#" id="open-auth-btn" class="clinivault-link">Access Clinivault</a>
                     <p class="clinivault-action-text">View Cases and Upload New Ones</p>
                 </div>
             </div>
@@ -100,7 +281,38 @@
         </div>
     </footer>
 
+    <div id="auth-modal" class="auth-modal">
+        <div class="auth-modal-content">
+            <i class="fa-solid fa-xmark close-auth" id="close-auth" aria-label="Close form"></i>
+            
+            <div id="auth-ui-container">
+                <h2 id="auth-title">Clinivault Login</h2>
+                <p id="auth-subtitle" class="auth-subtitle">Secure access to the veterinary casebank.</p>
+                
+                <div id="auth-alert" class="auth-alert"></div>
+                
+                <form id="auth-form" class="auth-form">
+                    <input type="text" id="auth-username" class="auth-input" placeholder="Veterinarian Username" required autocomplete="username">
+                    <input type="password" id="auth-password" class="auth-input" placeholder="Password" required autocomplete="current-password">
+                    <button type="submit" id="auth-submit-btn" class="auth-btn">Log In</button>
+                </form>
+                
+                <p class="auth-switch">
+                    <span id="auth-switch-text">Don't have access?</span> 
+                    <a href="#" id="auth-switch-link">Register here</a>
+                </p>
+            </div>
+
+            <div id="auth-loading" class="loading-container">
+                <div class="auth-spinner"></div>
+                <p id="loading-text" class="loading-text">Authenticating Credentials...</p>
+            </div>
+
+        </div>
+    </div>
+
     <script>
+        // === Mobile Menu Mechanics ===
         const menuToggle = document.querySelector('.menu-toggle');
         const closeMenu = document.querySelector('.close-menu');
         const navLinks = document.querySelector('.nav-links');
@@ -111,13 +323,163 @@
                 document.body.style.overflow = 'hidden'; 
             });
         }
-
         if(closeMenu) {
             closeMenu.addEventListener('click', () => {
                 navLinks.classList.remove('active');
                 document.body.style.overflow = 'auto'; 
             });
         }
+
+        // === Authentication Modal Logic ===
+        // IMPORTANT: Insert your actual published Google Apps Script Web App URL below
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbza5Iey4C6h-vIYjgakOCtFyFNenEXy2AfiQdbPkD1WAa9keDdZ8ATBt3CkOsRovYJs/exec";
+
+        const openAuthBtn = document.getElementById('open-auth-btn');
+        const authModal = document.getElementById('auth-modal');
+        const closeAuthBtn = document.getElementById('close-auth');
+        
+        const authUiContainer = document.getElementById('auth-ui-container');
+        const authLoading = document.getElementById('auth-loading');
+        const authAlert = document.getElementById('auth-alert');
+        const authForm = document.getElementById('auth-form');
+        const usernameInput = document.getElementById('auth-username');
+        const passwordInput = document.getElementById('auth-password');
+        
+        const authTitle = document.getElementById('auth-title');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const authSwitchLink = document.getElementById('auth-switch-link');
+        const authSwitchText = document.getElementById('auth-switch-text');
+        const loadingText = document.getElementById('loading-text');
+
+        let currentMode = "login"; // State tracker: "login" or "register"
+
+        // Open/Close Handlers
+        openAuthBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            resetAuthForm();
+        });
+
+        closeAuthBtn.addEventListener('click', closeAuthModal);
+        window.addEventListener('click', (e) => {
+            if (e.target === authModal) closeAuthModal();
+        });
+
+        function closeAuthModal() {
+            authModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            setTimeout(resetAuthForm, 300); // Clear after animation finishes
+        }
+
+        // Switch between Login and Registration
+        authSwitchLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            authAlert.style.display = 'none'; // Clear old errors
+            
+            if (currentMode === "login") {
+                currentMode = "register";
+                authTitle.innerText = "Register Clinivault";
+                authSubmitBtn.innerText = "Create Account";
+                authSwitchText.innerText = "Already have an account?";
+                authSwitchLink.innerText = "Log in here";
+            } else {
+                currentMode = "login";
+                authTitle.innerText = "Clinivault Login";
+                authSubmitBtn.innerText = "Log In";
+                authSwitchText.innerText = "Don't have access?";
+                authSwitchLink.innerText = "Register here";
+            }
+        });
+
+        function resetAuthForm() {
+            authForm.reset();
+            authAlert.style.display = 'none';
+            authUiContainer.style.display = 'block';
+            authLoading.style.display = 'none';
+            currentMode = "login";
+            authTitle.innerText = "Clinivault Login";
+            authSubmitBtn.innerText = "Log In";
+            authSwitchText.innerText = "Don't have access?";
+            authSwitchLink.innerText = "Register here";
+        }
+
+        function showAlert(message, type) {
+            authAlert.innerText = message;
+            authAlert.className = `auth-alert ${type}`;
+            authAlert.style.display = 'block';
+        }
+
+        // Form Submission Gateway
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!username || !password) {
+                showAlert("Please fill in both fields.", "error");
+                return;
+            }
+
+            // Transition to #141979 loading view
+            authUiContainer.style.display = 'none';
+            authLoading.style.display = 'flex';
+            loadingText.innerText = currentMode === "login" ? "Authenticating Credentials..." : "Creating Account...";
+
+            // Construct payload for GAS doPost
+            const payload = {
+                action: currentMode,
+                username: username,
+                password: password
+            };
+
+            try {
+                const response = await fetch(GAS_WEB_APP_URL, {
+                    method: "POST",
+                    // Note: text/plain prevents CORS preflight blocks from Google
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8",
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const json = await response.json();
+
+                // Restore UI View
+                authLoading.style.display = 'none';
+                authUiContainer.style.display = 'block';
+
+                if (json.status === "success") {
+                    if (currentMode === "login") {
+                        showAlert("Login successful! Redirecting...", "success");
+                        // Store auth token/state natively before redirecting
+                        localStorage.setItem("clinivault_auth_user", username);
+                        setTimeout(() => {
+                            window.location.href = "clinivault.html";
+                        }, 1000);
+                    } else {
+                        // Registration success -> flip them back to login screen
+                        showAlert("Registration complete! You may now log in.", "success");
+                        usernameInput.value = username; // Keep username populated
+                        passwordInput.value = "";
+                        currentMode = "login";
+                        authTitle.innerText = "Clinivault Login";
+                        authSubmitBtn.innerText = "Log In";
+                        authSwitchText.innerText = "Don't have access?";
+                        authSwitchLink.innerText = "Register here";
+                    }
+                } else {
+                    showAlert(json.message, "error"); // Print exact GAS error msg
+                }
+
+            } catch (error) {
+                authLoading.style.display = 'none';
+                authUiContainer.style.display = 'block';
+                showAlert("Network error. Please try again.", "error");
+                console.error("Auth Fetch Error:", error);
+            }
+        });
     </script>
 </body>
 </html>
