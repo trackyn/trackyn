@@ -1,3 +1,8 @@
+/* ==========================================================================
+   IMPORT GOOGLE FONTS (Orbitron & Inter)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700;900&display=swap');
+
 /* --- Global Reset & Variables --- */
 * {
     margin: 0;
@@ -2751,11 +2756,6 @@ a { text-decoration: none; color: inherit; }
         grid-template-columns: 1fr; /* Single column on phones */
     }
 }
-/* ==========================================================================
-   IMPORT GOOGLE FONTS (Orbitron & Inter)
-   ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@700;900&display=swap');
-
 /* ==========================================================================
    LEARNER ACCESS PORTAL PAGE (ISOLATED)
    ========================================================================== */
