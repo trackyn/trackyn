@@ -135,7 +135,13 @@
 
                 const banner = document.getElementById('lost-pet-banner');
                 if (lostPets.length > 0) {
-                    const petAlerts = lostPets.map(p => `${p.PetName} (Owner: ${p.OwnerFirstName})`).join(' & ');
+                    // Extracting names dynamically from B and C (assuming standard FirstName/LastName output)
+                    // The filter removes any 'undefined' or missing values.
+                    const petAlerts = lostPets.map(p => {
+                        const ownerName = [p.FirstName, p.LastName].filter(Boolean).join(' ') || 'Unknown';
+                        return `${p.PetName} (Owner: ${ownerName})`;
+                    }).join(' & ');
+                    
                     banner.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> URGENT LOST PET ALERT: Please keep an eye out for ${petAlerts}!`;
                     banner.style.display = 'block';
                 } else {
